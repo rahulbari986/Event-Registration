@@ -74,10 +74,10 @@ async function generateCard(registrant) {
   // ─── 4. Pink/Magenta Accent Wave (Behind main wave) ────────────────────────
   ctx.fillStyle = '#d81b60'; // Bright pink/magenta accent
   ctx.beginPath();
-  ctx.moveTo(0, 420);
-  ctx.bezierCurveTo(200, 435, 340, 335, 480, 380);
-  ctx.bezierCurveTo(620, 425, 680, 580, 850, 410);
-  ctx.bezierCurveTo(940, 310, 1000, 230, 1024, 190);
+  ctx.moveTo(0, 390);
+  ctx.bezierCurveTo(200, 405, 340, 305, 480, 350);
+  ctx.bezierCurveTo(620, 320, 680, 230, 850, 250);
+  ctx.bezierCurveTo(940, 230, 1000, 170, 1024, 160);
   ctx.lineTo(1024, 682);
   ctx.lineTo(0, 682);
   ctx.closePath();
@@ -93,10 +93,10 @@ async function generateCard(registrant) {
   ctx.fillStyle = waveGrad;
   ctx.beginPath();
   // Shift slightly down and right from the background wave to let pink edge peek out
-  ctx.moveTo(0, 426);
-  ctx.bezierCurveTo(200, 441, 340, 341, 480, 386);
-  ctx.bezierCurveTo(620, 431, 680, 586, 850, 416);
-  ctx.bezierCurveTo(940, 316, 1000, 236, 1024, 196);
+  ctx.moveTo(0, 396);
+  ctx.bezierCurveTo(200, 411, 340, 311, 480, 356);
+  ctx.bezierCurveTo(620, 326, 680, 236, 850, 256);
+  ctx.bezierCurveTo(940, 236, 1000, 176, 1024, 166);
   ctx.lineTo(1024, 682);
   ctx.lineTo(0, 682);
   ctx.closePath();
@@ -326,7 +326,7 @@ async function generateCard(registrant) {
 
   // Calendar Icon
   const calX = 58;
-  const calY = 414;
+  const calY = 450;
   ctx.strokeStyle = '#FFFFFF';
   ctx.lineWidth = 2;
   ctx.lineJoin = 'miter';
@@ -350,7 +350,7 @@ async function generateCard(registrant) {
 
   // Map Pin Icon
   const pinX = 62;
-  const pinY = 482;
+  const pinY = 510;
   ctx.strokeStyle = '#FFFFFF';
   ctx.lineWidth = 2;
   ctx.beginPath();
@@ -371,9 +371,17 @@ async function generateCard(registrant) {
   ctx.font = '500 18.5px Arial, sans-serif';
   ctx.fillText('West End Hotel, Taj West End, Bengaluru', calX + 38, pinY - 4);
 
+  // Separator Line
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(58, 550);
+  ctx.lineTo(460, 550);
+  ctx.stroke();
+
   // ─── 12. Bottom Left Powered By Branding ──────────────────────────────────
   const pbX = 58;
-  const pbY = 574;
+  const pbY = 566;
   ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
   ctx.font = '12px Arial, sans-serif';
   ctx.fillText('Powered by', pbX, pbY);
@@ -415,7 +423,7 @@ async function generateCard(registrant) {
   // ─── 13. Bottom Center Website ─────────────────────────────────────────────
   ctx.fillStyle = '#FFFFFF';
   ctx.font = 'bold 18.5px Arial, sans-serif';
-  ctx.fillText('www.triasummit.com', 228, 615);
+  ctx.fillText('www.triasummit.com', 228, 590);
 
   // ─── 14. Bottom Right "AI" Glowing Chip Badge ──────────────────────────────
   const chipX = 884;
