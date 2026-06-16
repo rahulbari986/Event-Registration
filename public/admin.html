@@ -886,9 +886,8 @@
 
     async function logout() {
       await fetch('/api/admin/logout', { method: 'POST' }).catch(() => {});
-      document.getElementById('dashboard').style.display = 'none';
-      document.getElementById('authScreen').style.display = 'flex';
       clearInterval(autoRefreshTimer);
+      window.location.href = '/';
     }
 
     document.getElementById('logoutBtn').addEventListener('click', logout);
