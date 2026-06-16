@@ -558,6 +558,36 @@
   }
   .anim-row { opacity: 0; transform: translateY(12px); }
   .anim-row.visible { opacity: 1; transform: translateY(0); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .live-dot-wrap {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 8px; border-radius: 6px;
+    background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2);
+    margin-left: 10px; vertical-align: middle;
+  }
+  .live-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--green);
+    animation: livePulse 2s ease infinite;
+  }
+  .live-label {
+    font-size: 8px; font-weight: 800; letter-spacing: 0.1em;
+    color: var(--green); line-height: 1;
+  }
+  @keyframes livePulse {
+    0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(74,222,128,0.4); }
+    50% { opacity: 0.6; transform: scale(0.85); box-shadow: 0 0 0 4px rgba(74,222,128,0); }
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  .refresh-icon.spinning {
+    animation: spin 0.85s linear infinite;
+  }
+  .refresh-icon {
+    display: inline-block;
+    transition: transform 0.2s;
+  }
   </style>
   <!-- GSAP -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
@@ -616,10 +646,16 @@
       <!-- Page Header -->
       <div class="page-header">
         <div>
-          <div class="page-title">Registrations Overview</div>
+          <div class="page-title" style="display: flex; align-items: center; gap: 4px; flex-wrap: wrap;">
+            Registrations Overview
+            <span class="live-dot-wrap">
+              <span class="live-dot"></span>
+              <span class="live-label">LIVE</span>
+            </span>
+          </div>
           <div class="page-sub">TiA Summit — participant management & system health</div>
         </div>
-        <button class="refresh-btn" id="refreshBtn">↻ &nbsp;Refresh</button>
+        <button class="refresh-btn" id="refreshBtn"><span class="refresh-icon">↻</span> &nbsp;Refresh</button>
       </div>
 
       <!-- Metric Cards -->
@@ -927,11 +963,44 @@
       autoRefreshTimer = setInterval(loadAll, 8000);
     }
 
+    // Helper to update text contents of elements with a premium pulse animation on changes
+    function updateMetric(id, newVal) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const oldVal = el.textContent;
+      if (oldVal !== '—' && oldVal !== String(newVal)) {
+        el.textContent = newVal;
+        // Pulse the parent card or widget stat parent
+        const card = el.closest('.metric-card, .queue-stat');
+        if (card && typeof gsap !== 'undefined') {
+          gsap.fromTo(card, 
+            { backgroundColor: 'rgba(212,175,55,0.18)', borderColor: 'var(--gold)' }, 
+            { backgroundColor: card.classList.contains('metric-card') ? 'rgba(255,255,255,0.02)' : 'transparent', borderColor: 'var(--border)', duration: 0.8 }
+          );
+        }
+      } else {
+        el.textContent = newVal;
+      }
+    }
+
     // ═══════════════════════════════════════════════════
     // DATA LOADING
     // ═══════════════════════════════════════════════════
     async function loadAll() {
-      await Promise.all([loadStats(), loadQueueStats(), loadRegistrations()]);
+      const icon = document.querySelector('#refreshBtn .refresh-icon');
+      if (icon) icon.classList.add('spinning');
+      const start = Date.now();
+      try {
+        await Promise.all([loadStats(), loadQueueStats(), loadRegistrations()]);
+      } catch(e) {
+        console.error("Refresh error", e);
+      } finally {
+        const elapsed = Date.now() - start;
+        const delay = Math.max(0, 600 - elapsed);
+        setTimeout(() => {
+          if (icon) icon.classList.remove('spinning');
+        }, delay);
+      }
     }
 
     async function loadStats() {
@@ -939,10 +1008,10 @@
         const res = await fetch('/api/admin/stats');
         if (!res.ok) return;
         const d = await res.json();
-        document.getElementById('mTotal').textContent  = d.totalRegistrations ?? '—';
-        document.getElementById('mCards').textContent  = d.cardsGenerated ?? '—';
-        document.getElementById('mEmails').textContent = d.emailsSent ?? '—';
-        document.getElementById('mPending').textContent = d.pendingJobs ?? '—';
+        updateMetric('mTotal', d.totalRegistrations ?? '—');
+        updateMetric('mCards', d.cardsGenerated ?? '—');
+        updateMetric('mEmails', d.emailsSent ?? '—');
+        updateMetric('mPending', d.pendingJobs ?? '—');
       } catch(e) {}
     }
 
@@ -951,10 +1020,10 @@
         const res = await fetch('/api/admin/queue-stats');
         if (!res.ok) return;
         const d = await res.json();
-        document.getElementById('qPending').textContent       = d.pending ?? 0;
-        document.getElementById('qProcessing').textContent    = d.processing ?? 0;
-        document.getElementById('qCompletedToday').textContent = d.completedToday ?? 0;
-        document.getElementById('qFailed').textContent        = d.failed ?? 0;
+        updateMetric('qPending', d.pending ?? 0);
+        updateMetric('qProcessing', d.processing ?? 0);
+        updateMetric('qCompletedToday', d.completedToday ?? 0);
+        updateMetric('qFailed', d.failed ?? 0);
       } catch(e) {}
     }
 
@@ -977,11 +1046,14 @@
       document.getElementById('totalBadge').textContent = `(${registrations.length})`;
 
       if (registrations.length === 0) {
-        tbody.innerHTML = '<tr class="empty-row"><td colspan="8">No registrations found.</td></tr>';
+        const emptyHtml = '<tr class="empty-row"><td colspan="8">No registrations found.</td></tr>';
+        if (tbody.innerHTML !== emptyHtml) {
+          tbody.innerHTML = emptyHtml;
+        }
         return;
       }
 
-      tbody.innerHTML = registrations.map(reg => {
+      const newHtml = registrations.map(reg => {
         const ini = initials(reg.name);
         const avatarHtml = reg.photo_path
           ? `<div class="avatar"><img src="${resolveUrl(reg.photo_path)}" alt=""/></div>`
@@ -1018,6 +1090,10 @@
           </td>
         </tr>`;
       }).join('');
+
+      if (tbody.innerHTML !== newHtml) {
+        tbody.innerHTML = newHtml;
+      }
     }
 
     function escHtml(s) {
@@ -1279,7 +1355,6 @@
     // ═══════════════════════════════════════════════════
     checkAuth();
   </script>
-<script>
 // ── ADMIN PANEL ANIMATIONS ──────────────────────────────────────────────────
 if (typeof gsap !== 'undefined') {
   // Auth card entrance
@@ -1287,10 +1362,12 @@ if (typeof gsap !== 'undefined') {
 
   // Stagger table rows whenever they appear (called after data loads)
   window.animateTableRows = function() {
-    const rows = document.querySelectorAll('#registrantsBody tr:not([data-anim-done])');
+    const rows = document.querySelectorAll('#regTableBody tr:not([data-anim-done])');
     rows.forEach((row, i) => {
+      // Check if it's the loading or empty row
+      if (row.classList.contains('empty-row')) return;
       row.dataset.animDone = '1';
-      gsap.from(row, { opacity: 0, y: 16, duration: 0.45, delay: i * 0.04, ease: 'power2.out' });
+      gsap.fromTo(row, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45, delay: i * 0.04, ease: 'power2.out' });
     });
     // Apply badge animation classes
     document.querySelectorAll('.badge').forEach(badge => {
@@ -1301,7 +1378,7 @@ if (typeof gsap !== 'undefined') {
   };
 
   // Hook into table renders via MutationObserver
-  const tbody = document.getElementById('registrantsBody');
+  const tbody = document.getElementById('regTableBody');
   if (tbody) {
     const obs = new MutationObserver(() => {
       if (typeof window.animateTableRows === 'function') window.animateTableRows();
@@ -1316,19 +1393,22 @@ if (typeof gsap !== 'undefined') {
   });
 
   // Modal entrance
-  const modalObserver = new MutationObserver(() => {
-    const modal = document.getElementById('editModal') || document.getElementById('viewModal');
-    if (modal && modal.style.display !== 'none' && !modal.dataset.animShown) {
-      modal.dataset.animShown = '1';
-      const inner = modal.querySelector('.modal-box, .modal-card, [class*="modal"]');
-      if (inner) gsap.from(inner, { scale: 0.93, opacity: 0, duration: 0.4, ease: 'back.out(1.4)' });
-      setTimeout(() => delete modal.dataset.animShown, 500);
-    }
+  const modalObserver = new MutationObserver((mutations) => {
+    mutations.forEach(m => {
+      const target = m.target;
+      if (target.classList.contains('open') && !target.dataset.animShown) {
+        target.dataset.animShown = '1';
+        const inner = target.querySelector('.modal');
+        if (inner) gsap.fromTo(inner, { scale: 0.93, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(1.4)' });
+        setTimeout(() => delete target.dataset.animShown, 500);
+      }
+    });
   });
-  ['editModal','viewModal','confirmModal'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) modalObserver.observe(el, { attributes: true, attributeFilter: ['style'] });
-  });
+
+  const editModal = document.getElementById('editModal');
+  if (editModal) {
+    modalObserver.observe(editModal, { attributes: true, attributeFilter: ['class'] });
+  }
 }
 </script>
 </body>
