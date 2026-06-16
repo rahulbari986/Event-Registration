@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register | EVENT 2026 — Future of Innovation</title>
+  <meta name="description" content="Register for EVENT 2026 — Future of Innovation. Join leading visionaries in Hyderabad, August 2026. Get your attendee card instantly."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy: #071428;
+      --navy-2: #0d1f3c;
+      --navy-3: #0a1830;
+      --gold: #D4AF37;
+      --gold-light: #F2CA50;
+      --gold-dark: #AA7C11;
+      --white: #FFFFFF;
+      --off-white: #e8e0cc;
+      --muted: rgba(232, 224, 204, 0.55);
+      --border: rgba(212, 175, 55, 0.22);
+      --border-strong: rgba(212, 175, 55, 0.5);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--navy);
+      color: var(--off-white);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NOISE TEXTURE ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── AMBIENT GLOWS ── */
+    .glow-tr {
+      position: fixed; top: -15%; right: -10%;
+      width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,175,55,0.07) 0%, transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+    .glow-bl {
+      position: fixed; bottom: -20%; left: -15%;
+      width: 700px; height: 700px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(13,31,60,0.9) 0%, transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 0 48px;
+      height: 72px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(7,20,40,0.75);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px; font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    .nav-link {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color 0.25s;
+    }
+    .nav-link:hover { color: var(--gold); }
+    .nav-badge {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 20px;
+      border: 1px solid var(--border-strong);
+      color: var(--gold); background: rgba(212,175,55,0.08);
+      text-decoration: none;
+      transition: background 0.25s;
+    }
+    .nav-badge:hover { background: rgba(212,175,55,0.15); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center;
+      padding: 100px 24px 60px;
+      position: relative; z-index: 1;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 6px 20px; border-radius: 40px;
+      border: 1px solid var(--border-strong);
+      background: rgba(212,175,55,0.06);
+      margin-bottom: 28px;
+      animation: fadeUp 0.8s ease both;
+    }
+    .hero-eyebrow-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--gold);
+      animation: pulse 2s ease infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+    .hero-eyebrow span {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--gold);
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(48px, 7vw, 88px);
+      font-weight: 700; line-height: 1.05;
+      color: var(--white); margin-bottom: 8px;
+      animation: fadeUp 0.9s ease 0.1s both;
+    }
+    .hero-title em {
+      font-style: italic;
+      background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(16px, 2vw, 22px);
+      color: var(--muted); margin-bottom: 24px;
+      font-weight: 300; letter-spacing: 0.02em;
+      animation: fadeUp 0.9s ease 0.2s both;
+    }
+
+    .hero-meta {
+      display: flex; align-items: center; gap: 24px;
+      justify-content: center; flex-wrap: wrap;
+      margin-bottom: 56px;
+      animation: fadeUp 0.9s ease 0.3s both;
+    }
+    .hero-meta-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 500; color: var(--off-white);
+    }
+    .hero-meta-icon {
+      width: 28px; height: 28px; border-radius: 6px;
+      background: rgba(212,175,55,0.1);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+    }
+    .hero-meta-sep { color: var(--border-strong); font-size: 18px; }
+
+    /* ── SAMPLE CARD PREVIEW ── */
+    .card-preview-wrap {
+      width: 100%; max-width: 640px; margin: 0 auto 72px;
+      animation: fadeUp 0.9s ease 0.4s both;
+      position: relative;
+    }
+    .card-preview-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--muted);
+      margin-bottom: 14px; text-align: center;
+    }
+    .card-preview {
+      width: 100%;
+      max-width: 640px;
+      aspect-ratio: 1024/682;
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,175,55,0.1);
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+    .card-preview:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 32px 100px rgba(0,0,0,0.7), 0 0 40px rgba(212,175,55,0.08);
+    }
+    .card-inner {
+      position: absolute;
+      inset: 0;
+      padding: 24px 32px;
+      display: flex;
+      justify-content: space-between;
+      color: #0b1a40;
+      z-index: 2;
+    }
+    .card-bottom-wave {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 48%;
+      background: linear-gradient(135deg, #a11b51 0%, #561877 35%, #141d66 70%, #070e3b 100%);
+      clip-path: ellipse(90% 100% at 50% 100%);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .card-col-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+      width: 60%;
+      height: 100%;
+      z-index: 2;
+      text-align: left;
+    }
+    .card-col-right {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      width: 38%;
+      height: 90%;
+      z-index: 2;
+      padding-bottom: 24px;
+    }
+    
+    .card-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-logo-9 {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #a11b51 0%, #561877 50%, #141d66 100%);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid #141d66;
+    }
+    .card-logo-line1 {
+      font-size: 10px;
+      font-weight: 700;
+      color: #0b1a40;
+      letter-spacing: 0.05em;
+    }
+    .card-logo-line2 {
+      font-size: 15px;
+      font-weight: 800;
+      color: #0b1a40;
+      line-height: 1.1;
+    }
+    .card-logo-line3 {
+      font-size: 6px;
+      font-weight: 900;
+      color: #0b1a40;
+      letter-spacing: 0.1em;
+    }
+    
+    .card-info-box {
+      margin-top: 28px;
+      color: #ffffff;
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .card-brand-box {
+      color: #ffffff;
+      font-size: 9px;
+      opacity: 0.9;
+    }
+    .card-brand-title {
+      font-size: 15px;
+      font-weight: 700;
+    }
+    
+    .card-avatar-ring {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: #a11b51;
+      border: 3px solid #a11b51;
+      box-shadow: 0 0 0 3px #0b1a40;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+    .card-avatar-ring .avatar-img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; border-radius: 50%;
+      display: none;
+    }
+    .card-avatar-ring .avatar-initials {
+      position: relative; z-index: 1;
+      transition: opacity 0.25s;
+    }
+    .card-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 2px;
+      text-align: center;
+    }
+    .card-role {
+      font-size: 11px;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 2px;
+    }
+    .card-location {
+      font-size: 11px;
+      color: rgba(255,255,255,0.75);
+      font-weight: 600;
+    }
+    .card-web-link {
+      position: absolute;
+      left: 218px;
+      bottom: 24px;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      z-index: 2;
+    }
+    .card-ai-chip {
+      position: absolute;
+      right: 32px;
+      bottom: 36px;
+      width: 44px; height: 44px;
+      background: #061030;
+      border: 2px solid #00aeef;
+      transform: rotate(45deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      box-shadow: 0 0 10px rgba(0, 174, 239, 0.4);
+      z-index: 2;
+    }
+
+    /* ── SECTION TITLE ── */
+    .section-anchor { padding-top: 90px; }
+    .section-title {
+      text-align: center; margin-bottom: 48px;
+    }
+    .section-title h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 36px; font-weight: 700;
+      color: var(--white); margin-bottom: 10px;
+    }
+    .section-title p {
+      font-size: 15px; color: var(--muted);
+      max-width: 500px; margin: 0 auto;
+    }
+
+    /* ── REGISTRATION FORM ── */
+    .form-section {
+      max-width: 600px; margin: 0 auto;
+      padding: 0 24px 120px;
+      position: relative; z-index: 1;
+    }
+
+    .form-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-top: 1px solid var(--border-strong);
+      border-radius: 16px;
+      padding: 44px 44px 40px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.4);
+      backdrop-filter: blur(20px);
+      position: relative;
+      overflow: hidden;
+    }
+    .form-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);
+    }
+
+    .form-header { margin-bottom: 36px; }
+    .form-header h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px; font-weight: 700; color: var(--white);
+      margin-bottom: 6px;
+    }
+    .form-header p { font-size: 13px; color: var(--muted); }
+
+    .field-group { display: flex; flex-direction: column; gap: 28px; margin-bottom: 36px; }
+
+    .field { display: flex; flex-direction: column; gap: 8px; }
+    .field-label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    .field-label.error { color: #ef4444; }
+    .field-label.active { color: var(--gold); }
+
+    .field-input {
+      background: transparent;
+      border: none; border-bottom: 1.5px solid rgba(255,255,255,0.15);
+      padding: 10px 0;
+      font-size: 14px; font-family: 'Inter', sans-serif;
+      color: var(--white);
+      transition: border-color 0.25s, box-shadow 0.25s;
+      outline: none;
+      width: 100%;
+    }
+    .field-input::placeholder { color: rgba(255,255,255,0.22); }
+    .field-input:focus { border-bottom-color: var(--gold); box-shadow: 0 4px 12px -4px rgba(212,175,55,0.25); }
+    .field-input.error {
+      border-bottom-color: #ef4444;
+      box-shadow: 0 4px 12px -4px rgba(239, 68, 68, 0.35);
+    }
+    .phone-wrap {
+      display: flex;
+      align-items: center;
+      border-bottom: 1.5px solid rgba(255,255,255,0.15);
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .phone-prefix {
+      font-size: 14px;
+      color: var(--muted);
+      padding: 10px 10px 10px 0;
+      user-select: none;
+    }
+    .phone-input {
+      border-bottom: none !important;
+      padding: 10px 0 !important;
+      box-shadow: none !important;
+    }
+    .phone-wrap:focus-within {
+      border-bottom-color: var(--gold);
+      box-shadow: 0 4px 12px -4px rgba(212,175,55,0.25);
+    }
+    .phone-wrap.error {
+      border-bottom-color: #ef4444;
+      box-shadow: 0 4px 12px -4px rgba(239, 68, 68, 0.35);
+    }
+    .photo-upload-area.error {
+      border-color: #ef4444;
+      background: rgba(239, 68, 68, 0.05);
+    }
+
+    /* ── PHOTO UPLOAD ── */
+    .photo-upload-wrap { display: flex; flex-direction: column; gap: 8px; }
+    .photo-upload-area {
+      border: 1.5px dashed rgba(212,175,55,0.3);
+      border-radius: 10px;
+      padding: 20px;
+      display: flex; align-items: center; gap: 16px;
+      cursor: pointer;
+      transition: border-color 0.25s, background 0.25s;
+      background: rgba(212,175,55,0.02);
+    }
+    .photo-upload-area:hover { border-color: var(--gold); background: rgba(212,175,55,0.04); }
+    .photo-upload-area.has-file { border-color: var(--gold); background: rgba(212,175,55,0.05); }
+    .photo-preview-circle {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: rgba(212,175,55,0.1);
+      border: 2px solid var(--border-strong);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; flex-shrink: 0;
+    }
+    .photo-preview-circle img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-icon { font-size: 22px; opacity: 0.5; }
+    .photo-upload-text { flex: 1; }
+    .photo-upload-title { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
+    .photo-upload-hint { font-size: 11px; color: var(--muted); }
+    .photo-upload-input { display: none; }
+
+    /* ── ERROR BANNER ── */
+    .error-banner {
+      display: none; margin-bottom: 20px;
+      background: rgba(239,68,68,0.12);
+      border: 1px solid rgba(239,68,68,0.3);
+      border-radius: 10px; padding: 14px 16px;
+      font-size: 13px; color: #fca5a5;
+      align-items: center; gap: 10px;
+    }
+    .error-banner.visible { display: flex; }
+
+    /* ── SUBMIT BUTTON ── */
+    .submit-btn {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(90deg, var(--gold-dark) 0%, var(--gold-light) 50%, var(--gold-dark) 100%);
+      background-size: 200% auto;
+      border: none; border-radius: 8px;
+      font-size: 13px; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--navy); cursor: pointer;
+      transition: background-position 0.5s, box-shadow 0.3s, transform 0.15s;
+      box-shadow: 0 0 24px rgba(212,175,55,0.2);
+    }
+    .submit-btn:hover {
+      background-position: right center;
+      box-shadow: 0 0 36px rgba(212,175,55,0.35);
+    }
+    .submit-btn:active { transform: scale(0.98); }
+    .submit-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+    .form-footer-note {
+      text-align: center; margin-top: 16px;
+      font-size: 11px; color: var(--muted);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.05);
+      background: rgba(5,10,20,0.8);
+      padding: 32px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 16px;
+      position: relative; z-index: 1;
+    }
+    footer .footer-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px; font-weight: 700; color: var(--gold);
+    }
+    footer .footer-copy { font-size: 11px; color: rgba(255,255,255,0.3); }
+
+    /* ── TOAST NOTIFICATION ── */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(161, 27, 81, 0.95);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      padding: 14px 28px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #ffffff;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      backdrop-filter: blur(10px);
+    }
+    .toast.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: all;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      nav { padding: 0 20px; }
+      .form-card { padding: 28px 24px; }
+      .hero-meta-sep { display: none; }
+      footer { flex-direction: column; text-align: center; padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glow-tr"></div>
+  <div class="glow-bl"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="/">TiA SUMMIT</a>
+    <div class="nav-links">
+      <a class="nav-link" href="#register">Register</a>
+      <a class="nav-badge" href="/admin">Admin Portal</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-dot"></span>
+      <span>9th Edition — Official Registration</span>
+    </div>
+
+    <h1 class="hero-title">
+      9th Edition of<br/><em>TiA SUMMIT</em>
+    </h1>
+
+    <p class="hero-subtitle">The India Advocate Summit — Shaping the Future of Legal Advocacy.</p>
+
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="hero-meta-icon">📅</div>
+        <span>15 & 16 Oct, 2026</span>
+      </div>
+      <span class="hero-meta-sep">·</span>
+      <div class="hero-meta-item">
+        <div class="hero-meta-icon">📍</div>
+        <span>Taj West End, Bengaluru</span>
+      </div>
+      <span class="hero-meta-sep">·</span>
+      <div class="hero-meta-item">
+        <div class="hero-meta-icon">✦</div>
+        <span>Official Attendee Pass</span>
+      </div>
+    </div>
+
+    <!-- Sample Attendee Card Preview -->
+    <div class="card-preview-wrap">
+      <p class="card-preview-label">✦ &nbsp;Your Attendee Card Preview&nbsp; ✦</p>
+      <div class="card-preview" id="sampleCard">
+        <div class="card-inner">
+          <div class="card-bottom-wave"></div>
+          
+          <!-- Left Column -->
+          <div class="card-col-left">
+            <div class="card-logo-wrap">
+              <div class="card-logo-9">TiA</div>
+              <div class="card-logo-text">
+                <div class="card-logo-line1">EDITION OF</div>
+                <div class="card-logo-line2">TiA SUMMIT</div>
+                <div class="card-logo-line3">THE INDIA ADVOCATE SUMMIT</div>
+              </div>
+            </div>
+            
+            <div class="card-info-box">
+              <div class="card-info-item">📅 &nbsp;15 & 16 Oct, 2026</div>
+              <div class="card-info-item" style="font-size:10px; line-height:1.2;">📍 &nbsp;West End Hotel, Taj West End, Bengaluru</div>
+            </div>
+            
+            <div class="card-brand-box">
+              <div class="card-powered">Powered by</div>
+              <div class="card-brand-title">micelio</div>
+              <div class="card-brand-sub">EVENTS & PUBLIC RELATIONS</div>
+            </div>
+          </div>
+          
+          <!-- Right Column -->
+          <div class="card-col-right">
+            <div class="card-avatar-ring" id="sampleAvatar">
+              <img class="avatar-img" id="sampleAvatarImg" src="" alt=""/>
+              <span class="avatar-initials" id="sampleAvatarInitials">✦</span>
+            </div>
+            <div class="card-name" id="sampleName">ATTENDEE NAME</div>
+            <div class="card-role">Attendee Delegate</div>
+            <div class="card-location" id="sampleLocation">CITY</div>
+          </div>
+
+          <div class="card-web-link">www.triasummit.com</div>
+          <div class="card-ai-chip"><span style="display:inline-block; transform:rotate(-45deg);">AI</span></div>
+        </div>
+      </div>
+    </div>
+
+    <a href="#register" style="font-size:12px;font-weight:600;letter-spacing:0.12em;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:8px;animation:fadeUp 1s ease 0.6s both;">
+      Scroll to Register &nbsp; ↓
+    </a>
+
+  </section>
+
+  <!-- REGISTRATION FORM -->
+  <section class="section-anchor form-section" id="register">
+
+    <div class="section-title">
+      <h2>Secure Your Place</h2>
+      <p>Fill in your details below. Your attendee card will be emailed within minutes.</p>
+    </div>
+
+    <!-- Error Banner removed per user instructions -->
+
+    <div class="form-card">
+      <div class="form-header">
+        <h3>Registration Form</h3>
+        <p>Fields marked with * are required.</p>
+      </div>
+
+      <form id="regForm" novalidate>
+        <div class="field-group">
+
+          <!-- Full Name -->
+          <div class="field">
+            <label class="field-label" for="name" id="nameLabel">Full Name *</label>
+            <input class="field-input" id="name" name="name" type="text"
+              placeholder="E.g. Ananya Sharma"
+              autocomplete="name" required
+              oninput="this.value=this.value.replace(/[^A-Za-z\s'\-]/g,'');"/>
+            <span class="field-hint" id="nameHint">Letters and spaces only — no numbers or symbols</span>
+            <span class="field-err" id="nameErr"></span>
+          </div>
+
+          <!-- Email -->
+          <div class="field">
+            <label class="field-label" for="email" id="emailLabel">Email Address *</label>
+            <input class="field-input" id="email" name="email" type="email"
+              placeholder="E.g. yourname@example.com"
+              autocomplete="email" required/>
+            <span class="field-hint" id="emailHint">Please enter a valid email address</span>
+            <span class="field-err" id="emailErr"></span>
+          </div>
+
+          <!-- Phone -->
+          <div class="field">
+            <label class="field-label" for="phone" id="phoneLabel">Phone Number *</label>
+            <div class="phone-wrap">
+              <span class="phone-prefix">+91</span>
+              <input class="field-input phone-input" id="phone" name="phone" type="tel"
+                placeholder="9876543210"
+                maxlength="10"
+                autocomplete="tel"
+                oninput="this.value=this.value.replace(/[^0-9]/g,'').substring(0,10);"/>
+            </div>
+            <span class="field-hint" id="phoneHint">10-digit Indian mobile number</span>
+            <span class="field-err" id="phoneErr"></span>
+          </div>
+
+          <!-- City -->
+          <div class="field">
+            <label class="field-label" for="city" id="cityLabel">City *</label>
+            <input class="field-input" id="city" name="city" type="text"
+              placeholder="E.g. Hyderabad"
+              autocomplete="address-level2"/>
+            <span class="field-err" id="cityErr"></span>
+          </div>
+
+          <!-- Profile Photo (Optional) -->
+          <div class="field photo-upload-wrap">
+            <label class="field-label" id="photoLabel">Profile Photo <span style="font-weight:400;opacity:0.6;">(Optional)</span></label>
+            <div class="photo-upload-area" id="photoDropArea" onclick="document.getElementById('photoInput').click()">
+              <div class="photo-preview-circle" id="photoPreviewCircle">
+                <span class="photo-icon" id="photoIcon">👤</span>
+                <img id="photoPreviewImg" src="" alt="Preview" style="display:none;"/>
+              </div>
+              <div class="photo-upload-text">
+                <div class="photo-upload-title" id="photoUploadTitle">Click to upload your photo</div>
+                <div class="photo-upload-hint">JPG, PNG or WEBP — max 5 MB · Will appear on your attendee card</div>
+              </div>
+            </div>
+            <input class="photo-upload-input" id="photoInput" name="photo" type="file" accept="image/jpeg,image/png,image/webp"/>
+          </div>
+
+        </div>
+
+        <button class="submit-btn" id="submitBtn" type="submit">Register Now</button>
+        <p class="form-footer-note">
+          🔒 &nbsp;Your attendee card will be emailed to your email address within minutes.
+        </p>
+
+      </form>
+    </div>
+
+  </section>
+
+  <!-- Toast Notification Container -->
+  <div class="toast" id="toast"></div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">TiA SUMMIT</div>
+    <div class="footer-copy">© 2026 TiA SUMMIT. All rights reserved.</div>
+  </footer>
+
+  <script>
+    // ═══════════════════════════════════════════════════════
+    // LIVE CARD PREVIEW — updates name, city, photo in real-time
+    // ═══════════════════════════════════════════════════════
+    const sampleName      = document.getElementById('sampleName');
+    const sampleLocation  = document.getElementById('sampleLocation');
+    const sampleAvatarImg = document.getElementById('sampleAvatarImg');
+    const sampleAvatarIni = document.getElementById('sampleAvatarInitials');
+
+    // Shared state
+    let previewPhotoURL = null;
+
+    function getInitials(name) {
+      const parts = name.trim().toUpperCase().split(/\s+/).filter(Boolean);
+      if (!parts.length) return '✦';
+      return parts.length > 1
+        ? parts[0][0] + parts[parts.length - 1][0]
+        : parts[0].substring(0, 2);
+    }
+
+    function updateCardName() {
+      const val = document.getElementById('name').value.trim();
+      sampleName.textContent = val ? val.toUpperCase() : 'ATTENDEE NAME';
+      // Only update initials if no photo is uploaded
+      if (!previewPhotoURL) {
+        sampleAvatarIni.textContent = val ? getInitials(val) : '✦';
+      }
+    }
+
+    function updateCardCity() {
+      const val = document.getElementById('city').value.trim();
+      sampleLocation.textContent = val ? val.toUpperCase() : 'CITY';
+    }
+
+    function showPhotoOnCard(url) {
+      previewPhotoURL = url;
+      sampleAvatarImg.src = url;
+      sampleAvatarImg.style.display = 'block';
+      sampleAvatarIni.style.opacity = '0';
+    }
+
+    function clearPhotoOnCard() {
+      previewPhotoURL = null;
+      sampleAvatarImg.style.display = 'none';
+      sampleAvatarImg.src = '';
+      sampleAvatarIni.style.opacity = '1';
+      const name = document.getElementById('name').value.trim();
+      sampleAvatarIni.textContent = name ? getInitials(name) : '✦';
+    }
+
+    // Bind name input
+    document.getElementById('name').addEventListener('input', updateCardName);
+
+    // Bind city input
+    document.getElementById('city').addEventListener('input', updateCardCity);
+
+    // ── Photo upload preview ────────────────────────────────────────────────
+    const photoInput = document.getElementById('photoInput');
+    const photoIcon = document.getElementById('photoIcon');
+    const photoPreviewImg = document.getElementById('photoPreviewImg');
+    const photoDropArea = document.getElementById('photoDropArea');
+    const photoUploadTitle = document.getElementById('photoUploadTitle');
+
+    photoInput.addEventListener('change', () => {
+      const file = photoInput.files[0];
+      if (!file) { clearPhotoOnCard(); return; }
+      const url = URL.createObjectURL(file);
+
+      // Update upload area UI
+      photoIcon.style.display = 'none';
+      photoPreviewImg.src = url;
+      photoPreviewImg.style.display = 'block';
+      photoDropArea.classList.add('has-file');
+      photoUploadTitle.textContent = file.name;
+
+      // Update card preview with photo
+      showPhotoOnCard(url);
+    });
+
+    // ── Label focus animation ────────────────────────────────────────────────
+    document.querySelectorAll('.field-input').forEach(input => {
+      const label = input.parentElement.querySelector('.field-label') || input.parentElement.parentElement.querySelector('.field-label');
+      if (!label) return;
+      input.addEventListener('focus', () => label.classList.add('active'));
+      input.addEventListener('blur', () => label.classList.remove('active'));
+      input.addEventListener('input', () => {
+        label.classList.remove('error');
+        input.classList.remove('error');
+        if (input.id === 'phone') {
+          const wrap = input.parentElement;
+          if (wrap) wrap.classList.remove('error');
+        }
+      });
+    });
+
+    const photoInputEl = document.getElementById('photoInput');
+    const photoDropAreaEl = document.getElementById('photoDropArea');
+    const photoLabelEl = document.getElementById('photoLabel');
+
+    if (photoInputEl && photoDropAreaEl) {
+      photoInputEl.addEventListener('change', () => {
+        photoDropAreaEl.classList.remove('error');
+        if (photoLabelEl) photoLabelEl.classList.remove('error');
+      });
+    }
+
+    // ── Toast Notification Helper ───────────────────────────────────────────
+    let toastTimer = null;
+    function showNotification(msg) {
+      const t = document.getElementById('toast');
+      if (!t) return;
+      t.innerHTML = `⚠️ &nbsp; ${msg}`;
+      t.classList.add('visible');
+      
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        t.classList.remove('visible');
+      }, 8000); // Disappear after 8 seconds
+    }
+
+    // ── Validation helpers ───────────────────────────────────────────────────
+    const NAME_RX  = /^[A-Za-z\s'\-]+$/;
+    const EMAIL_RX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const PHONE_RX = /^[0-9]{10}$/; // 10 digits (we prepend +91 before sending)
+
+    function clearErr(fieldId) {
+      const el = document.getElementById(fieldId + 'Err');
+      const inp = document.getElementById(fieldId);
+      const lbl = document.getElementById(fieldId + 'Label');
+      if (el)  el.textContent = '';
+      if (inp) inp.classList.remove('error');
+      if (lbl) lbl.classList.remove('error');
+      if (fieldId === 'phone') {
+        const wrap = document.querySelector('.phone-wrap');
+        if (wrap) wrap.classList.remove('error');
+      }
+    }
+    function showErr(fieldId, msg) {
+      const el = document.getElementById(fieldId + 'Err');
+      const inp = document.getElementById(fieldId);
+      const lbl = document.getElementById(fieldId + 'Label');
+      if (el)  { el.textContent = msg; }
+      if (inp) inp.classList.add('error');
+      if (lbl) lbl.classList.add('error');
+      if (fieldId === 'phone') {
+        const wrap = document.querySelector('.phone-wrap');
+        if (wrap) wrap.classList.add('error');
+      }
+      return false;
+    }
+
+    // ── Form submission ──────────────────────────────────────────────────────
+    document.getElementById('regForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name  = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const digits = document.getElementById('phone').value.replace(/\D/g, '').substring(0, 10);
+      const phone = '+91' + digits;  // always prepend +91
+      const city  = document.getElementById('city').value.trim();
+      const photo = document.getElementById('photoInput').files[0];
+
+      // Clear all errors
+      ['name','email','phone','city'].forEach(clearErr);
+      if (photoDropAreaEl) photoDropAreaEl.classList.remove('error');
+      if (photoLabelEl)    photoLabelEl.classList.remove('error');
+
+      let isValid = true;
+      let firstErrorMsg = '';
+
+      // Name — letters only
+      if (!name || name.length < 2) {
+        showErr('name', 'Name must be at least 2 characters.');
+        if (!firstErrorMsg) firstErrorMsg = 'Name must be at least 2 characters.';
+        isValid = false;
+      } else if (!NAME_RX.test(name)) {
+        showErr('name', 'Name must contain letters only — no numbers or symbols.');
+        if (!firstErrorMsg) firstErrorMsg = 'Name must contain letters only — no numbers or symbols.';
+        isValid = false;
+      }
+
+      // Email
+      if (!email) {
+        showErr('email', 'Email address is required.');
+        if (!firstErrorMsg) firstErrorMsg = 'Email address is required.';
+        isValid = false;
+      } else if (!EMAIL_RX.test(email)) {
+        showErr('email', 'Please enter a valid email address.');
+        if (!firstErrorMsg) firstErrorMsg = 'Please enter a valid email address.';
+        isValid = false;
+      }
+
+      // Phone — exactly 10 digits after +91
+      if (!digits || digits.length !== 10) {
+        showErr('phone', 'Enter exactly 10 digits after +91.');
+        if (!firstErrorMsg) firstErrorMsg = 'Enter exactly 10 digits after +91.';
+        isValid = false;
+      } else if (!PHONE_RX.test(digits)) {
+        showErr('phone', 'Phone must contain digits only.');
+        if (!firstErrorMsg) firstErrorMsg = 'Phone must contain digits only.';
+        isValid = false;
+      }
+
+      // City
+      if (!city || city.length < 2) {
+        showErr('city', 'Please enter your city.');
+        if (!firstErrorMsg) firstErrorMsg = 'Please enter your city.';
+        isValid = false;
+      }
+
+      // Photo size
+      if (photo && photo.size > 5 * 1024 * 1024) {
+        if (photoDropAreaEl) photoDropAreaEl.classList.add('error');
+        if (photoLabelEl)    photoLabelEl.classList.add('error');
+        if (!firstErrorMsg) firstErrorMsg = 'Profile photo must be smaller than 5 MB.';
+        isValid = false;
+      }
+
+      if (!isValid) {
+        showNotification(firstErrorMsg);
+        const firstErr = document.querySelector('.field-input.error') || document.querySelector('.photo-upload-area.error');
+        if (firstErr) firstErr.scrollIntoView({ behavior:'smooth', block:'center' });
+        return;
+      }
+
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Registering…';
+
+      try {
+        const fd = new FormData();
+        fd.append('name',  name);
+        fd.append('email', email);
+        fd.append('phone', phone);   // e.g. +919876543210
+        fd.append('city',  city);
+        if (photo) fd.append('photo', photo);
+
+        const res  = await fetch('/api/registration', { method:'POST', body: fd });
+        const data = await res.json();
+
+        if (res.ok) {
+          window.location.href = `/success?id=${data.id}`;
+        } else {
+          const errMsg = (data.error || '').toLowerCase();
+          if (errMsg.includes('gmail') || errMsg.includes('email')) {
+            showErr('email', data.error);
+          } else if (errMsg.includes('name')) {
+            showErr('name', data.error);
+          } else if (errMsg.includes('phone')) {
+            showErr('phone', data.error);
+          } else if (errMsg.includes('city')) {
+            showErr('city', data.error);
+          } else {
+            showErr('name', data.error || 'Registration failed. Please try again.');
+          }
+          showNotification(data.error || 'Registration failed. Please try again.');
+          btn.disabled = false;
+          btn.textContent = 'Register Now';
+        }
+      } catch (err) {
+        showErr('name', 'Network error — please check your connection.');
+        showNotification('Network error — please check your connection.');
+        btn.disabled = false;
+        btn.textContent = 'Register Now';
+      }
+    });
+
+    // ── Parallax sample card tilt on hover ──────────────────────────────────
+    const card = document.getElementById('sampleCard');
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = `perspective(800px) rotateY(${x * 10}deg) rotateX(${-y * 8}deg)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(800px) rotateY(0deg) rotateX(0deg)';
+      card.style.transition = 'transform 0.6s ease';
+    });
+    card.addEventListener('mouseenter', () => {
+      card.style.transition = 'transform 0.1s ease';
+    });
+  </script>
+</body>
+</html>
