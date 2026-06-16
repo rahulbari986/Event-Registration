@@ -44,6 +44,21 @@ async function generateCard(registrant) {
     ctx.fillRect(0, 0, width, height);
   }
 
+  // Helper to draw rounded rectangle for badge template overlay
+  function drawRoundedRect(c, x, y, w, h, r) {
+    c.beginPath();
+    c.moveTo(x + r, y);
+    c.lineTo(x + w - r, y);
+    c.quadraticCurveTo(x + w, y, x + w, y + r);
+    c.lineTo(x + w, y + h - r);
+    c.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    c.lineTo(x + r, y + h);
+    c.quadraticCurveTo(x, y + h, x, y + h - r);
+    c.lineTo(x, y + r);
+    c.quadraticCurveTo(x, y, x + r, y);
+    c.closePath();
+  }
+
   // 1. Profile Photo
   const photoCenterX = 1107;
   const photoCenterY = 429;
@@ -53,6 +68,10 @@ async function generateCard(registrant) {
   ctx.beginPath();
   ctx.arc(photoCenterX, photoCenterY, photoRad, 0, Math.PI * 2);
   ctx.clip();
+
+  // Clear/cover the template photo with a solid dark navy background first
+  ctx.fillStyle = '#071428';
+  ctx.fill();
 
   let photoLoaded = false;
   if (registrant.photo_path) {
@@ -117,36 +136,44 @@ async function generateCard(registrant) {
   ctx.restore();
 
   // 2. User Details (Name, Role, City)
+  // Cover the template details text area with a clean dark card badge
+  ctx.save();
+  ctx.fillStyle = '#071428';
+  ctx.strokeStyle = '#D4AF37';
+  ctx.lineWidth = 2.5;
+  const badgeX = 900;
+  const badgeY = 605;
+  const badgeW = 414;
+  const badgeH = 135;
+  const badgeRadius = 12;
+  drawRoundedRect(ctx, badgeX, badgeY, badgeW, badgeH, badgeRadius);
+  ctx.fill();
+  ctx.stroke();
+  ctx.restore();
+
   ctx.textAlign = 'center';
   ctx.textBaseline = 'alphabetic';
   ctx.fillStyle = '#FFFFFF';
   
   const attendeeName = (registrant.name || '').trim();
-  let nameSize = 42;
+  let nameSize = 36;
   ctx.font = `${nameSize}px ArialBold, Arial, sans-serif`;
   // Decrease font size if name is too wide
-  while (ctx.measureText(attendeeName).width > 350 && nameSize > 24) {
+  while (ctx.measureText(attendeeName).width > 370 && nameSize > 24) {
     nameSize -= 2;
     ctx.font = `${nameSize}px ArialBold, Arial, sans-serif`;
   }
-  ctx.fillText(attendeeName, photoCenterX, 642);
+  ctx.fillText(attendeeName, photoCenterX, 646);
 
   ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
-  ctx.font = '24px Arial, sans-serif';
+  ctx.font = '22px Arial, sans-serif';
   ctx.fillText('Attendee Delegate', photoCenterX, 684);
 
   const attendeeCity = (registrant.city || '').trim();
-  ctx.fillText(attendeeCity, photoCenterX, 720);
+  ctx.fillText(attendeeCity, photoCenterX, 716);
 
   // 3. Date and Location
-  ctx.textAlign = 'left';
-  ctx.fillStyle = '#FFFFFF';
-  ctx.font = '33px ArialBold, Arial, sans-serif';
-  ctx.fillText('15 & 16 Oct, 2026', 144, 702);
-
-  ctx.font = '28px Arial, sans-serif';
-  ctx.fillText('West End Hotel, Taj West End, Bengaluru', 144, 765);
-
+  // Note: Removed because they are already part of the card.jpeg template
   return canvas.toBuffer('image/png');
 }
 

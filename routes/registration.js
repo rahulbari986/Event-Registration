@@ -110,45 +110,19 @@ router.post('/registration', upload.single('photo'), async (req, res) => {
     // ── Enqueue background job ─────────────────────────────────────────────
     await queue.enqueueJob(req.db, registrationId);
 
-    // If running in Vercel (serverless environment), process it synchronously
-    if (isVercel) {
-      await queue.processSynchronously(req.db, registrationId);
-    }
-
-    // Attempt to read the generated card to send back as base64 for instant render
-    let cardDataUrl = null;
-    let regDetails = null;
-
-    try {
-      const updatedReg = await req.db.get(
-        `SELECT id, name, email, phone, city, photo_path, card_path,
-                card_status, email_status, created_at
-         FROM registrations WHERE id = ?`,
-        [registrationId]
-      );
-      if (updatedReg) {
-        regDetails = updatedReg;
-        if (updatedReg.card_status === 'generated' && updatedReg.card_path) {
-          const cardsDir = isVercel ? '/tmp/generated-cards' : path.join(process.cwd(), 'generated-cards');
-          const cardFilename = path.basename(updatedReg.card_path);
-          const cardFullPath = path.join(cardsDir, cardFilename);
-          
-          if (fs.existsSync(cardFullPath)) {
-            const buffer = fs.readFileSync(cardFullPath);
-            cardDataUrl = `data:image/png;base64,${buffer.toString('base64')}`;
-          }
-        }
-      }
-    } catch (e) {
-      console.error('Failed to attach card data to response:', e);
-    }
+    const regDetails = await req.db.get(
+      `SELECT id, name, email, phone, city, photo_path, card_path,
+              card_status, email_status, created_at
+       FROM registrations WHERE id = ?`,
+      [registrationId]
+    );
 
     return res.status(201).json({
       success: true,
       message: 'Registration successful. Card generation enqueued.',
       id: registrationId,
       registration: regDetails,
-      cardDataUrl: cardDataUrl
+      cardDataUrl: null
     });
 
   } catch (err) {
@@ -172,6 +146,30 @@ router.get('/registration/:id', async (req, res) => {
     if (!registrant) {
       return res.status(404).json({ error: 'Registration not found.' });
     }
+
+    // On-demand card generation if pending (suitable for serverless environments)
+    if (registrant.card_status === 'pending') {
+      console.log(`[On-Demand Processor] Initiating card generation for registrant ${registrant.id}...`);
+      
+      // Update status to processing immediately to act as a concurrency lock
+      await req.db.run(
+        "UPDATE registrations SET card_status = 'processing', email_status = 'processing', updated_at = CURRENT_TIMESTAMP WHERE id = ?",
+        [registrant.id]
+      );
+
+      // Generate card and update DB synchronously
+      await queue.processSynchronously(req.db, registrant.id);
+
+      // Re-fetch updated registrant record
+      const updatedRegistrant = await req.db.get(
+        `SELECT id, name, email, phone, city, photo_path, card_path,
+                card_status, email_status, created_at
+         FROM registrations WHERE id = ?`,
+        [registrant.id]
+      );
+      return res.json(updatedRegistrant);
+    }
+
     return res.json(registrant);
   } catch (err) {
     console.error('Error fetching registration:', err);
