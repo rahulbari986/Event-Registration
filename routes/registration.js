@@ -4,21 +4,12 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const queue = require('../services/queue');
+const storageManager = require('../services/storage');
 
 const isVercel = process.env.VERCEL === '1' || !!process.env.NOW_REGION;
-const uploadDir = isVercel ? '/tmp/uploads' : path.join(process.cwd(), 'uploads');
 
 // ── Multer storage ──────────────────────────────────────────────────────────
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase();
-    cb(null, `photo_${Date.now()}${ext}`);
-  }
-});
+const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
   const allowed = ['.jpg', '.jpeg', '.png', '.webp'];
@@ -95,14 +86,15 @@ router.post('/registration', upload.single('photo'), async (req, res) => {
       [email]
     );
     if (existing) {
-      if (req.file) fs.unlinkSync(req.file.path);
       return res.status(400).json({ error: 'This email address is already registered.' });
     }
 
     // ── Photo path ─────────────────────────────────────────────────────────
     let photoPath = null;
     if (req.file) {
-      photoPath = `uploads/${req.file.filename}`;
+      const ext = path.extname(req.file.originalname).toLowerCase();
+      const uniqueFilename = `photo_${Date.now()}${ext}`;
+      photoPath = await storageManager.uploadPhoto(req.file.buffer, uniqueFilename, req.file.mimetype);
     }
 
     // ── Insert ─────────────────────────────────────────────────────────────
@@ -120,7 +112,7 @@ router.post('/registration', upload.single('photo'), async (req, res) => {
 
     // If running in Vercel (serverless environment), process it synchronously
     if (isVercel) {
-      await queue.processNextJob(req.db);
+      await queue.processSynchronously(req.db, registrationId);
     }
 
     // Attempt to read the generated card to send back as base64 for instant render
@@ -160,7 +152,6 @@ router.post('/registration', upload.single('photo'), async (req, res) => {
     });
 
   } catch (err) {
-    if (req.file && fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
     console.error('Registration API Error:', err);
     return res.status(500).json({ error: 'Failed to process registration. Please try again.' });
   }

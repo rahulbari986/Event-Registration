@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const cardGenerator = require('./cardGenerator');
 const emailService = require('./emailService');
+const storageManager = require('./storage');
 
 let workerInterval = null;
 let isProcessing = false;
@@ -66,24 +67,19 @@ async function processNextJob(db) {
     console.log(`[Queue Worker] Generating card for ${registrant.name}...`);
     const cardBuffer = await cardGenerator.generateCard(registrant);
     
-    // Save locally
+    // Save locally (cache) and upload to cloud (Supabase)
+    const cardFilename = `${registrant.id}.png`;
+    const cardUrl = await storageManager.uploadCard(cardBuffer, cardFilename);
+
+    // Get the local cache path where the file was written, so we can attach it to the email
     const isVercel = process.env.VERCEL === '1' || !!process.env.NOW_REGION;
     const cardsDir = isVercel ? '/tmp/generated-cards' : path.join(process.cwd(), 'generated-cards');
-    if (!fs.existsSync(cardsDir)) {
-      fs.mkdirSync(cardsDir, { recursive: true });
-    }
-    
-    const cardFilename = `${registrant.id}.png`;
-    const cardRelativePath = `generated-cards/${cardFilename}`;
     const cardFullPath = path.join(cardsDir, cardFilename);
-    
-    fs.writeFileSync(cardFullPath, cardBuffer);
-    console.log(`[Queue Worker] Saved card to ${cardFullPath}`);
 
     // Update Registrations card path and card status
     await db.run(
       "UPDATE registrations SET card_path = ?, card_status = 'generated', updated_at = CURRENT_TIMESTAMP WHERE id = ?",
-      [cardRelativePath, registrant.id]
+      [cardUrl, registrant.id]
     );
 
     // 6. Send Email with Attachment
@@ -163,6 +159,61 @@ function startWorker(db, intervalMs = 3000) {
 }
 
 /**
+ * Processes a job synchronously in one database transaction/update.
+ * Optimizes performance by reducing DB roundtrips on Vercel.
+ */
+async function processSynchronously(db, registrantId) {
+  try {
+    const registrant = await db.get("SELECT * FROM registrations WHERE id = ?", [registrantId]);
+    if (!registrant) {
+      throw new Error(`Registrant with ID ${registrantId} not found.`);
+    }
+
+    console.log(`[Sync Processor] Generating card for ${registrant.name}...`);
+    const cardBuffer = await cardGenerator.generateCard(registrant);
+
+    const cardFilename = `${registrant.id}.png`;
+    const cardUrl = await storageManager.uploadCard(cardBuffer, cardFilename);
+
+    console.log(`[Sync Processor] Sending email to ${registrant.email}...`);
+    let emailStatus = 'sent';
+    
+    const isVercel = process.env.VERCEL === '1' || !!process.env.NOW_REGION;
+    const cardsDir = isVercel ? '/tmp/generated-cards' : path.join(process.cwd(), 'generated-cards');
+    const cardFullPath = path.join(cardsDir, cardFilename);
+
+    try {
+      await emailService.sendConfirmationEmail(registrant, cardFullPath);
+    } catch (mailErr) {
+      console.error(`[Sync Processor] Email failed for registrant ID ${registrant.id}:`, mailErr);
+      emailStatus = 'failed';
+    }
+
+    // Single query database update
+    await db.run(
+      `UPDATE registrations 
+       SET card_path = ?, card_status = 'generated', email_status = ?, updated_at = CURRENT_TIMESTAMP 
+       WHERE id = ?`,
+      [cardUrl, emailStatus, registrant.id]
+    );
+
+    console.log(`[Sync Processor] Successfully processed registrant ID: ${registrant.id}`);
+  } catch (err) {
+    console.error(`[Sync Processor] Error processing registrant:`, err);
+    try {
+      await db.run(
+        `UPDATE registrations 
+         SET card_status = 'failed', email_status = 'failed', updated_at = CURRENT_TIMESTAMP 
+         WHERE id = ?`,
+        [registrantId]
+      );
+    } catch (dbErr) {
+      console.error('[Sync Processor] Failed to set status to FAILED:', dbErr);
+    }
+  }
+}
+
+/**
  * Stops the background worker
  */
 function stopWorker() {
@@ -177,5 +228,6 @@ module.exports = {
   enqueueJob,
   startWorker,
   stopWorker,
-  processNextJob
+  processNextJob,
+  processSynchronously
 };

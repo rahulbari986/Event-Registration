@@ -40,9 +40,32 @@ async function generateCard(registrant) {
   let photoLoaded = false;
   if (registrant.photo_path) {
     try {
-      const absPath = path.join(process.cwd(), registrant.photo_path);
-      if (fs.existsSync(absPath)) {
-        const img = await loadImage(absPath);
+      let imgBufferOrPath = null;
+      
+      if (registrant.photo_path.startsWith('http://') || registrant.photo_path.startsWith('https://')) {
+        // It's a cloud URL. Check if we have it in our local cache
+        const filename = path.basename(registrant.photo_path);
+        const isVercel = process.env.VERCEL === '1' || !!process.env.NOW_REGION;
+        const localDir = isVercel ? '/tmp/uploads' : path.join(process.cwd(), 'uploads');
+        const localPath = path.join(localDir, filename);
+        
+        if (fs.existsSync(localPath)) {
+          imgBufferOrPath = localPath;
+        } else {
+          // Dynamic download fallback if local cache is missing (e.g., container cold start)
+          console.log(`[Card] Local cache missing for ${filename}. Downloading photo...`);
+          const response = await fetch(registrant.photo_path);
+          if (!response.ok) throw new Error(`Failed to fetch photo from URL: ${response.statusText}`);
+          const arrayBuffer = await response.arrayBuffer();
+          imgBufferOrPath = Buffer.from(arrayBuffer);
+        }
+      } else {
+        // It's a local relative path
+        imgBufferOrPath = path.join(process.cwd(), registrant.photo_path);
+      }
+      
+      if (imgBufferOrPath) {
+        const img = await loadImage(imgBufferOrPath);
         const scale = Math.max((photoRad * 2) / img.width, (photoRad * 2) / img.height);
         const w = img.width * scale;
         const h = img.height * scale;

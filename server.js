@@ -1,15 +1,13 @@
 const express = require('express');
-const session = require('express-session');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 const fs = require('fs');
-const sqlite3 = require('sqlite3');
-const { open } = require('sqlite');
 require('dotenv').config();
 
+const db = require('./db/db');
 const registrationRoutes = require('./routes/registration');
 const adminRoutes = require('./routes/admin');
 const queue = require('./services/queue');
-const initDb = require('./db/init');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,38 +16,22 @@ const isVercel = process.env.VERCEL === '1' || !!process.env.NOW_REGION;
 const uploadDir = isVercel ? '/tmp/uploads' : path.join(__dirname, 'uploads');
 const cardsDir = isVercel ? '/tmp/generated-cards' : path.join(__dirname, 'generated-cards');
 const sentEmailsDir = isVercel ? '/tmp/sent-emails' : path.join(__dirname, 'sent-emails');
-const dbPath = isVercel ? '/tmp/database.db' : path.join(__dirname, 'db', 'database.db');
 
-// Setup directories
-[uploadDir, cardsDir, sentEmailsDir].forEach(dir => {
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-    console.log(`Created directory: ${dir}`);
-  }
-});
-
-// Lazy DB initialization
-let dbPromise = null;
-function getDb() {
-  if (!dbPromise) {
-    dbPromise = (async () => {
-      console.log(`Connecting to SQLite database at: ${dbPath}`);
-      const db = await open({
-        filename: dbPath,
-        driver: sqlite3.Database
-      });
-      // Run schema tables setup
-      await initDb(dbPath);
-      return db;
-    })();
-  }
-  return dbPromise;
+// Setup directories locally (if database is SQLite, or for temporary storage)
+if (!process.env.DATABASE_URL) {
+  [uploadDir, cardsDir, sentEmailsDir].forEach(dir => {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+      console.log(`Created directory: ${dir}`);
+    }
+  });
 }
 
 // Attach DB to request object middleware
 app.use(async (req, res, next) => {
   try {
-    req.db = await getDb();
+    await db.initialize();
+    req.db = db;
     next();
   } catch (err) {
     console.error('Database connection middleware error:', err);
@@ -57,20 +39,10 @@ app.use(async (req, res, next) => {
   }
 });
 
-// Body parsers & session configuration
+// Body parsers & cookie configuration
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || 'event_2026_default_secret',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: false, // Set to true if running on HTTPS
-      maxAge: 24 * 60 * 60 * 1000 // 24 hours
-    }
-  })
-);
+app.use(cookieParser(process.env.COOKIE_SECRET || 'event_2026_cookie_secret'));
 
 // API Routes
 app.use('/api', registrationRoutes);
@@ -100,7 +72,7 @@ app.get('/admin', (req, res) => {
 if (!isVercel) {
   (async () => {
     try {
-      const db = await getDb();
+      await db.initialize();
       // Start Background Queue Worker
       queue.startWorker(db, 3000);
 

@@ -492,7 +492,7 @@
       document.getElementById('cardLoading').style.display = 'none';
       const img = document.getElementById('cardImg');
       
-      const imgSrc = cachedCardDataUrl ? cachedCardDataUrl : ('/' + reg.card_path + '?t=' + Date.now());
+      const imgSrc = cachedCardDataUrl ? cachedCardDataUrl : (reg.card_path.startsWith('http') ? reg.card_path : '/' + reg.card_path) + (reg.card_path.includes('?') ? '&' : '?') + 't=' + Date.now();
       img.src = imgSrc;
       img.style.display = 'block';
 

@@ -2,14 +2,26 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const fs = require('fs');
+const jwt = require('jsonwebtoken');
 const queue = require('../services/queue');
+
+const JWT_SECRET = process.env.JWT_SECRET || 'event_2026_jwt_secret_key';
+const isVercel = process.env.VERCEL === '1' || !!process.env.NOW_REGION;
 
 // Auth Middleware
 function requireAuth(req, res, next) {
-  if (req.session && req.session.isAdmin) {
-    return next();
+  const token = req.cookies && req.cookies.admin_token;
+  if (!token) {
+    return res.status(401).json({ error: 'Unauthorized. Please log in.' });
   }
-  return res.status(401).json({ error: 'Unauthorized. Please log in.' });
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    req.admin = decoded;
+    return next();
+  } catch (err) {
+    return res.status(401).json({ error: 'Session expired or invalid. Please log in.' });
+  }
 }
 
 /**
@@ -20,7 +32,16 @@ router.post('/admin/login', (req, res) => {
   const adminPass = process.env.ADMIN_PASSWORD || 'akhil';
 
   if (password === adminPass) {
-    req.session.isAdmin = true;
+    const token = jwt.sign({ isAdmin: true }, JWT_SECRET, { expiresIn: '24h' });
+    
+    // Set HTTP-Only, Secure cookie
+    res.cookie('admin_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    });
+
     return res.json({ success: true, message: 'Logged in successfully.' });
   }
 
@@ -31,23 +52,25 @@ router.post('/admin/login', (req, res) => {
  * POST /api/admin/logout
  */
 router.post('/admin/logout', (req, res) => {
-  req.session.destroy(err => {
-    if (err) {
-      return res.status(500).json({ error: 'Failed to log out.' });
-    }
-    res.clearCookie('connect.sid');
-    return res.json({ success: true, message: 'Logged out successfully.' });
-  });
+  res.clearCookie('admin_token');
+  return res.json({ success: true, message: 'Logged out successfully.' });
 });
 
 /**
  * GET /api/admin/check-auth
  */
 router.get('/admin/check-auth', (req, res) => {
-  if (req.session && req.session.isAdmin) {
-    return res.json({ authenticated: true });
+  const token = req.cookies && req.cookies.admin_token;
+  if (!token) {
+    return res.json({ authenticated: false });
   }
-  return res.json({ authenticated: false });
+
+  try {
+    jwt.verify(token, JWT_SECRET);
+    return res.json({ authenticated: true });
+  } catch (err) {
+    return res.json({ authenticated: false });
+  }
 });
 
 /**
@@ -222,6 +245,10 @@ router.put('/admin/registrations/:id', requireAuth, async (req, res) => {
     // Auto queue card regeneration
     await queue.enqueueJob(req.db, registrantId);
 
+    if (isVercel) {
+      await queue.processSynchronously(req.db, registrantId);
+    }
+
     return res.json({ success: true, message: 'Details updated. Card regeneration enqueued.' });
   } catch (err) {
     console.error('Admin update error:', err);
@@ -278,6 +305,10 @@ router.post('/admin/regenerate-card/:id', requireAuth, async (req, res) => {
     await req.db.run("UPDATE registrations SET card_status = 'pending', updated_at = CURRENT_TIMESTAMP WHERE id = ?", [registrantId]);
     await queue.enqueueJob(req.db, registrantId);
 
+    if (isVercel) {
+      await queue.processSynchronously(req.db, registrantId);
+    }
+
     return res.json({ success: true, message: 'Card regeneration queued.' });
   } catch (err) {
     console.error('Regenerate error:', err);
@@ -298,6 +329,10 @@ router.post('/admin/resend-email/:id', requireAuth, async (req, res) => {
 
     await req.db.run("UPDATE registrations SET email_status = 'pending', updated_at = CURRENT_TIMESTAMP WHERE id = ?", [registrantId]);
     await queue.enqueueJob(req.db, registrantId);
+
+    if (isVercel) {
+      await queue.processSynchronously(req.db, registrantId);
+    }
 
     return res.json({ success: true, message: 'Email dispatch queued.' });
   } catch (err) {

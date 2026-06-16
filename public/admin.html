@@ -826,6 +826,14 @@
     // ═══════════════════════════════════════════════════
     // HELPERS
     // ═══════════════════════════════════════════════════
+    function resolveUrl(path) {
+      if (!path) return '';
+      if (path.startsWith('http://') || path.startsWith('https://')) {
+        return path;
+      }
+      return '/' + path;
+    }
+
     function toast(msg, duration = 2800) {
       const t = document.getElementById('toast');
       t.textContent = msg;
@@ -957,7 +965,7 @@
       tbody.innerHTML = registrations.map(reg => {
         const ini = initials(reg.name);
         const avatarHtml = reg.photo_path
-          ? `<div class="avatar"><img src="/${reg.photo_path}" alt=""/></div>`
+          ? `<div class="avatar"><img src="${resolveUrl(reg.photo_path)}" alt=""/></div>`
           : `<div class="avatar"><span class="avatar-initials">${ini}</span></div>`;
 
         return `<tr onclick="openDrawer(${reg.id})">
@@ -980,7 +988,7 @@
             <div class="action-btns" onclick="event.stopPropagation()">
               <button class="action-btn" onclick="openDrawer(${reg.id})" title="View">👁</button>
               <button class="action-btn" onclick="openEdit(${reg.id})" title="Edit">✎</button>
-              <a class="action-btn" href="${reg.card_path ? '/'+reg.card_path : '#'}"
+              <a class="action-btn" href="${reg.card_path ? resolveUrl(reg.card_path) : '#'}"
                  download="${escHtml(reg.name)}-Card.png"
                  style="${!reg.card_path ? 'opacity:.3;pointer-events:none;' : ''}"
                  title="Download">⬇</a>
@@ -1040,7 +1048,7 @@
       // Avatar
       const avatarEl = document.getElementById('drawerAvatar');
       if (reg.photo_path) {
-        avatarEl.innerHTML = `<img src="/${reg.photo_path}" alt="${escHtml(reg.name)}"/>`;
+        avatarEl.innerHTML = `<img src="${resolveUrl(reg.photo_path)}" alt="${escHtml(reg.name)}"/>`;
       } else {
         avatarEl.textContent = initials(reg.name);
       }
@@ -1056,7 +1064,8 @@
       // Card Preview
       const wrap = document.getElementById('drawerCardWrap');
       if (reg.card_path) {
-        wrap.innerHTML = `<img src="/${reg.card_path}?t=${Date.now()}" alt="Attendee Card"/>`;
+        const pathUrl = resolveUrl(reg.card_path);
+        wrap.innerHTML = `<img src="${pathUrl}${pathUrl.includes('?') ? '&' : '?'}t=${Date.now()}" alt="Attendee Card"/>`;
       } else {
         wrap.innerHTML = `<p class="drawer-card-placeholder">Card not yet generated</p>`;
       }
@@ -1064,7 +1073,7 @@
       // Download button
       const dlBtn = document.getElementById('daDownload');
       if (reg.card_path) {
-        dlBtn.href = '/' + reg.card_path;
+        dlBtn.href = resolveUrl(reg.card_path);
         dlBtn.download = `${(reg.name || 'attendee').replace(/\s+/g,'-')}-Card.png`;
         dlBtn.style.opacity = '1'; dlBtn.style.pointerEvents = 'all';
       } else {
