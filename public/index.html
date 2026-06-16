@@ -1054,6 +1054,12 @@
         const data = await res.json();
 
         if (res.ok) {
+          if (data.registration) {
+            sessionStorage.setItem(`registration_${data.id}`, JSON.stringify(data.registration));
+          }
+          if (data.cardDataUrl) {
+            sessionStorage.setItem(`cardDataUrl_${data.id}`, data.cardDataUrl);
+          }
           window.location.href = `/success?id=${data.id}`;
         } else {
           const errMsg = (data.error || '').toLowerCase();

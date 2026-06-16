@@ -123,10 +123,40 @@ router.post('/registration', upload.single('photo'), async (req, res) => {
       await queue.processNextJob(req.db);
     }
 
+    // Attempt to read the generated card to send back as base64 for instant render
+    let cardDataUrl = null;
+    let regDetails = null;
+
+    try {
+      const updatedReg = await req.db.get(
+        `SELECT id, name, email, phone, city, photo_path, card_path,
+                card_status, email_status, created_at
+         FROM registrations WHERE id = ?`,
+        [registrationId]
+      );
+      if (updatedReg) {
+        regDetails = updatedReg;
+        if (updatedReg.card_status === 'generated' && updatedReg.card_path) {
+          const cardsDir = isVercel ? '/tmp/generated-cards' : path.join(process.cwd(), 'generated-cards');
+          const cardFilename = path.basename(updatedReg.card_path);
+          const cardFullPath = path.join(cardsDir, cardFilename);
+          
+          if (fs.existsSync(cardFullPath)) {
+            const buffer = fs.readFileSync(cardFullPath);
+            cardDataUrl = `data:image/png;base64,${buffer.toString('base64')}`;
+          }
+        }
+      }
+    } catch (e) {
+      console.error('Failed to attach card data to response:', e);
+    }
+
     return res.status(201).json({
       success: true,
       message: 'Registration successful. Card generation enqueued.',
-      id: registrationId
+      id: registrationId,
+      registration: regDetails,
+      cardDataUrl: cardDataUrl
     });
 
   } catch (err) {

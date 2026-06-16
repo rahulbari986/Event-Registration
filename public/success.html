@@ -488,14 +488,16 @@
       }
     }
 
-    function showCard(reg) {
+    function showCard(reg, cachedCardDataUrl) {
       document.getElementById('cardLoading').style.display = 'none';
       const img = document.getElementById('cardImg');
-      img.src = '/' + reg.card_path + '?t=' + Date.now();
+      
+      const imgSrc = cachedCardDataUrl ? cachedCardDataUrl : ('/' + reg.card_path + '?t=' + Date.now());
+      img.src = imgSrc;
       img.style.display = 'block';
 
       const dl = document.getElementById('downloadBtn');
-      dl.href = '/' + reg.card_path;
+      dl.href = imgSrc;
       dl.download = `${(reg.name || 'attendee').replace(/\s+/g, '-')}-Event2026.png`;
 
       document.getElementById('ctaGroup').style.display = 'flex';
@@ -515,12 +517,43 @@
     }
 
     async function fetchStatus() {
+      const cachedReg = sessionStorage.getItem(`registration_${regId}`);
+      const cachedCardDataUrl = sessionStorage.getItem(`cardDataUrl_${regId}`);
+
+      // Render instantly if we have everything in cache
+      if (cachedReg) {
+        try {
+          const reg = JSON.parse(cachedReg);
+          document.getElementById('loadingScreen').style.display = 'none';
+          document.getElementById('successContent').style.display = 'block';
+
+          populateDetails(reg);
+          updateTimeline(reg);
+
+          if (reg.card_status === 'generated' && cachedCardDataUrl) {
+            showCard(reg, cachedCardDataUrl);
+            if (pollInterval) clearInterval(pollInterval);
+            return; // We are fully done locally!
+          }
+        } catch (e) {
+          console.error("Local cache read error", e);
+        }
+      }
+
+      // Fallback: poll server
       try {
         const res = await fetch(`/api/registration/${regId}`);
-        if (!res.ok) throw new Error('Not found');
+        if (!res.ok) {
+          // Do not crash UI if server ephemeral DB lost the record but we have local cache
+          if (cachedReg) return;
+          throw new Error('Not found');
+        }
         const reg = await res.json();
 
-        // Show content on first load
+        // Update cache for subsequent updates during this session
+        sessionStorage.setItem(`registration_${regId}`, JSON.stringify(reg));
+
+        // Show content
         document.getElementById('loadingScreen').style.display = 'none';
         document.getElementById('successContent').style.display = 'block';
 
@@ -528,7 +561,7 @@
         updateTimeline(reg);
 
         if (reg.card_status === 'generated') {
-          showCard(reg);
+          showCard(reg, cachedCardDataUrl);
           clearInterval(pollInterval);
         } else if (reg.card_status === 'failed') {
           document.getElementById('cardLoading').innerHTML =
