@@ -679,10 +679,9 @@
     <div class="footer-copy">© 2026 TiA SUMMIT. All rights reserved.</div>
   </footer>
 
-  <!-- ── CDN LIBRARIES (Three.js removed — replaced with Canvas 2D for performance) -->
+  <!-- ── CDN LIBRARIES (Three.js and Lenis removed for performance and scrolling smoothness) -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/splitting@1.0.6/dist/splitting.min.js"></script>
 
   <!-- ── FORM LOGIC (unchanged) ─────────────────────────────────────────── -->
@@ -906,17 +905,7 @@
   <!-- ── ANIMATION ENGINE ──────────────────────────────────────────────────── -->
   <script>
   (function() {
-    // ── 1. LENIS SMOOTH SCROLL ──────────────────────────────────────────────
-    // Single RAF loop only — do NOT also hook into gsap.ticker (that would
-    // call lenis.raf() twice per frame and cause jank)
-    if (typeof Lenis !== 'undefined') {
-      const lenis = new Lenis({
-        duration: 1.1,
-        easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      });
-      function lenisRaf(time) { lenis.raf(time); requestAnimationFrame(lenisRaf); }
-      requestAnimationFrame(lenisRaf);
-    }
+
 
     // ── 2. CANVAS 2D PARTICLE CONSTELLATION (replaces Three.js — much lighter) ──
     (function initParticles() {

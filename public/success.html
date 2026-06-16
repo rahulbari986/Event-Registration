@@ -358,8 +358,6 @@
   </style>
   <!-- GSAP -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <!-- Lenis smooth scroll -->
-  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 </head>
 <body>
 
@@ -641,15 +639,7 @@
   <!-- ── PREMIUM ANIMATION ENGINE ──────────────────────────────────────── -->
   <script>
   (function() {
-    // 1. Lenis smooth scroll
-    if (typeof Lenis !== 'undefined') {
-      const lenis = new Lenis({
-        duration: 1.2,
-        easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      });
-      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-      requestAnimationFrame(raf);
-    }
+
 
     if (typeof gsap === 'undefined') return;
 
