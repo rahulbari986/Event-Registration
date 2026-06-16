@@ -64,14 +64,19 @@ async function generateCard(registrant) {
   const photoCenterY = 420;
   const photoRad = 171;
 
+  // Cover/wipe out the old template photo completely with a slightly larger circle first
+  // (drawn before clipping, to cover any hair/shoulders peeking past the clip boundary)
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(photoCenterX, photoCenterY, 178, 0, Math.PI * 2);
+  ctx.fillStyle = '#071428';
+  ctx.fill();
+  ctx.restore();
+
   ctx.save();
   ctx.beginPath();
   ctx.arc(photoCenterX, photoCenterY, photoRad, 0, Math.PI * 2);
   ctx.clip();
-
-  // Clear/cover the template photo with a solid dark navy background first
-  ctx.fillStyle = '#071428';
-  ctx.fill();
 
   let photoLoaded = false;
   if (registrant.photo_path) {
