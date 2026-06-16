@@ -44,6 +44,65 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser(process.env.COOKIE_SECRET || 'event_2026_cookie_secret'));
 
+// Diagnostic Route
+app.get('/api/diagnose', async (req, res) => {
+  const diagnostics = {
+    env: {
+      DATABASE_URL: !!process.env.DATABASE_URL,
+      SUPABASE_URL: !!process.env.SUPABASE_URL,
+      SUPABASE_SERVICE_ROLE_KEY: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+      SMTP_HOST: !!process.env.SMTP_HOST,
+      VERCEL: process.env.VERCEL,
+      NODE_ENV: process.env.NODE_ENV
+    },
+    database: 'untested',
+    storage: 'untested',
+    email: 'untested',
+    canvas: 'untested'
+  };
+
+  try {
+    const db = require('./db/db');
+    await db.initialize();
+    const testRow = await db.get('SELECT 1 as test');
+    diagnostics.database = testRow && testRow.test === 1 ? 'OK' : 'Failed to query database';
+  } catch (err) {
+    diagnostics.database = `Error: ${err.message}`;
+  }
+
+  try {
+    const { createClient } = require('@supabase/supabase-js');
+    if (process.env.SUPABASE_URL && (process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY)) {
+      const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY);
+      const { data, error } = await supabase.storage.listBuckets();
+      if (error) throw error;
+      diagnostics.storage = `OK (found ${data.length} buckets)`;
+    } else {
+      diagnostics.storage = 'Offline (local filesystem)';
+    }
+  } catch (err) {
+    diagnostics.storage = `Error: ${err.message}`;
+  }
+
+  try {
+    diagnostics.email = process.env.SMTP_HOST ? 'Configured' : 'Offline (JSON Writer)';
+  } catch (err) {
+    diagnostics.email = `Error: ${err.message}`;
+  }
+
+  try {
+    const { createCanvas } = require('@napi-rs/canvas');
+    const canvas = createCanvas(100, 100);
+    const ctx = canvas.getContext('2d');
+    ctx.fillText('Test', 10, 10);
+    diagnostics.canvas = 'OK';
+  } catch (err) {
+    diagnostics.canvas = `Error: ${err.message}`;
+  }
+
+  return res.json(diagnostics);
+});
+
 // API Routes
 app.use('/api', registrationRoutes);
 app.use('/api', adminRoutes);
