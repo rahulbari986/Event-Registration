@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const nodemailer = require('nodemailer');
 
 /**
  * Sends a registration confirmation email with the attendee card attached.
@@ -219,9 +220,56 @@ We look forward to welcoming you.
       console.error('[Email] Resend API request failed:', fetchErr);
       throw fetchErr;
     }
-  } else {
+  }
+  // Send request using SMTP (Nodemailer) if configured
+  else if (process.env.SMTP_HOST) {
+    console.log(`[Email] Sending confirmation to ${email} via SMTP...`);
+
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: parseInt(process.env.SMTP_PORT || '587'),
+      secure: process.env.SMTP_PORT === '465', // true for 465, false for other ports
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS
+      }
+    });
+
+    const mailOptions = {
+      from,
+      replyTo: from,
+      to: email,
+      subject: `EVENT 2026 — Registration Confirmed (${refId})`,
+      text: plainText,
+      html: htmlBody,
+      attachments: [
+        {
+          filename: `${name.replace(/\s+/g, '-')}-Event2026-Card.png`,
+          path: cardPath,
+          contentType: 'image/png'
+        }
+      ],
+      headers: {
+        'X-Priority': '3',                          // Normal priority
+        'X-Mailer': 'Nodemailer',
+        'X-Auto-Response-Suppress': 'OOF, AutoReply',
+        'Importance': 'normal'
+      }
+    };
+
+    try {
+      const info = await transporter.sendMail(mailOptions);
+      console.log(`[Email] ✓ Sent successfully via SMTP. MessageID: ${info.messageId}`);
+      return info;
+    } catch (smtpErr) {
+      console.error('[Email] SMTP sendMail failed:', smtpErr);
+      throw smtpErr;
+    }
+  }
+  // Offline fallback
+  else {
     // Offline / Local Development Fallback
-    console.warn('[Email] Resend API key missing or invalid — using offline JSON transport. Emails will NOT be sent.');
+    console.warn('[Email] Resend API key missing or invalid and SMTP not configured — using offline JSON transport.');
     const isVercel = process.env.VERCEL === '1' || !!process.env.NOW_REGION;
     const emailDir = isVercel ? '/tmp/sent-emails' : path.join(process.cwd(), 'sent-emails');
     if (!fs.existsSync(emailDir)) fs.mkdirSync(emailDir, { recursive: true });
