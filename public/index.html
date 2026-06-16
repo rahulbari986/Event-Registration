@@ -418,6 +418,32 @@
     .field-label.error { color: #ef4444; }
     .field-label.active { color: var(--gold); }
 
+    .field-hint {
+      font-size: 11px;
+      color: rgba(232, 224, 204, 0.45);
+      margin-top: 4px;
+      line-height: 1.4;
+      transition: all 0.2s ease;
+    }
+
+    .field-err {
+      font-size: 11px;
+      color: #f87171;
+      font-weight: 600;
+      margin-top: 4px;
+      line-height: 1.4;
+      display: none;
+      transition: all 0.2s ease;
+    }
+    .field-err:not(:empty) {
+      display: block;
+    }
+
+    .field-input.error ~ .field-hint,
+    .phone-wrap.error ~ .field-hint {
+      display: none;
+    }
+
     .field-input {
       background: transparent;
       border: none; border-bottom: 1.5px solid rgba(255,255,255,0.15);
@@ -877,6 +903,8 @@
           const wrap = input.parentElement;
           if (wrap) wrap.classList.remove('error');
         }
+        const errEl = document.getElementById(input.id + 'Err');
+        if (errEl) errEl.textContent = '';
       });
     });
 
