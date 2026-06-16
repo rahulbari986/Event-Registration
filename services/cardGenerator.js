@@ -1,6 +1,23 @@
-const { createCanvas, loadImage } = require('@napi-rs/canvas');
+const { createCanvas, loadImage, GlobalFonts } = require('@napi-rs/canvas');
 const path = require('path');
 const fs = require('fs');
+
+// Register Arial font files for Linux Vercel container
+try {
+  const boldFontPath = path.join(process.cwd(), 'arialbd.ttf');
+  const regularFontPath = path.join(process.cwd(), 'arial.ttf');
+
+  if (fs.existsSync(boldFontPath)) {
+    GlobalFonts.registerFromPath(boldFontPath, 'ArialBold');
+    console.log('[Card] Registered font ArialBold successfully.');
+  }
+  if (fs.existsSync(regularFontPath)) {
+    GlobalFonts.registerFromPath(regularFontPath, 'Arial');
+    console.log('[Card] Registered font Arial successfully.');
+  }
+} catch (e) {
+  console.error('[Card] Failed to register fonts:', e.message);
+}
 
 /**
  * Generates the official TiA Summit Attendee Card using the provided background image.
@@ -92,7 +109,7 @@ async function generateCard(registrant) {
       : nameParts[0].substring(0, 2).toUpperCase();
 
     ctx.fillStyle = '#FFFFFF';
-    ctx.font = 'bold 110px Arial, sans-serif';
+    ctx.font = '110px ArialBold, Arial, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(initials, photoCenterX, photoCenterY + 4);
@@ -106,16 +123,16 @@ async function generateCard(registrant) {
   
   const attendeeName = (registrant.name || '').trim();
   let nameSize = 42;
-  ctx.font = `bold ${nameSize}px Arial, sans-serif`;
+  ctx.font = `${nameSize}px ArialBold, Arial, sans-serif`;
   // Decrease font size if name is too wide
   while (ctx.measureText(attendeeName).width > 350 && nameSize > 24) {
     nameSize -= 2;
-    ctx.font = `bold ${nameSize}px Arial, sans-serif`;
+    ctx.font = `${nameSize}px ArialBold, Arial, sans-serif`;
   }
   ctx.fillText(attendeeName, photoCenterX, 642);
 
   ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
-  ctx.font = '500 24px Arial, sans-serif';
+  ctx.font = '24px Arial, sans-serif';
   ctx.fillText('Attendee Delegate', photoCenterX, 684);
 
   const attendeeCity = (registrant.city || '').trim();
@@ -124,10 +141,10 @@ async function generateCard(registrant) {
   // 3. Date and Location
   ctx.textAlign = 'left';
   ctx.fillStyle = '#FFFFFF';
-  ctx.font = 'bold 33px Arial, sans-serif';
+  ctx.font = '33px ArialBold, Arial, sans-serif';
   ctx.fillText('15 & 16 Oct, 2026', 144, 702);
 
-  ctx.font = '500 28px Arial, sans-serif';
+  ctx.font = '28px Arial, sans-serif';
   ctx.fillText('West End Hotel, Taj West End, Bengaluru', 144, 765);
 
   return canvas.toBuffer('image/png');
