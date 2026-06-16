@@ -172,6 +172,7 @@
       width: 100%; max-width: 640px; margin: 0 auto 72px;
       animation: fadeUp 0.9s ease 0.4s both;
       position: relative;
+      container-type: inline-size;
     }
     .card-preview-label {
       font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
@@ -180,24 +181,23 @@
     }
     .card-preview {
       width: 100%;
-      max-width: 640px;
       aspect-ratio: 1024/682;
       background: #ffffff;
       border: 1px solid var(--border);
-      border-radius: 16px;
+      border-radius: 2.5cqw;
       overflow: hidden;
       position: relative;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(212,175,55,0.1);
+      box-shadow: 0 3.75cqw 12.5cqw rgba(0,0,0,0.5), 0 0 0 0.15cqw rgba(212,175,55,0.1);
       transition: transform 0.5s ease, box-shadow 0.5s ease;
     }
     .card-preview:hover {
-      transform: translateY(-4px) scale(1.01);
-      box-shadow: 0 32px 100px rgba(0,0,0,0.7), 0 0 40px rgba(212,175,55,0.08);
+      transform: translateY(-0.625cqw) scale(1.01);
+      box-shadow: 0 5cqw 15.6cqw rgba(0,0,0,0.7), 0 0 6.25cqw rgba(212,175,55,0.08);
     }
     .card-inner {
       position: absolute;
       inset: 0;
-      padding: 24px 32px;
+      padding: 3.75cqw 5cqw;
       display: flex;
       justify-content: space-between;
       color: #0b1a40;
@@ -230,77 +230,77 @@
       width: 38%;
       height: 90%;
       z-index: 2;
-      padding-bottom: 24px;
+      padding-bottom: 3.75cqw;
     }
     
     .card-logo-wrap {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 1.56cqw;
     }
     .card-logo-9 {
-      width: 44px; height: 44px;
+      width: 6.875cqw; height: 6.875cqw;
       border-radius: 50%;
       background: linear-gradient(135deg, #a11b51 0%, #561877 50%, #141d66 100%);
       color: #ffffff;
-      font-size: 14px;
+      font-size: 2.18cqw;
       font-weight: 700;
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 3px solid #141d66;
+      border: 0.47cqw solid #141d66;
     }
     .card-logo-line1 {
-      font-size: 10px;
+      font-size: 1.56cqw;
       font-weight: 700;
       color: #0b1a40;
       letter-spacing: 0.05em;
     }
     .card-logo-line2 {
-      font-size: 15px;
+      font-size: 2.34cqw;
       font-weight: 800;
       color: #0b1a40;
       line-height: 1.1;
     }
     .card-logo-line3 {
-      font-size: 6px;
+      font-size: 0.94cqw;
       font-weight: 900;
       color: #0b1a40;
       letter-spacing: 0.1em;
     }
     
     .card-info-box {
-      margin-top: 28px;
+      margin-top: 4.38cqw;
       color: #ffffff;
-      font-size: 13px;
+      font-size: 2.03cqw;
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 1.25cqw;
     }
     
     .card-brand-box {
       color: #ffffff;
-      font-size: 9px;
+      font-size: 1.4cqw;
       opacity: 0.9;
     }
     .card-brand-title {
-      font-size: 15px;
+      font-size: 2.34cqw;
       font-weight: 700;
     }
     
     .card-avatar-ring {
-      width: 100px; height: 100px;
+      width: 15.625cqw; height: 15.625cqw;
       border-radius: 50%;
       background: #a11b51;
-      border: 3px solid #a11b51;
-      box-shadow: 0 0 0 3px #0b1a40;
+      border: 0.47cqw solid #a11b51;
+      box-shadow: 0 0 0 0.47cqw #0b1a40;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 36px;
+      font-size: 5.625cqw;
       font-weight: 700;
       color: #ffffff;
-      margin-bottom: 12px;
+      margin-bottom: 1.875cqw;
       overflow: hidden;
       position: relative;
     }
@@ -315,46 +315,46 @@
       transition: opacity 0.25s;
     }
     .card-name {
-      font-size: 16px;
+      font-size: 2.5cqw;
       font-weight: 700;
       color: #ffffff;
-      margin-bottom: 2px;
+      margin-bottom: 0.31cqw;
       text-align: center;
     }
     .card-role {
-      font-size: 11px;
+      font-size: 1.72cqw;
       color: rgba(255,255,255,0.75);
-      margin-bottom: 2px;
+      margin-bottom: 0.31cqw;
     }
     .card-location {
-      font-size: 11px;
+      font-size: 1.72cqw;
       color: rgba(255,255,255,0.75);
       font-weight: 600;
     }
     .card-web-link {
       position: absolute;
-      left: 218px;
-      bottom: 24px;
+      left: 34cqw;
+      bottom: 3.75cqw;
       color: #ffffff;
-      font-size: 12px;
+      font-size: 1.875cqw;
       font-weight: 700;
       z-index: 2;
     }
     .card-ai-chip {
       position: absolute;
-      right: 32px;
-      bottom: 36px;
-      width: 44px; height: 44px;
+      right: 5cqw;
+      bottom: 5.6cqw;
+      width: 6.875cqw; height: 6.875cqw;
       background: #061030;
-      border: 2px solid #00aeef;
+      border: 0.31cqw solid #00aeef;
       transform: rotate(45deg);
       display: flex;
       align-items: center;
       justify-content: center;
       color: #ffffff;
-      font-size: 12px;
+      font-size: 1.875cqw;
       font-weight: 700;
-      box-shadow: 0 0 10px rgba(0, 174, 239, 0.4);
+      box-shadow: 0 0 1.56cqw rgba(0, 174, 239, 0.4);
       z-index: 2;
     }
 
