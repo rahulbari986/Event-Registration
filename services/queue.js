@@ -57,48 +57,71 @@ async function processNextJob(db) {
       throw new Error(`Registrant with ID ${job.registration_id} not found.`);
     }
 
-    // 4. Update registrant card & email status to indicate processing
+    // Check if registrant is already fully processed (both card generated and email sent)
+    if (registrant.card_status === 'generated' && registrant.email_status === 'sent') {
+      console.log(`[Queue Worker] Registrant ${registrant.id} is already fully processed. Marking job as completed.`);
+      await db.run(
+        "UPDATE jobs SET status = 'completed', processed_at = CURRENT_TIMESTAMP WHERE id = ?",
+        [job.id]
+      );
+      isProcessing = false;
+      return;
+    }
+
+    // 4. Update registrant card & email status to indicate processing (if not already generated/sent)
     await db.run(
-      "UPDATE registrations SET card_status = 'processing', email_status = 'processing', updated_at = CURRENT_TIMESTAMP WHERE id = ?",
+      `UPDATE registrations 
+       SET card_status = CASE WHEN card_status = 'generated' THEN 'generated' ELSE 'processing' END, 
+           email_status = CASE WHEN email_status = 'sent' THEN 'sent' ELSE 'processing' END, 
+           updated_at = CURRENT_TIMESTAMP 
+       WHERE id = ?`,
       [registrant.id]
     );
 
-    // 5. Generate Card
-    console.log(`[Queue Worker] Generating card for ${registrant.name}...`);
-    const cardBuffer = await cardGenerator.generateCard(registrant);
-    
-    // Save locally (cache) and upload to cloud (Supabase)
+    let cardUrl = registrant.card_path;
     const cardFilename = `${registrant.id}.png`;
-    const cardUrl = await storageManager.uploadCard(cardBuffer, cardFilename);
-
-    // Get the local cache path where the file was written, so we can attach it to the email
     const isVercel = process.env.VERCEL === '1' || !!process.env.NOW_REGION;
     const cardsDir = isVercel ? '/tmp/generated-cards' : path.join(process.cwd(), 'generated-cards');
     const cardFullPath = path.join(cardsDir, cardFilename);
 
-    // Update Registrations card path and card status
-    await db.run(
-      "UPDATE registrations SET card_path = ?, card_status = 'generated', updated_at = CURRENT_TIMESTAMP WHERE id = ?",
-      [cardUrl, registrant.id]
-    );
-
-    // 6. Send Email with Attachment
-    console.log(`[Queue Worker] Sending email to ${registrant.email}...`);
-    try {
-      await emailService.sendConfirmationEmail(registrant, cardFullPath);
+    // 5. Generate Card if not already done
+    if (registrant.card_status !== 'generated') {
+      console.log(`[Queue Worker] Generating card for ${registrant.name}...`);
+      const cardBuffer = await cardGenerator.generateCard(registrant);
       
-      // Update email status
+      // Save locally (cache) and upload to cloud (Supabase)
+      cardUrl = await storageManager.uploadCard(cardBuffer, cardFilename);
+
+      // Update Registrations card path and card status
       await db.run(
-        "UPDATE registrations SET email_status = 'sent', updated_at = CURRENT_TIMESTAMP WHERE id = ?",
-        [registrant.id]
+        "UPDATE registrations SET card_path = ?, card_status = 'generated', updated_at = CURRENT_TIMESTAMP WHERE id = ?",
+        [cardUrl, registrant.id]
       );
-    } catch (mailErr) {
-      console.error(`[Queue Worker] Email failed for registrant ID ${registrant.id}:`, mailErr);
-      await db.run(
-        "UPDATE registrations SET email_status = 'failed', updated_at = CURRENT_TIMESTAMP WHERE id = ?",
-        [registrant.id]
-      );
-      throw new Error(`Email delivery failed: ${mailErr.message}`);
+    } else {
+      console.log(`[Queue Worker] Card already generated for registrant ${registrant.id}. Skipping generation.`);
+    }
+
+    // 6. Send Email with Attachment if not already sent
+    if (registrant.email_status !== 'sent') {
+      console.log(`[Queue Worker] Sending email to ${registrant.email}...`);
+      try {
+        await emailService.sendConfirmationEmail(registrant, cardFullPath);
+        
+        // Update email status
+        await db.run(
+          "UPDATE registrations SET email_status = 'sent', updated_at = CURRENT_TIMESTAMP WHERE id = ?",
+          [registrant.id]
+        );
+      } catch (mailErr) {
+        console.error(`[Queue Worker] Email failed for registrant ID ${registrant.id}:`, mailErr);
+        await db.run(
+          "UPDATE registrations SET email_status = CASE WHEN email_status = 'sent' THEN 'sent' ELSE 'failed' END, updated_at = CURRENT_TIMESTAMP WHERE id = ?",
+          [registrant.id]
+        );
+        throw new Error(`Email delivery failed: ${mailErr.message}`);
+      }
+    } else {
+      console.log(`[Queue Worker] Email already sent to ${registrant.email}. Skipping email dispatch.`);
     }
 
     // 7. Complete Job
@@ -127,8 +150,8 @@ async function processNextJob(db) {
         // Also update registrant card/email status if they are stuck in processing
         await db.run(
           `UPDATE registrations 
-           SET card_status = CASE WHEN card_status = 'processing' THEN 'failed' ELSE card_status END,
-               email_status = CASE WHEN email_status = 'processing' THEN 'failed' ELSE email_status END,
+           SET card_status = CASE WHEN card_status = 'generated' THEN 'generated' WHEN card_status = 'processing' THEN 'failed' ELSE card_status END,
+               email_status = CASE WHEN email_status = 'sent' THEN 'sent' WHEN email_status = 'processing' THEN 'failed' ELSE email_status END,
                updated_at = CURRENT_TIMESTAMP 
            WHERE id = ?`,
           [currentProcessingJob.registration_id]
@@ -189,10 +212,12 @@ async function processSynchronously(db, registrantId) {
       emailStatus = 'failed';
     }
 
-    // Single query database update
+    // Single query database update - prevent overwriting 'sent' status with 'failed'
     await db.run(
       `UPDATE registrations 
-       SET card_path = ?, card_status = 'generated', email_status = ?, updated_at = CURRENT_TIMESTAMP 
+       SET card_path = ?, card_status = 'generated', 
+           email_status = CASE WHEN email_status = 'sent' THEN 'sent' ELSE ? END, 
+           updated_at = CURRENT_TIMESTAMP 
        WHERE id = ?`,
       [cardUrl, emailStatus, registrant.id]
     );
@@ -203,7 +228,9 @@ async function processSynchronously(db, registrantId) {
     try {
       await db.run(
         `UPDATE registrations 
-         SET card_status = 'failed', email_status = 'failed', updated_at = CURRENT_TIMESTAMP 
+         SET card_status = CASE WHEN card_status = 'generated' THEN 'generated' ELSE 'failed' END, 
+             email_status = CASE WHEN email_status = 'sent' THEN 'sent' ELSE 'failed' END, 
+             updated_at = CURRENT_TIMESTAMP 
          WHERE id = ?`,
         [registrantId]
       );

@@ -541,7 +541,26 @@
       .metrics { grid-template-columns: 1fr; }
       .main { padding: 76px 16px 60px; }
     }
+  /* ── ANIMATION EXTRAS ── */
+  @keyframes statusPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.4); }
+    50% { box-shadow: 0 0 0 6px rgba(212,175,55,0); }
+  }
+  .badge-processing { animation: statusPulse 1.5s ease infinite; }
+  @keyframes sentShimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  .badge-sent {
+    background: linear-gradient(90deg, rgba(74,222,128,0.15) 0%, rgba(74,222,128,0.3) 50%, rgba(74,222,128,0.15) 100%) !important;
+    background-size: 200% auto !important;
+    animation: sentShimmer 2s linear infinite !important;
+  }
+  .anim-row { opacity: 0; transform: translateY(12px); }
+  .anim-row.visible { opacity: 1; transform: translateY(0); transition: opacity 0.5s ease, transform 0.5s ease; }
   </style>
+  <!-- GSAP -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 </head>
 <body>
 
@@ -1260,5 +1279,57 @@
     // ═══════════════════════════════════════════════════
     checkAuth();
   </script>
+<script>
+// ── ADMIN PANEL ANIMATIONS ──────────────────────────────────────────────────
+if (typeof gsap !== 'undefined') {
+  // Auth card entrance
+  gsap.from('.auth-card', { opacity: 0, y: 40, duration: 0.9, ease: 'power3.out' });
+
+  // Stagger table rows whenever they appear (called after data loads)
+  window.animateTableRows = function() {
+    const rows = document.querySelectorAll('#registrantsBody tr:not([data-anim-done])');
+    rows.forEach((row, i) => {
+      row.dataset.animDone = '1';
+      gsap.from(row, { opacity: 0, y: 16, duration: 0.45, delay: i * 0.04, ease: 'power2.out' });
+    });
+    // Apply badge animation classes
+    document.querySelectorAll('.badge').forEach(badge => {
+      const txt = badge.textContent.toLowerCase();
+      if (txt.includes('processing') || txt.includes('pending')) badge.classList.add('badge-processing');
+      if (txt.includes('sent') || txt.includes('generated')) badge.classList.add('badge-sent');
+    });
+  };
+
+  // Hook into table renders via MutationObserver
+  const tbody = document.getElementById('registrantsBody');
+  if (tbody) {
+    const obs = new MutationObserver(() => {
+      if (typeof window.animateTableRows === 'function') window.animateTableRows();
+    });
+    obs.observe(tbody, { childList: true });
+  }
+
+  // Auth input glow
+  document.querySelectorAll('.auth-input, .filter-input, .search-input').forEach(inp => {
+    inp.addEventListener('focus', () => gsap.to(inp, { boxShadow: '0 0 0 2px rgba(212,175,55,0.35)', duration: 0.3 }));
+    inp.addEventListener('blur',  () => gsap.to(inp, { boxShadow: '0 0 0 0px rgba(212,175,55,0)', duration: 0.3 }));
+  });
+
+  // Modal entrance
+  const modalObserver = new MutationObserver(() => {
+    const modal = document.getElementById('editModal') || document.getElementById('viewModal');
+    if (modal && modal.style.display !== 'none' && !modal.dataset.animShown) {
+      modal.dataset.animShown = '1';
+      const inner = modal.querySelector('.modal-box, .modal-card, [class*="modal"]');
+      if (inner) gsap.from(inner, { scale: 0.93, opacity: 0, duration: 0.4, ease: 'back.out(1.4)' });
+      setTimeout(() => delete modal.dataset.animShown, 500);
+    }
+  });
+  ['editModal','viewModal','confirmModal'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) modalObserver.observe(el, { attributes: true, attributeFilter: ['style'] });
+  });
+}
+</script>
 </body>
 </html>

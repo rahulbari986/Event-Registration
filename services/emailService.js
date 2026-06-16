@@ -232,7 +232,10 @@ We look forward to welcoming you.
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS
-      }
+      },
+      connectionTimeout: 10000, // 10 seconds max connection timeout (prevents hanging on Vercel)
+      greetingTimeout: 10000,   // 10 seconds max greeting timeout
+      socketTimeout: 15000      // 15 seconds max socket inactivity timeout
     });
 
     const mailOptions = {

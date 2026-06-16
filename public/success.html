@@ -304,6 +304,39 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* ── ANIMATION EXTRAS (GSAP layer) ── */
+    .confetti-piece {
+      position: fixed; width: 9px; height: 9px;
+      border-radius: 2px; pointer-events: none;
+      z-index: 9999; top: -20px;
+    }
+    .step-dot { transition: all 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+    .timeline-step.done .step-dot {
+      box-shadow: 0 0 20px rgba(212,175,55,0.5), 0 0 40px rgba(212,175,55,0.25);
+    }
+    @keyframes shimmerGold {
+      0%   { background-position: -200% center; }
+      100% { background-position:  200% center; }
+    }
+    .shimmer-text {
+      background: linear-gradient(90deg,
+        var(--gold-dark) 0%, var(--gold-light) 30%,
+        #fff 50%, var(--gold-light) 70%, var(--gold-dark) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmerGold 2.5s linear infinite;
+    }
+    .check-ring {
+      transition: box-shadow 0.5s ease;
+    }
+    .check-ring:hover {
+      box-shadow: 0 0 60px rgba(212,175,55,0.4);
+    }
+    .btn-primary, .btn-secondary {
+      transition: background-position 0.4s, box-shadow 0.3s, transform 0.2s;
+    }
+
     /* ── FOOTER ── */
     footer {
       border-top: 1px solid rgba(255,255,255,0.05);
@@ -323,6 +356,10 @@
       footer { flex-direction: column; text-align: center; padding: 20px; }
     }
   </style>
+  <!-- GSAP -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <!-- Lenis smooth scroll -->
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 </head>
 <body>
 
@@ -599,6 +636,138 @@
     }
 
 
+  </script>
+
+  <!-- ── PREMIUM ANIMATION ENGINE ──────────────────────────────────────── -->
+  <script>
+  (function() {
+    // 1. Lenis smooth scroll
+    if (typeof Lenis !== 'undefined') {
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      });
+      function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+    }
+
+    if (typeof gsap === 'undefined') return;
+
+    // 2. Page entrance — stagger all major sections
+    const sections = [
+      '.success-header',
+      '.ref-card',
+      '.timeline',
+      '.details-panel',
+      '.card-section',
+    ];
+    // Set initial hidden state only on sections that are in the DOM
+    sections.forEach(sel => {
+      const el = document.querySelector(sel);
+      if (el) gsap.set(el, { opacity: 0, y: 28 });
+    });
+
+    // Watch for successContent becoming visible then fire entrance
+    const successContent = document.getElementById('successContent');
+    let entranceFired = false;
+    const successObs = new MutationObserver(() => {
+      if (successContent.style.display !== 'none' && !entranceFired) {
+        entranceFired = true;
+        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+        sections.forEach((sel, i) => {
+          const el = document.querySelector(sel);
+          if (el) tl.to(el, { opacity: 1, y: 0, duration: 0.75 }, i * 0.12);
+        });
+      }
+    });
+    if (successContent) successObs.observe(successContent, { attributes: true, attributeFilter: ['style'] });
+
+    // 3. Confetti burst function
+    function launchConfetti() {
+      const colors = ['#D4AF37','#F2CA50','#ffffff','#AA7C11','#fde68a','#fbbf24','#f59e0b'];
+      for (let i = 0; i < 90; i++) {
+        const el = document.createElement('div');
+        el.className = 'confetti-piece';
+        el.style.left    = Math.random() * 100 + 'vw';
+        el.style.background = colors[Math.floor(Math.random() * colors.length)];
+        el.style.width   = (5 + Math.random() * 9) + 'px';
+        el.style.height  = (5 + Math.random() * 9) + 'px';
+        el.style.borderRadius = Math.random() > 0.5 ? '50%' : '3px';
+        document.body.appendChild(el);
+        gsap.to(el, {
+          y: window.innerHeight + 40,
+          x: (Math.random() - 0.5) * 320,
+          rotation: Math.random() * 720 - 360,
+          opacity: 0,
+          duration: 2.2 + Math.random() * 1.8,
+          delay: Math.random() * 0.7,
+          ease: 'power1.in',
+          onComplete: () => el.remove(),
+        });
+      }
+    }
+
+    // 4. Watch ctaGroup becoming visible → confetti + shimmer + spring bounce
+    let confettiFired = false;
+    const ctaGroup = document.getElementById('ctaGroup');
+    if (ctaGroup) {
+      const ctaObs = new MutationObserver(() => {
+        if (ctaGroup.style.display !== 'none' && !confettiFired) {
+          confettiFired = true;
+          launchConfetti();
+          // Shimmer the reference ID
+          const refId = document.getElementById('refId');
+          if (refId) refId.classList.add('shimmer-text');
+          // Spring bounce on the ticket emoji and card-ready message
+          gsap.from('#cardReadyMessage', {
+            scale: 0.65, opacity: 0, duration: 0.9, ease: 'back.out(1.8)'
+          });
+          gsap.from('#ctaGroup a:first-child', {
+            scale: 0, opacity: 0, duration: 0.65, delay: 0.35, ease: 'back.out(2.2)'
+          });
+          gsap.from('#ctaGroup a:last-child', {
+            x: -24, opacity: 0, duration: 0.5, delay: 0.55, ease: 'power3.out'
+          });
+          // Pulse glow on check-ring
+          gsap.to('.check-ring', {
+            boxShadow: '0 0 60px rgba(212,175,55,0.45)',
+            duration: 0.6, ease: 'power2.out'
+          });
+        }
+      });
+      ctaObs.observe(ctaGroup, { attributes: true, attributeFilter: ['style'] });
+    }
+
+    // 5. Animate timeline step dots with spring when they gain .done class
+    const stepObserver = new MutationObserver(() => {
+      document.querySelectorAll('.timeline-step.done .step-dot').forEach(dot => {
+        if (!dot.dataset.gsapDone) {
+          dot.dataset.gsapDone = '1';
+          gsap.from(dot, { scale: 0, duration: 0.55, ease: 'back.out(2.2)' });
+        }
+      });
+    });
+    document.querySelectorAll('.timeline-step').forEach(s =>
+      stepObserver.observe(s, { attributes: true, attributeFilter: ['class'] })
+    );
+
+    // 6. Button hover micro-animations
+    document.querySelectorAll('.btn-primary, .btn-secondary').forEach(btn => {
+      btn.addEventListener('mouseenter', () => gsap.to(btn, { y: -2, duration: 0.2 }));
+      btn.addEventListener('mouseleave', () => gsap.to(btn, { y: 0,  duration: 0.4, ease: 'elastic.out(1, 0.6)' }));
+    });
+
+    // 7. Copy button feedback
+    const copyBtn = document.querySelector('.ref-copy-btn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => {
+        gsap.timeline()
+          .to(copyBtn, { scale: 0.9, duration: 0.1 })
+          .to(copyBtn, { scale: 1, duration: 0.4, ease: 'elastic.out(1, 0.5)' });
+      });
+    }
+
+  })();
   </script>
 </body>
 </html>
