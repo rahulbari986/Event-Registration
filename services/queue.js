@@ -67,7 +67,8 @@ async function processNextJob(db) {
     const cardBuffer = await cardGenerator.generateCard(registrant);
     
     // Save locally
-    const cardsDir = path.join(process.cwd(), 'generated-cards');
+    const isVercel = process.env.VERCEL === '1' || !!process.env.NOW_REGION;
+    const cardsDir = isVercel ? '/tmp/generated-cards' : path.join(process.cwd(), 'generated-cards');
     if (!fs.existsSync(cardsDir)) {
       fs.mkdirSync(cardsDir, { recursive: true });
     }

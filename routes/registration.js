@@ -5,10 +5,12 @@ const path = require('path');
 const fs = require('fs');
 const queue = require('../services/queue');
 
+const isVercel = process.env.VERCEL === '1' || !!process.env.NOW_REGION;
+const uploadDir = isVercel ? '/tmp/uploads' : path.join(process.cwd(), 'uploads');
+
 // ── Multer storage ──────────────────────────────────────────────────────────
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = path.join(process.cwd(), 'uploads');
     if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
     cb(null, uploadDir);
   },
@@ -115,6 +117,11 @@ router.post('/registration', upload.single('photo'), async (req, res) => {
 
     // ── Enqueue background job ─────────────────────────────────────────────
     await queue.enqueueJob(req.db, registrationId);
+
+    // If running in Vercel (serverless environment), process it synchronously
+    if (isVercel) {
+      await queue.processNextJob(req.db);
+    }
 
     return res.status(201).json({
       success: true,

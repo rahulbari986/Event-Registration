@@ -277,7 +277,8 @@ We look forward to welcoming you.
 
   // Offline fallback — log to file
   if (client.options && client.options.jsonTransport) {
-    const emailDir = path.join(process.cwd(), 'sent-emails');
+    const isVercel = process.env.VERCEL === '1' || !!process.env.NOW_REGION;
+    const emailDir = isVercel ? '/tmp/sent-emails' : path.join(process.cwd(), 'sent-emails');
     if (!fs.existsSync(emailDir)) fs.mkdirSync(emailDir, { recursive: true });
     const emailFile = path.join(emailDir, `email_${registrant.id}_${Date.now()}.json`);
     fs.writeFileSync(emailFile, JSON.stringify(JSON.parse(info.message), null, 2));
