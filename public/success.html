@@ -408,18 +408,21 @@
         </div>
       </div>
 
-      <!-- Card Display -->
+      <!-- Card Status/Message (No Image Preview) -->
       <div class="card-section">
-        <p class="card-section-title">✦ &nbsp;Your Attendee Card&nbsp; ✦</p>
-        <div class="card-display" id="cardDisplay">
+        <div id="cardStatusContainer" style="width:100%; max-width:680px; background:rgba(10,24,48,0.8); border:1px solid var(--border); border-radius:12px; padding:40px 24px; margin-bottom:24px; text-align:center;">
           <!-- Loading state -->
           <div class="card-loading" id="cardLoading">
-            <div class="spinner"></div>
-            <p class="card-loading-text">Generating Your Card…</p>
-            <p class="card-loading-sub">Usually takes 3–10 seconds</p>
+            <div class="spinner" style="margin:0 auto 16px;"></div>
+            <p class="card-loading-text" style="font-size:12px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold);">Generating Your Attendee Card…</p>
+            <p class="card-loading-sub" style="font-size:11px; color:var(--muted); margin-top:4px;">Usually takes 3–10 seconds</p>
           </div>
-          <!-- Card image (hidden until ready) -->
-          <img id="cardImg" src="" alt="Your EVENT 2026 Attendee Card" style="display:none;"/>
+          <!-- Ready state -->
+          <div id="cardReadyMessage" style="display:none;">
+            <div style="font-size:48px; margin-bottom:16px; animation:scaleIn 0.5s ease both;">🎫</div>
+            <h3 style="font-family:'Playfair Display', serif; font-size:22px; font-weight:700; color:var(--gold); margin-bottom:8px;">Your Attendee Card is Ready!</h3>
+            <p style="font-size:13px; color:var(--muted); max-width:320px; margin:0 auto;">Download your official pass below and present it at the entry gates.</p>
+          </div>
         </div>
 
         <!-- CTA buttons (shown when card ready) -->
@@ -490,11 +493,9 @@
 
     function showCard(reg, cachedCardDataUrl) {
       document.getElementById('cardLoading').style.display = 'none';
-      const img = document.getElementById('cardImg');
+      document.getElementById('cardReadyMessage').style.display = 'block';
       
       const imgSrc = cachedCardDataUrl ? cachedCardDataUrl : (reg.card_path.startsWith('http') ? reg.card_path : '/' + reg.card_path) + (reg.card_path.includes('?') ? '&' : '?') + 't=' + Date.now();
-      img.src = imgSrc;
-      img.style.display = 'block';
 
       const dl = document.getElementById('downloadBtn');
       dl.href = imgSrc;
@@ -597,19 +598,7 @@
       pollInterval = setInterval(fetchStatus, 2500);
     }
 
-    // Card display tilt
-    const cardDisplay = document.getElementById('cardDisplay');
-    cardDisplay.addEventListener('mousemove', (e) => {
-      const r = cardDisplay.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width - 0.5;
-      const y = (e.clientY - r.top) / r.height - 0.5;
-      cardDisplay.style.transform = `perspective(900px) rotateY(${x * 8}deg) rotateX(${-y * 6}deg)`;
-      cardDisplay.style.transition = 'transform 0.1s ease';
-    });
-    cardDisplay.addEventListener('mouseleave', () => {
-      cardDisplay.style.transform = 'perspective(900px) rotateY(0) rotateX(0)';
-      cardDisplay.style.transition = 'transform 0.6s ease';
-    });
+
   </script>
 </body>
 </html>

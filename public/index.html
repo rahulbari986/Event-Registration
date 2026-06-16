@@ -657,52 +657,7 @@
       </div>
     </div>
 
-    <!-- Sample Attendee Card Preview -->
-    <div class="card-preview-wrap">
-      <p class="card-preview-label">✦ &nbsp;Your Attendee Card Preview&nbsp; ✦</p>
-      <div class="card-preview" id="sampleCard">
-        <div class="card-inner">
-          <div class="card-bottom-wave"></div>
-          
-          <!-- Left Column -->
-          <div class="card-col-left">
-            <div class="card-logo-wrap">
-              <div class="card-logo-9">TiA</div>
-              <div class="card-logo-text">
-                <div class="card-logo-line1">EDITION OF</div>
-                <div class="card-logo-line2">TiA SUMMIT</div>
-                <div class="card-logo-line3">THE INDIA ADVOCATE SUMMIT</div>
-              </div>
-            </div>
-            
-            <div class="card-info-box">
-              <div class="card-info-item">📅 &nbsp;15 & 16 Oct, 2026</div>
-              <div class="card-info-item" style="font-size:10px; line-height:1.2;">📍 &nbsp;West End Hotel, Taj West End, Bengaluru</div>
-            </div>
-            
-            <div class="card-brand-box">
-              <div class="card-powered">Powered by</div>
-              <div class="card-brand-title">micelio</div>
-              <div class="card-brand-sub">EVENTS & PUBLIC RELATIONS</div>
-            </div>
-          </div>
-          
-          <!-- Right Column -->
-          <div class="card-col-right">
-            <div class="card-avatar-ring" id="sampleAvatar">
-              <img class="avatar-img" id="sampleAvatarImg" src="" alt=""/>
-              <span class="avatar-initials" id="sampleAvatarInitials">✦</span>
-            </div>
-            <div class="card-name" id="sampleName">ATTENDEE NAME</div>
-            <div class="card-role">Attendee Delegate</div>
-            <div class="card-location" id="sampleLocation">CITY</div>
-          </div>
-
-          <div class="card-web-link">www.triasummit.com</div>
-          <div class="card-ai-chip"><span style="display:inline-block; transform:rotate(-45deg);">AI</span></div>
-        </div>
-      </div>
-    </div>
+    <div style="margin-bottom: 40px;"></div>
 
     <a href="#register" style="font-size:12px;font-weight:600;letter-spacing:0.12em;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:8px;animation:fadeUp 1s ease 0.6s both;">
       Scroll to Register &nbsp; ↓
@@ -812,61 +767,6 @@
   </footer>
 
   <script>
-    // ═══════════════════════════════════════════════════════
-    // LIVE CARD PREVIEW — updates name, city, photo in real-time
-    // ═══════════════════════════════════════════════════════
-    const sampleName      = document.getElementById('sampleName');
-    const sampleLocation  = document.getElementById('sampleLocation');
-    const sampleAvatarImg = document.getElementById('sampleAvatarImg');
-    const sampleAvatarIni = document.getElementById('sampleAvatarInitials');
-
-    // Shared state
-    let previewPhotoURL = null;
-
-    function getInitials(name) {
-      const parts = name.trim().toUpperCase().split(/\s+/).filter(Boolean);
-      if (!parts.length) return '✦';
-      return parts.length > 1
-        ? parts[0][0] + parts[parts.length - 1][0]
-        : parts[0].substring(0, 2);
-    }
-
-    function updateCardName() {
-      const val = document.getElementById('name').value.trim();
-      sampleName.textContent = val ? val.toUpperCase() : 'ATTENDEE NAME';
-      // Only update initials if no photo is uploaded
-      if (!previewPhotoURL) {
-        sampleAvatarIni.textContent = val ? getInitials(val) : '✦';
-      }
-    }
-
-    function updateCardCity() {
-      const val = document.getElementById('city').value.trim();
-      sampleLocation.textContent = val ? val.toUpperCase() : 'CITY';
-    }
-
-    function showPhotoOnCard(url) {
-      previewPhotoURL = url;
-      sampleAvatarImg.src = url;
-      sampleAvatarImg.style.display = 'block';
-      sampleAvatarIni.style.opacity = '0';
-    }
-
-    function clearPhotoOnCard() {
-      previewPhotoURL = null;
-      sampleAvatarImg.style.display = 'none';
-      sampleAvatarImg.src = '';
-      sampleAvatarIni.style.opacity = '1';
-      const name = document.getElementById('name').value.trim();
-      sampleAvatarIni.textContent = name ? getInitials(name) : '✦';
-    }
-
-    // Bind name input
-    document.getElementById('name').addEventListener('input', updateCardName);
-
-    // Bind city input
-    document.getElementById('city').addEventListener('input', updateCardCity);
-
     // ── Photo upload preview ────────────────────────────────────────────────
     const photoInput = document.getElementById('photoInput');
     const photoIcon = document.getElementById('photoIcon');
@@ -876,7 +776,7 @@
 
     photoInput.addEventListener('change', () => {
       const file = photoInput.files[0];
-      if (!file) { clearPhotoOnCard(); return; }
+      if (!file) { return; }
       const url = URL.createObjectURL(file);
 
       // Update upload area UI
@@ -885,9 +785,6 @@
       photoPreviewImg.style.display = 'block';
       photoDropArea.classList.add('has-file');
       photoUploadTitle.textContent = file.name;
-
-      // Update card preview with photo
-      showPhotoOnCard(url);
     });
 
     // ── Label focus animation ────────────────────────────────────────────────
@@ -1086,21 +983,7 @@
       }
     });
 
-    // ── Parallax sample card tilt on hover ──────────────────────────────────
-    const card = document.getElementById('sampleCard');
-    card.addEventListener('mousemove', (e) => {
-      const r = card.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width - 0.5;
-      const y = (e.clientY - r.top) / r.height - 0.5;
-      card.style.transform = `perspective(800px) rotateY(${x * 10}deg) rotateX(${-y * 8}deg)`;
-    });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = 'perspective(800px) rotateY(0deg) rotateX(0deg)';
-      card.style.transition = 'transform 0.6s ease';
-    });
-    card.addEventListener('mouseenter', () => {
-      card.style.transition = 'transform 0.1s ease';
-    });
+
   </script>
 </body>
 </html>
