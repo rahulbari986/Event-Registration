@@ -60,8 +60,8 @@ async function generateCard(registrant) {
   }
 
   // 1. Profile Photo
-  const photoCenterX = 1107;
-  const photoCenterY = 429;
+  const photoCenterX = 1117;
+  const photoCenterY = 420;
   const photoRad = 171;
 
   ctx.save();
@@ -141,7 +141,7 @@ async function generateCard(registrant) {
   ctx.fillStyle = '#071428';
   ctx.strokeStyle = '#D4AF37';
   ctx.lineWidth = 2.5;
-  const badgeX = 900;
+  const badgeX = 910;
   const badgeY = 605;
   const badgeW = 414;
   const badgeH = 135;
