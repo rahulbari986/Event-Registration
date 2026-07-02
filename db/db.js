@@ -102,10 +102,33 @@ class DatabaseAdapter {
         card_path TEXT,
         card_status VARCHAR(50) DEFAULT 'pending',
         email_status VARCHAR(50) DEFAULT 'pending',
+        attendance VARCHAR(100),
+        designation VARCHAR(255),
+        organisation VARCHAR(255),
+        about_company TEXT,
+        event_objective TEXT,
+        interested_in TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
+
+    // Run PostgreSQL migrations for existing tables
+    const pgMigrations = [
+      "ALTER TABLE registrations ADD COLUMN IF NOT EXISTS attendance VARCHAR(100)",
+      "ALTER TABLE registrations ADD COLUMN IF NOT EXISTS designation VARCHAR(255)",
+      "ALTER TABLE registrations ADD COLUMN IF NOT EXISTS organisation VARCHAR(255)",
+      "ALTER TABLE registrations ADD COLUMN IF NOT EXISTS about_company TEXT",
+      "ALTER TABLE registrations ADD COLUMN IF NOT EXISTS event_objective TEXT",
+      "ALTER TABLE registrations ADD COLUMN IF NOT EXISTS interested_in TEXT"
+    ];
+    for (const migration of pgMigrations) {
+      try {
+        await this.pool.query(migration);
+      } catch (err) {
+        console.warn(`[Database] Postgres migration warning for "${migration}":`, err.message);
+      }
+    }
 
     await this.pool.query(`
       CREATE TABLE IF NOT EXISTS jobs (
@@ -140,18 +163,36 @@ class DatabaseAdapter {
         card_path TEXT,
         card_status TEXT DEFAULT 'pending',
         email_status TEXT DEFAULT 'pending',
+        attendance TEXT,
+        designation TEXT,
+        organisation TEXT,
+        about_company TEXT,
+        event_objective TEXT,
+        interested_in TEXT,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
         updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
       )
     `);
 
-    // Ensure migration for photo_path exists locally
-    try {
-      await this.sqliteDb.run('ALTER TABLE registrations ADD COLUMN photo_path TEXT');
-      console.log('[Database] SQLite Migration: added photo_path column.');
-    } catch (e) {
-      if (!e.message.includes('duplicate column name')) {
-        throw e;
+    // Ensure migration for photo_path and other new columns exists locally
+    const sqliteMigrations = [
+      'ALTER TABLE registrations ADD COLUMN photo_path TEXT',
+      'ALTER TABLE registrations ADD COLUMN attendance TEXT',
+      'ALTER TABLE registrations ADD COLUMN designation TEXT',
+      'ALTER TABLE registrations ADD COLUMN organisation TEXT',
+      'ALTER TABLE registrations ADD COLUMN about_company TEXT',
+      'ALTER TABLE registrations ADD COLUMN event_objective TEXT',
+      'ALTER TABLE registrations ADD COLUMN interested_in TEXT'
+    ];
+
+    for (const migration of sqliteMigrations) {
+      try {
+        await this.sqliteDb.run(migration);
+        console.log(`[Database] SQLite Migration: executed "${migration}".`);
+      } catch (e) {
+        if (!e.message.includes('duplicate column name') && !e.message.includes('already exists')) {
+          throw e;
+        }
       }
     }
 

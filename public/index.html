@@ -3,55 +3,73 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Register | TiA SUMMIT — The India Advocate Summit</title>
-  <meta name="description" content="Register for the 9th Edition of TiA SUMMIT. Join leading legal advocates in Bengaluru, October 2026. Get your official attendee pass instantly."/>
+  <title>India's Digital Economy Leadership Council 2026 | NCAIC</title>
+  <meta name="description" content="Inaugural Council Meeting of India's Digital Economy Leadership Council. Hyderabad, 30 July 2026. Hosted by National Cyber & AI Centre (NCAIC)."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --navy: #071428;
-      --navy-2: #0d1f3c;
-      --navy-3: #0a1830;
-      --gold: #D4AF37;
-      --gold-light: #F2CA50;
-      --gold-dark: #AA7C11;
-      --white: #FFFFFF;
-      --off-white: #e8e0cc;
-      --muted: rgba(232, 224, 204, 0.55);
-      --border: rgba(212, 175, 55, 0.22);
-      --border-strong: rgba(212, 175, 55, 0.5);
+      --bg: #ffffff;
+      --bg-panel: #f8fafc;
+      --bg-card: #ffffff;
+      --foreground: #0f172a;
+      --text-muted: #475569;
+      --accent-orange: hsl(18, 100%, 55%);
+      --accent-blue: hsl(210, 79%, 29%);
+      --accent-green: hsl(122, 88%, 25%);
+      --border: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --font-outfit: 'Outfit', sans-serif;
+      --font-inter: 'Inter', sans-serif;
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      background-color: var(--navy);
-      color: var(--off-white);
-      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--foreground);
+      font-family: var(--font-inter);
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
+      
+      /* Cyber Grid Light background */
+      background-image: 
+        linear-gradient(to right, rgba(15, 76, 129, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(15, 76, 129, 0.04) 1px, transparent 1px);
+      background-size: 30px 30px;
     }
 
-    /* ── THREE.JS CANVAS ── */
-    #bg-canvas {
-      position: fixed;
+    /* ── NEURAL PATTERN / GLOWING SPHERES ── */
+    .neural-pattern {
+      position: absolute;
       inset: 0;
-      z-index: 0;
       pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
     }
-
-    /* ── NOISE TEXTURE ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.4;
+    .glow-sphere {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(130px);
+      opacity: 0.15;
+    }
+    .glow-1 {
+      top: -10%; left: 15%;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, var(--accent-orange) 0%, transparent 70%);
+    }
+    .glow-2 {
+      top: 35%; right: 10%;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, var(--accent-blue) 0%, transparent 70%);
+    }
+    .glow-3 {
+      bottom: -5%; left: 5%;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, var(--accent-green) 0%, transparent 70%);
     }
 
     /* ── NAV ── */
@@ -60,53 +78,68 @@
       padding: 0 48px;
       height: 72px;
       display: flex; align-items: center; justify-content: space-between;
-      background: rgba(7,20,40,0.75);
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
-      transition: background 0.4s;
+    }
+    .nav-logo-wrap {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .nav-logo-crest {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-orange), var(--accent-blue), var(--accent-green));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 800;
+      box-shadow: 0 4px 12px rgba(15, 76, 129, 0.15);
     }
     .nav-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 22px; font-weight: 700;
-      color: var(--gold);
+      font-family: var(--font-outfit);
+      font-size: 20px; font-weight: 700;
       letter-spacing: 0.08em;
+      color: var(--foreground);
       text-decoration: none;
-      transition: opacity 0.2s;
     }
-    .nav-logo:hover { opacity: 0.85; }
+    .nav-logo span {
+      background: linear-gradient(135deg, var(--accent-orange), var(--accent-blue), var(--accent-green));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
     .nav-links { display: flex; gap: 32px; align-items: center; }
     .nav-link {
       font-size: 11px; font-weight: 600;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--muted); text-decoration: none;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-muted); text-decoration: none;
       transition: color 0.25s;
       position: relative;
     }
     .nav-link::after {
       content: '';
       position: absolute; bottom: -4px; left: 0; right: 0;
-      height: 1px; background: var(--gold);
+      height: 2px; background: var(--accent-blue);
       transform: scaleX(0); transition: transform 0.25s;
     }
-    .nav-link:hover { color: var(--gold); }
+    .nav-link:hover { color: var(--accent-blue); }
     .nav-link:hover::after { transform: scaleX(1); }
     .nav-badge {
       font-size: 10px; font-weight: 700;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 4px 12px; border-radius: 20px;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 7px 18px; border-radius: 6px;
       border: 1px solid var(--border-strong);
-      color: var(--gold); background: rgba(212,175,55,0.08);
+      color: var(--accent-blue); background: #f8fafc;
       text-decoration: none;
-      transition: background 0.25s, transform 0.15s;
+      transition: all 0.25s, transform 0.15s;
     }
-    .nav-badge:hover { background: rgba(212,175,55,0.15); transform: translateY(-1px); }
+    .nav-badge:hover { 
+      background: #f1f5f9; 
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      transform: translateY(-1px); 
+    }
 
     /* ── HERO ── */
     .hero {
       min-height: 100vh;
       display: flex; flex-direction: column; align-items: center;
       justify-content: center;
-      padding: 100px 24px 60px;
+      padding: 120px 24px 60px;
       position: relative; z-index: 1;
       text-align: center;
     }
@@ -115,562 +148,875 @@
       display: inline-flex; align-items: center; gap: 10px;
       padding: 6px 20px; border-radius: 40px;
       border: 1px solid var(--border-strong);
-      background: rgba(212,175,55,0.06);
-      margin-bottom: 28px;
-      opacity: 0; /* animated in by GSAP */
+      background: #f8fafc;
+      margin-bottom: 24px;
     }
     .hero-eyebrow-dot {
       width: 6px; height: 6px; border-radius: 50%;
-      background: var(--gold);
+      background: var(--accent-green);
+      box-shadow: 0 0 6px var(--accent-green);
       animation: dotPulse 2s ease infinite;
     }
     @keyframes dotPulse {
-      0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(212,175,55,0.4); }
-      50% { opacity: 0.7; transform: scale(0.85); box-shadow: 0 0 0 6px rgba(212,175,55,0); }
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
     }
     .hero-eyebrow span {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
-      text-transform: uppercase; color: var(--gold);
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--accent-blue);
     }
 
     .hero-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(48px, 7vw, 88px);
-      font-weight: 700; line-height: 1.05;
-      color: var(--white); margin-bottom: 8px;
-      perspective: 800px;
+      font-family: var(--font-outfit);
+      font-size: clamp(36px, 5.5vw, 70px);
+      font-weight: 800; line-height: 1.15;
+      color: var(--foreground); margin-bottom: 16px;
+      max-width: 960px;
+      letter-spacing: -0.01em;
     }
-    .hero-title em {
-      font-style: italic;
-      background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold));
+    .hero-title span {
+      background: linear-gradient(135deg, var(--accent-orange) 10%, var(--accent-blue) 50%, var(--accent-green) 90%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
     .hero-subtitle {
-      font-size: clamp(16px, 2vw, 22px);
-      color: var(--muted); margin-bottom: 24px;
-      font-weight: 300; letter-spacing: 0.02em;
-      opacity: 0; /* animated in by GSAP */
+      font-size: clamp(15px, 2vw, 20px);
+      color: var(--text-muted); margin-bottom: 36px;
+      font-weight: 400; max-width: 780px; line-height: 1.6;
     }
 
-    .hero-meta {
-      display: flex; align-items: center; gap: 24px;
-      justify-content: center; flex-wrap: wrap;
-      margin-bottom: 56px;
-      opacity: 0; /* animated in by GSAP */
-    }
-    .hero-meta-item {
-      display: flex; align-items: center; gap: 8px;
-      font-size: 13px; font-weight: 500; color: var(--off-white);
-    }
-    .hero-meta-icon {
-      width: 28px; height: 28px; border-radius: 6px;
-      background: rgba(212,175,55,0.1);
-      border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px;
-      transition: background 0.25s, transform 0.25s;
-    }
-    .hero-meta-item:hover .hero-meta-icon {
-      background: rgba(212,175,55,0.18);
-      transform: scale(1.1);
-    }
-    .hero-meta-sep { color: var(--border-strong); font-size: 18px; }
-
-    /* ── SAMPLE CARD PREVIEW ── */
-    .card-preview-wrap {
-      width: 100%; max-width: 640px; margin: 0 auto 72px;
-      position: relative;
-      container-type: inline-size;
-      opacity: 0; /* animated in by GSAP */
-    }
-    .card-preview-label {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
-      text-transform: uppercase; color: var(--muted);
-      margin-bottom: 14px; text-align: center;
-    }
-    .card-preview {
+    .hero-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      max-width: 900px;
       width: 100%;
-      aspect-ratio: 1024/682;
-      background: #ffffff;
+      margin: 0 auto 48px;
+    }
+    .meta-box {
+      background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 2.5cqw;
-      overflow: hidden;
-      position: relative;
-      box-shadow: 0 3.75cqw 12.5cqw rgba(0,0,0,0.5), 0 0 0 0.15cqw rgba(212,175,55,0.1);
-      transition: transform 0.6s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.5s ease;
-      will-change: transform;
+      border-radius: 12px; padding: 18px;
+      text-align: left; display: flex; align-items: center; gap: 14px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+      transition: border-color 0.3s, box-shadow 0.3s;
     }
-    .card-preview:hover {
-      transform: translateY(-0.625cqw) scale(1.02) rotateX(2deg);
-      box-shadow: 0 5cqw 15.6cqw rgba(0,0,0,0.7), 0 0 6.25cqw rgba(212,175,55,0.12);
+    .meta-box:hover { 
+      border-color: var(--border-strong);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
     }
-    .card-inner {
-      position: absolute; inset: 0;
-      padding: 3.75cqw 5cqw;
-      display: flex; justify-content: space-between;
-      color: #0b1a40; z-index: 2;
-    }
-    .card-bottom-wave {
-      position: absolute; left: -10%; right: -10%; bottom: 0;
-      height: 60%;
-      background: linear-gradient(135deg, #a11b51 0%, #561877 35%, #141d66 70%, #070e3b 100%);
-      border-radius: 50% 50% 0 0 / 18% 18% 0 0;
-      z-index: 0; pointer-events: none;
-    }
-    .card-col-left {
-      display: flex; flex-direction: column;
-      justify-content: space-between; align-items: flex-start;
-      width: 60%; height: 100%; z-index: 2; text-align: left;
-    }
-    .card-col-right {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: flex-end;
-      width: 38%; height: 90%; z-index: 2;
-      padding-bottom: 3.75cqw;
-    }
-    .card-logo-wrap { display: flex; align-items: center; gap: 1.56cqw; }
-    .card-logo-9 {
-      width: 6.875cqw; height: 6.875cqw; border-radius: 50%;
-      background: linear-gradient(135deg, #a11b51 0%, #561877 50%, #141d66 100%);
-      color: #ffffff; font-size: 2.18cqw; font-weight: 700;
+    .meta-icon {
+      width: 44px; height: 44px; border-radius: 8px;
+      background: #f1f5f9;
       display: flex; align-items: center; justify-content: center;
-      border: 0.47cqw solid #141d66;
+      font-size: 20px; color: var(--accent-blue);
+      border: 1px solid var(--border);
     }
-    .card-logo-line1 { font-size: 1.56cqw; font-weight: 700; color: #0b1a40; letter-spacing: 0.05em; }
-    .card-logo-line2 { font-size: 2.34cqw; font-weight: 800; color: #0b1a40; line-height: 1.1; }
-    .card-logo-line3 { font-size: 0.94cqw; font-weight: 900; color: #0b1a40; letter-spacing: 0.1em; }
-    .card-info-box {
-      margin-top: 4.38cqw; color: #ffffff;
-      font-size: 2.03cqw; display: flex; flex-direction: column; gap: 1.25cqw;
-    }
-    .card-brand-box { color: #ffffff; font-size: 1.4cqw; opacity: 0.9; }
-    .card-brand-title { font-size: 2.34cqw; font-weight: 700; }
-    .card-avatar-ring {
-      width: 15.625cqw; height: 15.625cqw; border-radius: 50%;
-      background: #a11b51; border: 0.47cqw solid #a11b51;
-      box-shadow: 0 0 0 0.47cqw #0b1a40;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 5.625cqw; font-weight: 700; color: #ffffff;
-      margin-bottom: 1.875cqw; overflow: hidden; position: relative;
-    }
-    .card-avatar-ring .avatar-img {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: cover; border-radius: 50%; display: none;
-    }
-    .card-avatar-ring .avatar-initials { position: relative; z-index: 1; transition: opacity 0.25s; }
-    .card-name { font-size: 2.5cqw; font-weight: 700; color: #ffffff; margin-bottom: 0.31cqw; text-align: center; }
-    .card-role { font-size: 1.72cqw; color: rgba(255,255,255,0.75); margin-bottom: 0.31cqw; }
-    .card-location { font-size: 1.72cqw; color: rgba(255,255,255,0.75); font-weight: 600; }
-    .card-web-link {
-      position: absolute; left: 34cqw; bottom: 3.75cqw;
-      color: #ffffff; font-size: 1.875cqw; font-weight: 700; z-index: 2;
-    }
-    .card-ai-chip {
-      position: absolute; right: 5cqw; bottom: 5.6cqw;
-      width: 6.875cqw; height: 6.875cqw;
-      background: #061030; border: 0.31cqw solid #00aeef;
-      transform: rotate(45deg);
-      display: flex; align-items: center; justify-content: center;
-      color: #ffffff; font-size: 1.875cqw; font-weight: 700;
-      box-shadow: 0 0 1.56cqw rgba(0, 174, 239, 0.4);
-      z-index: 2;
+    .meta-details { display: flex; flex-direction: column; }
+    .meta-label { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+    .meta-val { font-size: 13.5px; font-weight: 600; color: var(--foreground); margin-top: 2px; }
+
+    .invitation-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 18px; border-radius: 30px;
+      border: 1px solid rgba(255, 98, 26, 0.25);
+      background: rgba(255, 98, 26, 0.05);
+      color: var(--accent-orange); font-size: 11px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 24px;
     }
 
-    /* ── SECTION TITLE ── */
-    .section-anchor { padding-top: 90px; }
-    .section-title { text-align: center; margin-bottom: 48px; }
-    .section-title h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 36px; font-weight: 700;
-      color: var(--white); margin-bottom: 10px;
+    .scroll-down {
+      font-size: 12px; font-weight: 600; letter-spacing: 0.1em;
+      color: var(--text-muted); text-decoration: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 10px; transition: color 0.2s;
     }
-    .section-title p { font-size: 15px; color: var(--muted); max-width: 500px; margin: 0 auto; }
+    .scroll-down:hover { color: var(--accent-blue); }
+
+    /* ── LEADERSHIP PARTICIPATION ── */
+    .section-anchor { padding-top: 100px; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+    
+    .section-header { text-align: center; margin-bottom: 48px; }
+    .section-header h2 {
+      font-family: var(--font-outfit);
+      font-size: clamp(28px, 4vw, 40px); font-weight: 700;
+      color: var(--foreground); margin-bottom: 12px;
+    }
+    .section-header h2 span {
+      background: linear-gradient(135deg, var(--accent-orange), var(--accent-blue), var(--accent-green));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .section-header p { font-size: 15px; color: var(--text-muted); max-width: 600px; margin: 0 auto; line-height: 1.6; }
+
+    /* Speaker Grid */
+    .speaker-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px; margin-bottom: 64px;
+    }
+    .speaker-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px 16px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+      transition: all 0.3s;
+    }
+    .speaker-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
+    }
+    .speaker-avatar-wrap {
+      width: 100px; height: 100px; border-radius: 50%;
+      margin: 0 auto 16px; position: relative;
+      background: linear-gradient(135deg, var(--accent-orange), var(--accent-blue), var(--accent-green));
+      padding: 2.5px;
+      box-shadow: 0 4px 12px rgba(15, 76, 129, 0.1);
+      transition: box-shadow 0.3s;
+    }
+    .speaker-card:hover .speaker-avatar-wrap {
+      box-shadow: 0 8px 24px rgba(15, 76, 129, 0.25);
+    }
+    .speaker-avatar {
+      width: 100%; height: 100%; border-radius: 50%;
+      background: #f8fafc; display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-outfit); font-size: 32px; font-weight: 700;
+      color: var(--accent-blue); overflow: hidden;
+    }
+    .speaker-name { font-size: 16px; font-weight: 700; color: var(--foreground); margin-bottom: 6px; }
+    .speaker-title { font-size: 11.5px; color: var(--accent-orange); font-weight: 600; margin-bottom: 2px; }
+    .speaker-org { font-size: 11px; color: var(--text-muted); line-height: 1.3; }
+
+    /* Special card for 100+ attendees */
+    .speaker-card.extra {
+      background: linear-gradient(135deg, rgba(255, 98, 26, 0.02), rgba(15, 76, 129, 0.02));
+      border: 1px dashed var(--border-strong);
+    }
+    .speaker-card.extra .speaker-avatar {
+      background: #ffffff; color: var(--accent-blue);
+      font-size: 28px;
+    }
+
+    /* ── CONTENT GRID: KEY THEMES & MISSION ── */
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 28px; margin-bottom: 80px;
+    }
+    @media (max-width: 860px) {
+      .content-grid { grid-template-columns: 1fr; }
+    }
+
+    .themes-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 36px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    }
+    .themes-panel h3 {
+      font-family: var(--font-outfit); font-size: 22px; font-weight: 700;
+      color: var(--foreground); margin-bottom: 24px; display: flex; align-items: center; gap: 10px;
+    }
+    .themes-panel h3 span {
+      color: var(--accent-orange);
+    }
+    .themes-list { display: flex; flex-direction: column; gap: 16px; }
+    .theme-item { display: flex; gap: 14px; align-items: flex-start; }
+    .theme-marker {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent-blue); margin-top: 7px; flex-shrink: 0;
+      box-shadow: 0 0 6px var(--accent-blue);
+    }
+    .theme-text { font-size: 14.5px; color: var(--foreground); line-height: 1.5; }
+
+    .mission-panel {
+      background: linear-gradient(135deg, rgba(15, 76, 129, 0.03), rgba(255, 255, 255, 0.95));
+      border: 1px solid var(--border-strong);
+      border-radius: 16px; padding: 36px;
+      display: flex; flex-direction: column; justify-content: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    }
+    .mission-quote {
+      font-size: 16px; color: var(--foreground); line-height: 1.7;
+      font-style: italic; margin-bottom: 20px;
+      position: relative;
+    }
+    .mission-quote::before {
+      content: '“';
+      position: absolute; top: -20px; left: -20px;
+      font-size: 64px; color: rgba(15, 76, 129, 0.1);
+      font-family: serif;
+    }
+    .mission-author { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-blue); }
 
     /* ── REGISTRATION FORM ── */
-    .form-section {
-      max-width: 600px; margin: 0 auto;
-      padding: 0 24px 120px;
-      position: relative; z-index: 1;
+    .form-wrap {
+      max-width: 680px; margin: 0 auto 120px;
     }
-
     .form-card {
-      background: rgba(255,255,255,0.02);
+      background: var(--bg-card);
       border: 1px solid var(--border);
       border-top: 1px solid var(--border-strong);
-      border-radius: 16px;
-      padding: 44px 44px 40px;
-      box-shadow: 0 32px 80px rgba(0,0,0,0.4);
-      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 48px 48px 40px;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.06);
       position: relative; overflow: hidden;
     }
     .form-card::before {
       content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 3px;
-      background: linear-gradient(90deg, transparent, var(--gold), var(--gold-light), var(--gold), transparent);
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--accent-orange), var(--accent-blue), var(--accent-green));
     }
-    /* Animated shimmer line */
-    .form-card::after {
-      content: '';
-      position: absolute; top: 0; left: -100%; width: 60%; height: 3px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-      animation: shimmerLine 3s ease-in-out infinite 1s;
-    }
-    @keyframes shimmerLine {
-      0% { left: -100%; }
-      100% { left: 200%; }
-    }
-
     .form-header { margin-bottom: 36px; }
     .form-header h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 24px; font-weight: 700; color: var(--white); margin-bottom: 6px;
+      font-family: var(--font-outfit);
+      font-size: 24px; font-weight: 700; color: var(--foreground); margin-bottom: 8px;
     }
-    .form-header p { font-size: 13px; color: var(--muted); }
+    .form-header p { font-size: 13px; color: var(--text-muted); }
 
-    .field-group { display: flex; flex-direction: column; gap: 28px; margin-bottom: 36px; }
+    .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px; }
+    .field-full { grid-column: span 2; }
+    @media (max-width: 600px) {
+      .field-grid > * { grid-column: span 2; }
+      .form-card { padding: 32px 24px; }
+    }
 
     .field { display: flex; flex-direction: column; gap: 8px; }
     .field-label {
       font-size: 10px; font-weight: 700;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--muted); transition: color 0.2s;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-muted); transition: color 0.2s;
     }
-    .field-label.error { color: #ef4444; }
-    .field-label.active { color: var(--gold); }
-
-    .field-hint {
-      font-size: 11px; color: rgba(232, 224, 204, 0.45);
-      margin-top: 4px; line-height: 1.4; transition: all 0.2s ease;
-    }
-    .field-err {
-      font-size: 11px; color: #f87171; font-weight: 600;
-      margin-top: 4px; line-height: 1.4; display: none; transition: all 0.2s ease;
-    }
-    .field-err:not(:empty) { display: block; }
-    .field-input.error ~ .field-hint,
-    .phone-wrap.error ~ .field-hint { display: none; }
+    .field-label.active { color: var(--accent-blue); }
+    .field-label.error { color: #dc2626; }
 
     .field-input {
-      background: transparent;
-      border: none; border-bottom: 1.5px solid rgba(255,255,255,0.15);
-      padding: 10px 12px;
-      font-size: 14px; font-family: 'Inter', sans-serif;
-      color: var(--white);
-      transition: border-color 0.25s, box-shadow 0.25s;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 14px; font-family: var(--font-inter);
+      color: var(--foreground);
+      transition: all 0.25s;
       outline: none; width: 100%;
     }
-    .field-input::placeholder { color: rgba(255,255,255,0.22); }
-    .field-input:focus { border-bottom-color: var(--gold); box-shadow: 0 4px 12px -4px rgba(212,175,55,0.25); }
-    .field-input.error { border-bottom-color: #ef4444; box-shadow: 0 4px 12px -4px rgba(239,68,68,0.35); }
-
-    /* Shake on error */
-    @keyframes fieldShake {
-      0%, 100% { transform: translateX(0); }
-      15%  { transform: translateX(-6px); }
-      35%  { transform: translateX(6px); }
-      55%  { transform: translateX(-4px); }
-      75%  { transform: translateX(4px); }
+    .field-input::placeholder { color: #94a3b8; }
+    .field-input:focus { 
+      border-color: var(--accent-blue); 
+      box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.12); 
+      background: #ffffff; 
     }
-    .shake { animation: fieldShake 0.42s cubic-bezier(0.36,0.07,0.19,0.97); }
+    .field-input.error { 
+      border-color: #dc2626; 
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12); 
+    }
+    
+    textarea.field-input { min-height: 100px; resize: vertical; }
 
+    .field-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+    .field-err { font-size: 11px; color: #dc2626; font-weight: 600; margin-top: 4px; display: none; }
+    .field-err.visible { display: block; }
+    .field-input.error ~ .field-hint { display: none; }
+
+    /* Phone Input Wrap */
     .phone-wrap {
       display: flex; align-items: center;
-      border-bottom: 1.5px solid rgba(255,255,255,0.15);
-      transition: border-color 0.25s, box-shadow 0.25s;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: all 0.25s;
     }
-    .phone-prefix { font-size: 14px; color: var(--muted); padding: 10px 10px 10px 12px; user-select: none; }
-    .phone-input { border-bottom: none !important; padding: 10px 12px 10px 0 !important; box-shadow: none !important; }
-    .phone-wrap:focus-within { border-bottom-color: var(--gold); box-shadow: 0 4px 12px -4px rgba(212,175,55,0.25); }
-    .phone-wrap.error { border-bottom-color: #ef4444; box-shadow: 0 4px 12px -4px rgba(239,68,68,0.35); }
-    .photo-upload-area.error { border-color: #ef4444; background: rgba(239,68,68,0.05); }
+    .phone-wrap:focus-within { 
+      border-color: var(--accent-blue); 
+      box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.12); 
+      background: #ffffff; 
+    }
+    .phone-wrap.error { 
+      border-color: #dc2626; 
+      box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12); 
+    }
+    .phone-prefix { font-size: 14px; color: var(--text-muted); padding: 12px 0 12px 14px; user-select: none; font-weight: 600; }
+    .phone-input { border: none !important; padding-left: 8px !important; background: transparent !important; box-shadow: none !important; }
 
-    /* ── PHOTO UPLOAD ── */
-    .photo-upload-wrap { display: flex; flex-direction: column; gap: 8px; }
-    .photo-upload-area {
-      border: 1.5px dashed rgba(212,175,55,0.3);
+    /* Attendance Radio Selector */
+    .attendance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .attendance-card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px; text-align: center;
+      cursor: pointer; transition: all 0.25s;
+      font-size: 13.5px; font-weight: 600; color: var(--text-muted);
+    }
+    .attendance-card:hover { border-color: var(--border-strong); color: var(--foreground); }
+    .attendance-card.selected {
+      background: rgba(15, 76, 129, 0.05); border-color: var(--accent-blue); color: var(--accent-blue);
+      box-shadow: 0 0 12px rgba(15, 76, 129, 0.05);
+    }
+    .attendance-card.selected.no {
+      background: rgba(255, 98, 26, 0.05); border-color: var(--accent-orange); color: var(--accent-orange);
+      box-shadow: 0 0 12px rgba(255, 98, 26, 0.05);
+    }
+
+    /* Checkbox Grid */
+    .interest-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+    }
+    @media (max-width: 500px) {
+      .interest-grid { grid-template-columns: 1fr; }
+    }
+    .interest-item {
+      display: flex; align-items: center; gap: 10px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px 14px;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .interest-item:hover { background: #f1f5f9; border-color: var(--border-strong); }
+    .interest-item.selected {
+      border-color: var(--accent-blue); background: rgba(15, 76, 129, 0.04);
+    }
+    .interest-checkbox {
+      width: 16px; height: 16px; border-radius: 4px;
+      border: 1px solid var(--border-strong);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s; flex-shrink: 0;
+      background: #ffffff;
+    }
+    .interest-item.selected .interest-checkbox {
+      background: var(--accent-blue); border-color: var(--accent-blue);
+    }
+    .interest-checkbox-check {
+      font-size: 10px; color: #ffffff; display: none; font-weight: bold;
+    }
+    .interest-item.selected .interest-checkbox-check { display: block; }
+    .interest-label { font-size: 13px; color: var(--foreground); }
+
+    /* Photo Upload Dropzone */
+    .photo-area {
+      border: 1.5px dashed var(--border-strong);
       border-radius: 10px; padding: 20px;
       display: flex; align-items: center; gap: 16px;
-      cursor: pointer; transition: border-color 0.3s, background 0.3s, transform 0.2s;
-      background: rgba(212,175,55,0.02);
+      cursor: pointer; transition: all 0.3s;
+      background: #f8fafc;
     }
-    .photo-upload-area:hover { border-color: var(--gold); background: rgba(212,175,55,0.05); transform: translateY(-1px); }
-    .photo-upload-area.has-file { border-color: var(--gold); background: rgba(212,175,55,0.05); }
-    .photo-preview-circle {
+    .photo-area:hover { border-color: var(--accent-blue); background: rgba(15, 76, 129, 0.02); }
+    .photo-area.has-file { border-color: var(--accent-blue); background: rgba(15, 76, 129, 0.02); }
+    .photo-circle {
       width: 56px; height: 56px; border-radius: 50%;
-      background: rgba(212,175,55,0.1);
+      background: #e2e8f0;
       border: 2px solid var(--border-strong);
       display: flex; align-items: center; justify-content: center;
-      overflow: hidden; flex-shrink: 0;
-      transition: transform 0.3s;
+      overflow: hidden; flex-shrink: 0; transition: transform 0.3s;
     }
-    .photo-upload-area:hover .photo-preview-circle { transform: scale(1.08); }
-    .photo-preview-circle img { width: 100%; height: 100%; object-fit: cover; }
-    .photo-icon { font-size: 22px; opacity: 0.5; }
-    .photo-upload-text { flex: 1; }
-    .photo-upload-title { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
-    .photo-upload-hint { font-size: 11px; color: var(--muted); }
-    .photo-upload-input { display: none; }
+    .photo-area:hover .photo-circle { transform: scale(1.06); }
+    .photo-circle img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-icon { font-size: 20px; opacity: 0.6; }
+    .photo-details { flex: 1; }
+    .photo-title { font-size: 13px; font-weight: 600; color: var(--foreground); margin-bottom: 2px; }
+    .photo-hint { font-size: 11px; color: var(--text-muted); }
+    .photo-file-input { display: none; }
 
-    /* ── ERROR BANNER ── */
+    /* Error Banner */
     .error-banner {
-      display: none; margin-bottom: 20px;
-      background: rgba(239,68,68,0.12);
-      border: 1px solid rgba(239,68,68,0.3);
-      border-radius: 10px; padding: 14px 16px;
-      font-size: 13px; color: #fca5a5;
+      display: none; margin-bottom: 24px;
+      background: rgba(220, 38, 38, 0.05);
+      border: 1px solid rgba(220, 38, 38, 0.2);
+      border-radius: 8px; padding: 12px 16px;
+      font-size: 13.5px; color: #b91c1c;
       align-items: center; gap: 10px;
     }
     .error-banner.visible { display: flex; }
 
-    /* ── SUBMIT BUTTON ── */
+    /* Submit Button */
     .submit-btn {
       width: 100%; padding: 16px;
-      background: linear-gradient(90deg, var(--gold-dark) 0%, var(--gold-light) 50%, var(--gold-dark) 100%);
-      background-size: 200% auto;
+      background: linear-gradient(135deg, var(--accent-orange) 0%, var(--accent-blue) 50%, var(--accent-green) 100%);
       border: none; border-radius: 8px;
-      font-size: 13px; font-weight: 700;
-      letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--navy); cursor: pointer;
-      transition: background-position 0.5s, box-shadow 0.3s;
-      box-shadow: 0 0 24px rgba(212,175,55,0.2);
-      position: relative; overflow: hidden;
-      will-change: transform;
-    }
-    .submit-btn::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.25) 50%, transparent 100%);
-      transform: translateX(-100%);
-      transition: transform 0s;
+      font-family: var(--font-outfit);
+      font-size: 13.5px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: #ffffff; cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 14px rgba(15, 76, 129, 0.2);
     }
     .submit-btn:hover {
-      background-position: right center;
-      box-shadow: 0 0 40px rgba(212,175,55,0.45);
+      box-shadow: 0 6px 20px rgba(15, 76, 129, 0.35);
+      transform: translateY(-1px);
     }
-    .submit-btn:hover::after { transform: translateX(100%); transition: transform 0.5s ease; }
-    .submit-btn:active { transform: scale(0.97) !important; }
+    .submit-btn:active { transform: translateY(1px); }
     .submit-btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
-    /* Loading spinner inside button */
     .btn-spinner {
       display: inline-block; width: 14px; height: 14px;
-      border: 2px solid rgba(7,20,40,0.3);
-      border-top-color: var(--navy);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #ffffff;
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
       vertical-align: middle; margin-right: 8px;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .form-footer-note {
+    .footer-note {
       text-align: center; margin-top: 16px;
-      font-size: 11px; color: var(--muted);
+      font-size: 11.5px; color: var(--text-muted);
     }
 
-    /* ── SCROLL REVEAL ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(28px);
-    }
-
-    /* ── TOAST NOTIFICATION ── */
+    /* Toast */
     .toast {
       position: fixed; bottom: 32px; left: 50%;
       transform: translateX(-50%) translateY(20px);
-      background: rgba(161,27,81,0.95);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 10px; padding: 14px 28px;
-      font-size: 13.5px; font-weight: 600; color: #ffffff;
+      background: #ffffff;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px; padding: 14px 28px;
+      font-size: 13.5px; font-weight: 600; color: var(--accent-blue);
       z-index: 1000; opacity: 0; pointer-events: none;
       transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-      display: flex; align-items: center; gap: 10px;
-      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
     }
     .toast.visible { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: all; }
 
+    /* Shake Animation */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+    .shake { animation: shake 0.4s ease; }
+
     /* ── FOOTER ── */
     footer {
-      border-top: 1px solid rgba(255,255,255,0.05);
-      background: rgba(5,10,20,0.8);
-      padding: 32px 48px;
+      border-top: 1px solid var(--border);
+      background: #f8fafc;
+      padding: 40px 48px;
       display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 16px;
+      flex-wrap: wrap; gap: 20px;
       position: relative; z-index: 1;
     }
-    footer .footer-brand { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--gold); }
-    footer .footer-copy { font-size: 11px; color: rgba(255,255,255,0.3); }
+    .footer-left { display: flex; flex-direction: column; gap: 8px; }
+    .footer-brand { font-family: var(--font-outfit); font-size: 17px; font-weight: 700; color: var(--accent-blue); }
+    .footer-copy { font-size: 11px; color: var(--text-muted); }
+    .footer-contact {
+      display: flex; gap: 24px; align-items: center;
+    }
+    .contact-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 12.5px; color: var(--text-muted); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .contact-item:hover { color: var(--accent-blue); }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 640px) {
+    @media (max-width: 680px) {
       nav { padding: 0 20px; }
-      .form-card { padding: 28px 24px; }
-      .hero-meta-sep { display: none; }
-      footer { flex-direction: column; text-align: center; padding: 24px; }
+      footer { flex-direction: column; text-align: center; padding: 32px 20px; }
+      .footer-contact { flex-direction: column; gap: 12px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Three.js Background Canvas -->
-  <canvas id="bg-canvas"></canvas>
+  <!-- Background Radial Pattern -->
+  <div class="neural-pattern">
+    <div class="glow-sphere glow-1"></div>
+    <div class="glow-sphere glow-2"></div>
+    <div class="glow-sphere glow-3"></div>
+  </div>
 
   <!-- NAV -->
-  <nav id="mainNav">
-    <a class="nav-logo" href="/">TiA SUMMIT</a>
+  <nav>
+    <div class="nav-logo-wrap">
+      <div class="nav-logo-crest">🇮🇳</div>
+      <a class="nav-logo" href="/">NCAIC <span>COUNCIL</span></a>
+    </div>
     <div class="nav-links">
-      <a class="nav-link" href="#register">Register</a>
+      <a class="nav-link" href="#register">RSVP</a>
       <a class="nav-badge" href="/admin">Admin Portal</a>
     </div>
   </nav>
 
   <!-- HERO -->
   <section class="hero">
-
-    <div class="hero-eyebrow" id="heroEyebrow">
+    <div class="hero-eyebrow">
       <span class="hero-eyebrow-dot"></span>
-      <span>9th Edition — Official Registration</span>
+      <span>Inaugural Meeting • 30 July 2026</span>
     </div>
 
-    <h1 class="hero-title" id="heroTitle">
-      9th Edition of<br/><em>TiA SUMMIT</em>
+    <h1 class="hero-title">
+      India's Digital Economy<br/><span>Leadership Council 2026</span>
     </h1>
 
-    <p class="hero-subtitle" id="heroSubtitle">The India Advocate Summit — Shaping the Future of Legal Advocacy.</p>
+    <p class="hero-subtitle">
+      Building India’s Next Digital Economy Through AI, Cybersecurity & Digital Infrastructure
+    </p>
 
-    <div class="hero-meta" id="heroMeta">
-      <div class="hero-meta-item">
-        <div class="hero-meta-icon">📅</div>
-        <span>15 &amp; 16 Oct, 2026</span>
+    <div class="invitation-badge">
+      ✦ Participation is by invitation only
+    </div>
+
+    <div class="hero-meta-grid">
+      <div class="meta-box">
+        <div class="meta-icon">📅</div>
+        <div class="meta-details">
+          <span class="meta-label">Date</span>
+          <span class="meta-val">30 July 2026</span>
+        </div>
       </div>
-      <span class="hero-meta-sep">·</span>
-      <div class="hero-meta-item">
-        <div class="hero-meta-icon">📍</div>
-        <span>Taj West End, Bengaluru</span>
+      <div class="meta-box">
+        <div class="meta-icon">📍</div>
+        <div class="meta-details">
+          <span class="meta-label">Venue</span>
+          <span class="meta-val">Hyderabad, Telangana</span>
+        </div>
       </div>
-      <span class="hero-meta-sep">·</span>
-      <div class="hero-meta-item">
-        <div class="hero-meta-icon">✦</div>
-        <span>Official Attendee Pass</span>
+      <div class="meta-box">
+        <div class="meta-icon">🏛</div>
+        <div class="meta-details">
+          <span class="meta-label">Hosted by</span>
+          <span class="meta-val">National Cyber & AI Centre</span>
+        </div>
       </div>
     </div>
 
-    <div style="margin-bottom: 40px;"></div>
-
-    <a href="#register" id="scrollCta" style="font-size:12px;font-weight:600;letter-spacing:0.12em;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:8px;opacity:0;">
-      Scroll to Register &nbsp; ↓
+    <a href="#register" class="scroll-down">
+      Scroll to RSVP &nbsp; ↓
     </a>
-
   </section>
 
-  <!-- REGISTRATION FORM -->
-  <section class="section-anchor form-section" id="register">
-
-    <div class="section-title reveal">
-      <h2>Secure Your Place</h2>
-      <p>Fill in your details below. Your attendee card will be emailed within minutes.</p>
+  <!-- LEADERSHIP PARTICIPATION -->
+  <section class="container" style="padding-bottom: 60px;">
+    <div class="section-header">
+      <h2>Leadership <span>Participation</span></h2>
+      <p>
+        An invitation-only leadership forum bringing together policymakers, enterprise leaders, data centers, digital infrastructure operators, and technology innovators.
+      </p>
     </div>
 
-    <div class="form-card reveal" style="transition-delay: 0.1s;">
-      <div class="form-header">
-        <h3>Registration Form</h3>
-        <p>Fields marked with * are required.</p>
+    <div class="speaker-grid">
+      <!-- Speaker 1 -->
+      <div class="speaker-card">
+        <div class="speaker-avatar-wrap">
+          <div class="speaker-avatar">
+            <img src="/images/sridar_babu.png" alt="Sridar Babu" style="width:100%; height:100%; object-fit:cover;"/>
+          </div>
+        </div>
+        <div class="speaker-name">Sridar Babu</div>
+        <div class="speaker-title">IT Minister</div>
+        <div class="speaker-org">Government of Telangana</div>
       </div>
 
-      <form id="regForm" novalidate>
-        <div class="field-group">
+      <!-- Speaker 2 -->
+      <div class="speaker-card">
+        <div class="speaker-avatar-wrap">
+          <div class="speaker-avatar">
+            <img src="/images/laura_williams.png" alt="Laura Williams" style="width:100%; height:100%; object-fit:cover;"/>
+          </div>
+        </div>
+        <div class="speaker-name">Laura Williams</div>
+        <div class="speaker-title">United States Consul General</div>
+        <div class="speaker-org">United States Consulate</div>
+      </div>
+
+      <!-- Speaker 3 -->
+      <div class="speaker-card">
+        <div class="speaker-avatar-wrap">
+          <div class="speaker-avatar">
+            <img src="/images/nikhil_chakravarthy.png" alt="Nikhil Chakravarthy J" style="width:100%; height:100%; object-fit:cover;"/>
+          </div>
+        </div>
+        <div class="speaker-name">Nikhil Chakravarthy J</div>
+        <div class="speaker-title">Director of Department</div>
+        <div class="speaker-org">Government of Telangana</div>
+      </div>
+
+      <!-- Speaker 4 -->
+      <div class="speaker-card">
+        <div class="speaker-avatar-wrap">
+          <div class="speaker-avatar">
+            <img src="/images/aditya_ps.png" alt="Aditya PS" style="width:100%; height:100%; object-fit:cover;"/>
+          </div>
+        </div>
+        <div class="speaker-name">Aditya PS</div>
+        <div class="speaker-title">Principal Advisor</div>
+        <div class="speaker-org">Office of Prince of Bahrain</div>
+      </div>
+    </div>
+
+    <!-- Content Grid -->
+    <div class="content-grid">
+      <!-- Key Themes -->
+      <div class="themes-panel">
+        <h3><span>◈</span> Key Themes</h3>
+        <div class="themes-list">
+          <div class="theme-item">
+            <span class="theme-marker"></span>
+            <span class="theme-text">Accelerating India’s digital economy growth</span>
+          </div>
+          <div class="theme-item">
+            <span class="theme-marker"></span>
+            <span class="theme-text">Strengthening digital infrastructure readiness</span>
+          </div>
+          <div class="theme-item">
+            <span class="theme-marker"></span>
+            <span class="theme-text">Enabling enterprise adoption and transformation</span>
+          </div>
+          <div class="theme-item">
+            <span class="theme-marker"></span>
+            <span class="theme-text">Unlocking investment & capital formation opportunities</span>
+          </div>
+          <div class="theme-item">
+            <span class="theme-marker"></span>
+            <span class="theme-text">GCC Expansion & Enterprise Digital Adoption</span>
+          </div>
+          <div class="theme-item">
+            <span class="theme-marker"></span>
+            <span class="theme-text">Advancing Public - Private collaboration</span>
+          </div>
+          <div class="theme-item">
+            <span class="theme-marker"></span>
+            <span class="theme-text">Creating long-term partnerships that support India’s digital growth ambitions</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quote -->
+      <div class="mission-panel">
+        <div class="mission-quote">
+          The Council provides a platform for stakeholders to align around emerging opportunities, market priorities, infrastructure requirements, investment trends, and ecosystem partnerships required to build and scale India’s next digital economy.
+        </div>
+        <div class="mission-author">
+          National Cyber & AI Centre
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RSVP REGISTRATION FORM -->
+  <section class="container form-wrap" id="register">
+    <div class="form-card">
+      <div class="form-header">
+        <h3>Registration RSVP Form</h3>
+        <p>Fields marked with * are required to secure your place.</p>
+      </div>
+
+      <form id="rsvpForm" novalidate>
+        <!-- Error Banner -->
+        <div class="error-banner" id="errorBanner">
+          <span>⚠️</span>
+          <span id="errorBannerText">Please fill in all required fields.</span>
+        </div>
+
+        <div class="field-grid">
+          
+          <!-- Attendance -->
+          <div class="field field-full">
+            <label class="field-label">Can you attend? *</label>
+            <div class="attendance-grid">
+              <div class="attendance-card" id="attendYes" onclick="selectAttendance('Yes,  I\'ll be there')">
+                Yes, I'll be there
+              </div>
+              <div class="attendance-card" id="attendNo" onclick="selectAttendance('Sorry, can\'t make it')">
+                Sorry, can't make it
+              </div>
+            </div>
+            <input type="hidden" id="attendance" name="attendance" required/>
+            <span class="field-err" id="attendanceErr">Please select your attendance status.</span>
+          </div>
 
           <!-- Full Name -->
-          <div class="field reveal" style="transition-delay: 0.15s;">
+          <div class="field">
             <label class="field-label" for="name" id="nameLabel">Full Name *</label>
             <input class="field-input" id="name" name="name" type="text"
-              placeholder="E.g. Ananya Sharma"
-              autocomplete="name" required
+              placeholder="E.g. Sridar Babu" autocomplete="name" required
               oninput="this.value=this.value.replace(/[^A-Za-z\s'\-]/g,'');"/>
-            <span class="field-hint" id="nameHint">Letters and spaces only — no numbers or symbols</span>
+            <span class="field-hint" id="nameHint">Letters and spaces only</span>
             <span class="field-err" id="nameErr"></span>
           </div>
 
           <!-- Email -->
-          <div class="field reveal" style="transition-delay: 0.2s;">
+          <div class="field">
             <label class="field-label" for="email" id="emailLabel">Email Address *</label>
             <input class="field-input" id="email" name="email" type="email"
-              placeholder="E.g. yourname@example.com"
-              autocomplete="email" required/>
-            <span class="field-hint" id="emailHint">Please enter a valid email address</span>
+              placeholder="yourname@ncaic.org.in" autocomplete="email" required/>
             <span class="field-err" id="emailErr"></span>
           </div>
 
           <!-- Phone -->
-          <div class="field reveal" style="transition-delay: 0.25s;">
-            <label class="field-label" for="phone" id="phoneLabel">Phone Number *</label>
+          <div class="field">
+            <label class="field-label" for="phone" id="phoneLabel">Mobile Number *</label>
             <div class="phone-wrap" id="phoneWrap">
               <span class="phone-prefix">+91</span>
               <input class="field-input phone-input" id="phone" name="phone" type="tel"
-                placeholder="9876543210"
-                maxlength="10"
-                autocomplete="tel"
+                placeholder="9876543210" maxlength="10" autocomplete="tel"
                 oninput="this.value=this.value.replace(/[^0-9]/g,'').substring(0,10);"/>
             </div>
-            <span class="field-hint" id="phoneHint">10-digit Indian mobile number</span>
+            <span class="field-hint" id="phoneHint">10-digit mobile number</span>
             <span class="field-err" id="phoneErr"></span>
           </div>
 
           <!-- City -->
-          <div class="field reveal" style="transition-delay: 0.3s;">
+          <div class="field">
             <label class="field-label" for="city" id="cityLabel">City *</label>
             <input class="field-input" id="city" name="city" type="text"
-              placeholder="E.g. Hyderabad"
-              autocomplete="address-level2"/>
+              placeholder="E.g. Hyderabad" autocomplete="address-level2" required/>
             <span class="field-err" id="cityErr"></span>
           </div>
 
-          <!-- Profile Photo -->
-          <div class="field photo-upload-wrap reveal" style="transition-delay: 0.35s;">
+          <!-- Designation -->
+          <div class="field">
+            <label class="field-label" for="designation" id="designationLabel">Designation *</label>
+            <input class="field-input" id="designation" name="designation" type="text"
+              placeholder="E.g. Principal Advisor" required/>
+            <span class="field-err" id="designationErr"></span>
+          </div>
+
+          <!-- Organisation -->
+          <div class="field">
+            <label class="field-label" for="organisation" id="organisationLabel">Organisation *</label>
+            <input class="field-input" id="organisation" name="organisation" type="text"
+              placeholder="E.g. Government of Telangana" required/>
+            <span class="field-err" id="organisationErr"></span>
+          </div>
+
+          <!-- About Company -->
+          <div class="field field-full">
+            <label class="field-label" for="about_company" id="about_companyLabel">About the company *</label>
+            <textarea class="field-input" id="about_company" name="about_company" 
+              placeholder="Brief description of your company / organisation..." required></textarea>
+            <span class="field-hint">Min 10 characters</span>
+            <span class="field-err" id="about_companyErr"></span>
+          </div>
+
+          <!-- Event Objective -->
+          <div class="field field-full">
+            <label class="field-label" for="event_objective" id="event_objectiveLabel">Event objective *</label>
+            <textarea class="field-input" id="event_objective" name="event_objective" 
+              placeholder="What are your goals or expectations from this forum?" required></textarea>
+            <span class="field-hint">Min 10 characters</span>
+            <span class="field-err" id="event_objectiveErr"></span>
+          </div>
+
+          <!-- Interested In Checkboxes -->
+          <div class="field field-full">
+            <label class="field-label">Interested In *</label>
+            <div class="interest-grid">
+              <div class="interest-item" onclick="toggleInterest(this, 'Sponsorship')">
+                <div class="interest-checkbox"><span class="interest-checkbox-check">✓</span></div>
+                <span class="interest-label">Sponsorship</span>
+              </div>
+              <div class="interest-item" onclick="toggleInterest(this, 'Summit')">
+                <div class="interest-checkbox"><span class="interest-checkbox-check">✓</span></div>
+                <span class="interest-label">Summit Attendee</span>
+              </div>
+              <div class="interest-item" onclick="toggleInterest(this, 'Speaking')">
+                <div class="interest-checkbox"><span class="interest-checkbox-check">✓</span></div>
+                <span class="interest-label">Speaking Slot</span>
+              </div>
+              <div class="interest-item" onclick="toggleInterest(this, 'Cyber Resilient Panel')">
+                <div class="interest-checkbox"><span class="interest-checkbox-check">✓</span></div>
+                <span class="interest-label">Cyber Resilient Panel</span>
+              </div>
+              <div class="interest-item" onclick="toggleInterest(this, 'Demo Day')">
+                <div class="interest-checkbox"><span class="interest-checkbox-check">✓</span></div>
+                <span class="interest-label">Demo Day Pitching</span>
+              </div>
+              <div class="interest-item" onclick="toggleInterest(this, 'Leadership Roundtable')">
+                <div class="interest-checkbox"><span class="interest-checkbox-check">✓</span></div>
+                <span class="interest-label">Leadership Roundtable</span>
+              </div>
+            </div>
+            <span class="field-err" id="interested_inErr" style="margin-top: 8px;">Please select at least one interest area.</span>
+          </div>
+
+          <!-- Profile Photo (Optional) -->
+          <div class="field field-full">
             <label class="field-label" id="photoLabel">Profile Photo <span style="font-weight:400;opacity:0.6;">(Optional)</span></label>
-            <div class="photo-upload-area" id="photoDropArea" onclick="document.getElementById('photoInput').click()">
-              <div class="photo-preview-circle" id="photoPreviewCircle">
+            <div class="photo-area" id="photoDropArea" onclick="document.getElementById('photoInput').click()">
+              <div class="photo-circle" id="photoPreviewCircle">
                 <span class="photo-icon" id="photoIcon">👤</span>
                 <img id="photoPreviewImg" src="" alt="Preview" style="display:none;"/>
               </div>
-              <div class="photo-upload-text">
-                <div class="photo-upload-title" id="photoUploadTitle">Click to upload your photo</div>
-                <div class="photo-upload-hint">JPG, PNG or WEBP — max 5 MB · Will appear on your attendee card</div>
+              <div class="photo-details">
+                <div class="photo-title" id="photoUploadTitle">Click to upload photo</div>
+                <div class="photo-hint">JPG, PNG or WEBP — max 5 MB · Will appear on your delegate card</div>
               </div>
             </div>
-            <input class="photo-upload-input" id="photoInput" name="photo" type="file" accept="image/jpeg,image/png,image/webp"/>
+            <input class="photo-file-input" id="photoInput" name="photo" type="file" accept="image/jpeg,image/png,image/webp"/>
           </div>
 
         </div>
 
-        <button class="submit-btn reveal" id="submitBtn" type="submit" style="transition-delay: 0.4s;">Register Now</button>
-        <p class="form-footer-note reveal" style="transition-delay: 0.45s;">
-          🔒 &nbsp;Your attendee card will be emailed to your email address within minutes.
+        <button class="submit-btn" id="submitBtn" type="submit">Submit RSVP Registration</button>
+        <p class="footer-note">
+          🔒 &nbsp;Your attendee delegate card will be processed and enqueued for dispatch within minutes.
         </p>
-
       </form>
     </div>
-
   </section>
 
-  <!-- Toast Notification -->
+  <!-- Toast -->
   <div class="toast" id="toast"></div>
 
   <!-- FOOTER -->
   <footer>
-    <div class="footer-brand">TiA SUMMIT</div>
-    <div class="footer-copy">© 2026 TiA SUMMIT. All rights reserved.</div>
+    <div class="footer-left">
+      <div class="footer-brand">National Cyber & AI Centre</div>
+      <div class="footer-copy">© 2026 NCAIC India. All rights reserved.</div>
+    </div>
+    <div class="footer-contact">
+      <a href="mailto:pawani.reddy@ncaic.org.in" class="contact-item">
+        <span>✉</span> pawani.reddy@ncaic.org.in
+      </a>
+      <a href="tel:+919535789228" class="contact-item">
+        <span>📞</span> +91 9535789228
+      </a>
+    </div>
   </footer>
 
-  <!-- ── CDN LIBRARIES (Three.js, Lenis, and Splitting.js removed for performance) -->
+  <!-- GSAP CDN -->
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 
-  <!-- ── FORM LOGIC (unchanged) ─────────────────────────────────────────── -->
   <script>
-    // ── Photo upload preview ────────────────────────────────────────────────
+    // ── Attendance Selection ────────────────────────────────────────────────
+    function selectAttendance(val) {
+      document.getElementById('attendance').value = val;
+      const yesBtn = document.getElementById('attendYes');
+      const noBtn = document.getElementById('attendNo');
+      const label = document.getElementById('attendance').closest('.field').querySelector('.field-label');
+      const err = document.getElementById('attendanceErr');
+      
+      err.classList.remove('visible');
+      label.classList.remove('error');
+
+      if (val === "Yes,  I'll be there") {
+        yesBtn.classList.add('selected');
+        noBtn.classList.remove('selected');
+        noBtn.className = "attendance-card";
+      } else {
+        yesBtn.classList.remove('selected');
+        noBtn.className = "attendance-card selected no";
+      }
+    }
+
+    // ── Checkbox Toggling ────────────────────────────────────────────────────
+    const selectedInterests = new Set();
+    function toggleInterest(element, value) {
+      const err = document.getElementById('interested_inErr');
+      err.classList.remove('visible');
+
+      if (selectedInterests.has(value)) {
+        selectedInterests.delete(value);
+        element.classList.remove('selected');
+      } else {
+        selectedInterests.add(value);
+        element.classList.add('selected');
+      }
+    }
+
+    // ── Photo Upload Preview ────────────────────────────────────────────────
     const photoInput = document.getElementById('photoInput');
     const photoIcon = document.getElementById('photoIcon');
     const photoPreviewImg = document.getElementById('photoPreviewImg');
@@ -688,34 +1034,22 @@
       photoUploadTitle.textContent = file.name;
     });
 
-    // ── Label focus animation ────────────────────────────────────────────────
+    // ── Label active class handling ──────────────────────────────────────────
     document.querySelectorAll('.field-input').forEach(input => {
-      const label = input.parentElement.querySelector('.field-label') || input.parentElement.parentElement.querySelector('.field-label');
+      const field = input.closest('.field');
+      if (!field) return;
+      const label = field.querySelector('.field-label');
       if (!label) return;
+
       input.addEventListener('focus', () => label.classList.add('active'));
       input.addEventListener('blur',  () => label.classList.remove('active'));
       input.addEventListener('input', () => {
         label.classList.remove('error');
         input.classList.remove('error');
-        if (input.id === 'phone') {
-          const wrap = input.parentElement;
-          if (wrap) wrap.classList.remove('error');
-        }
         const errEl = document.getElementById(input.id + 'Err');
-        if (errEl) errEl.textContent = '';
+        if (errEl) errEl.classList.remove('visible');
       });
     });
-
-    const photoInputEl  = document.getElementById('photoInput');
-    const photoDropAreaEl = document.getElementById('photoDropArea');
-    const photoLabelEl  = document.getElementById('photoLabel');
-
-    if (photoInputEl && photoDropAreaEl) {
-      photoInputEl.addEventListener('change', () => {
-        photoDropAreaEl.classList.remove('error');
-        if (photoLabelEl) photoLabelEl.classList.remove('error');
-      });
-    }
 
     // ── Toast Notification ──────────────────────────────────────────────────
     let toastTimer = null;
@@ -725,411 +1059,232 @@
       t.innerHTML = `⚠️ &nbsp; ${msg}`;
       t.classList.add('visible');
       clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => t.classList.remove('visible'), 8000);
+      toastTimer = setTimeout(() => t.classList.remove('visible'), 5000);
     }
 
-    // ── Validation helpers ───────────────────────────────────────────────────
+    // ── Form Validation & Submission ────────────────────────────────────────
     const NAME_RX  = /^[A-Za-z\s'\-]+$/;
     const EMAIL_RX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const PHONE_RX = /^[0-9]{10}$/;
 
-    function clearErr(fieldId) {
-      const el  = document.getElementById(fieldId + 'Err');
-      const inp = document.getElementById(fieldId);
-      const lbl = document.getElementById(fieldId + 'Label');
-      if (el)  el.textContent = '';
-      if (inp) inp.classList.remove('error', 'shake');
-      if (lbl) lbl.classList.remove('error');
-      if (fieldId === 'phone') {
-        const wrap = document.querySelector('.phone-wrap');
-        if (wrap) wrap.classList.remove('error', 'shake');
-      }
-    }
-
     function showErr(fieldId, msg) {
-      const el  = document.getElementById(fieldId + 'Err');
-      const inp = document.getElementById(fieldId);
-      const lbl = document.getElementById(fieldId + 'Label');
-      if (el)  el.textContent = msg;
-      if (inp) {
-        inp.classList.remove('shake');
-        void inp.offsetWidth; // reflow to restart animation
-        inp.classList.add('error', 'shake');
+      const field = document.getElementById(fieldId).closest('.field');
+      const errEl = document.getElementById(fieldId + 'Err');
+      const input = document.getElementById(fieldId);
+      const label = field.querySelector('.field-label');
+
+      if (errEl) {
+        errEl.textContent = msg;
+        errEl.classList.add('visible');
       }
-      if (lbl) lbl.classList.add('error');
-      if (fieldId === 'phone') {
-        const wrap = document.querySelector('.phone-wrap');
-        if (wrap) {
-          wrap.classList.remove('shake');
-          void wrap.offsetWidth;
-          wrap.classList.add('error', 'shake');
-        }
+      if (input) {
+        input.classList.add('error');
+        input.classList.remove('shake');
+        void input.offsetWidth;
+        input.classList.add('shake');
       }
+      if (label) label.classList.add('error');
       return false;
     }
 
-    // ── Form submission ──────────────────────────────────────────────────────
-    document.getElementById('regForm').addEventListener('submit', async (e) => {
+    function clearErr(fieldId) {
+      const field = document.getElementById(fieldId).closest('.field');
+      const errEl = document.getElementById(fieldId + 'Err');
+      const input = document.getElementById(fieldId);
+      const label = field.querySelector('.field-label');
+
+      if (errEl) errEl.classList.remove('visible');
+      if (input) input.classList.remove('error', 'shake');
+      if (label) label.classList.remove('error');
+    }
+
+    document.getElementById('rsvpForm').addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      const name   = document.getElementById('name').value.trim();
-      const email  = document.getElementById('email').value.trim();
-      const digits = document.getElementById('phone').value.replace(/\D/g, '').substring(0, 10);
-      const phone  = '+91' + digits;
-      const city   = document.getElementById('city').value.trim();
-      const photo  = document.getElementById('photoInput').files[0];
+      const attendance      = document.getElementById('attendance').value;
+      const name            = document.getElementById('name').value.trim();
+      const email           = document.getElementById('email').value.trim();
+      const phoneDigits     = document.getElementById('phone').value.replace(/\D/g, '');
+      const city            = document.getElementById('city').value.trim();
+      const designation     = document.getElementById('designation').value.trim();
+      const organisation    = document.getElementById('organisation').value.trim();
+      const about_company   = document.getElementById('about_company').value.trim();
+      const event_objective = document.getElementById('event_objective').value.trim();
+      const photo           = document.getElementById('photoInput').files[0];
 
-      ['name','email','phone','city'].forEach(clearErr);
-      if (photoDropAreaEl) photoDropAreaEl.classList.remove('error');
-      if (photoLabelEl)    photoLabelEl.classList.remove('error');
+      // Reset errors
+      document.querySelectorAll('.field-err').forEach(el => el.classList.remove('visible'));
+      document.querySelectorAll('.field-input, .phone-wrap').forEach(el => el.classList.remove('error'));
+      document.querySelectorAll('.field-label').forEach(el => el.classList.remove('error'));
+      document.getElementById('errorBanner').classList.remove('visible');
 
       let isValid = true;
       let firstErrorMsg = '';
 
+      // Attendance
+      if (!attendance) {
+        document.getElementById('attendanceErr').classList.add('visible');
+        document.getElementById('attendance').closest('.field').querySelector('.field-label').classList.add('error');
+        if (!firstErrorMsg) firstErrorMsg = 'Please select if you can attend.';
+        isValid = false;
+      }
+
+      // Name
       if (!name || name.length < 2) {
-        showErr('name', 'Name must be at least 2 characters.');
-        if (!firstErrorMsg) firstErrorMsg = 'Name must be at least 2 characters.';
+        showErr('name', 'Full Name must be at least 2 characters.');
+        if (!firstErrorMsg) firstErrorMsg = 'Full Name is required.';
         isValid = false;
       } else if (!NAME_RX.test(name)) {
-        showErr('name', 'Name must contain letters only — no numbers or symbols.');
+        showErr('name', 'Name must contain letters only.');
         if (!firstErrorMsg) firstErrorMsg = 'Name must contain letters only.';
         isValid = false;
       }
 
+      // Email
       if (!email) {
-        showErr('email', 'Email address is required.');
-        if (!firstErrorMsg) firstErrorMsg = 'Email address is required.';
+        showErr('email', 'Email Address is required.');
+        if (!firstErrorMsg) firstErrorMsg = 'Email Address is required.';
         isValid = false;
       } else if (!EMAIL_RX.test(email)) {
         showErr('email', 'Please enter a valid email address.');
-        if (!firstErrorMsg) firstErrorMsg = 'Please enter a valid email address.';
+        if (!firstErrorMsg) firstErrorMsg = 'Invalid email address.';
         isValid = false;
       }
 
-      if (!digits || digits.length !== 10) {
-        showErr('phone', 'Enter exactly 10 digits after +91.');
-        if (!firstErrorMsg) firstErrorMsg = 'Enter exactly 10 digits after +91.';
-        isValid = false;
-      } else if (!PHONE_RX.test(digits)) {
-        showErr('phone', 'Phone must contain digits only.');
-        if (!firstErrorMsg) firstErrorMsg = 'Phone must contain digits only.';
+      // Phone
+      const wrap = document.getElementById('phoneWrap');
+      const phoneLabel = document.getElementById('phoneLabel');
+      if (!phoneDigits || phoneDigits.length !== 10) {
+        wrap.classList.add('error');
+        wrap.classList.remove('shake');
+        void wrap.offsetWidth;
+        wrap.classList.add('shake');
+        phoneLabel.classList.add('error');
+        document.getElementById('phoneErr').textContent = 'Please enter a 10-digit mobile number.';
+        document.getElementById('phoneErr').classList.add('visible');
+        if (!firstErrorMsg) firstErrorMsg = 'Valid mobile number is required.';
         isValid = false;
       }
 
+      // City
       if (!city || city.length < 2) {
-        showErr('city', 'Please enter your city.');
-        if (!firstErrorMsg) firstErrorMsg = 'Please enter your city.';
+        showErr('city', 'City must be at least 2 characters.');
+        if (!firstErrorMsg) firstErrorMsg = 'City is required.';
         isValid = false;
       }
 
-      if (photo && photo.size > 5 * 1024 * 1024) {
-        if (photoDropAreaEl) photoDropAreaEl.classList.add('error');
-        if (photoLabelEl)    photoLabelEl.classList.add('error');
-        if (!firstErrorMsg) firstErrorMsg = 'Profile photo must be smaller than 5 MB.';
+      // Designation
+      if (!designation || designation.length < 2) {
+        showErr('designation', 'Designation must be at least 2 characters.');
+        if (!firstErrorMsg) firstErrorMsg = 'Designation is required.';
+        isValid = false;
+      }
+
+      // Organisation
+      if (!organisation || organisation.length < 2) {
+        showErr('organisation', 'Organisation must be at least 2 characters.');
+        if (!firstErrorMsg) firstErrorMsg = 'Organisation is required.';
+        isValid = false;
+      }
+
+      // About Company
+      if (!about_company || about_company.length < 10) {
+        showErr('about_company', 'About the company description must be at least 10 characters.');
+        if (!firstErrorMsg) firstErrorMsg = 'Company description is required (min 10 chars).';
+        isValid = false;
+      }
+
+      // Event Objective
+      if (!event_objective || event_objective.length < 10) {
+        showErr('event_objective', 'Event objective must be at least 10 characters.');
+        if (!firstErrorMsg) firstErrorMsg = 'Event objective is required (min 10 chars).';
+        isValid = false;
+      }
+
+      // Interested In
+      if (selectedInterests.size === 0) {
+        document.getElementById('interested_inErr').classList.add('visible');
+        if (!firstErrorMsg) firstErrorMsg = 'Please select at least one interest area.';
         isValid = false;
       }
 
       if (!isValid) {
-        showNotification(firstErrorMsg);
-        const firstErr = document.querySelector('.field-input.error') || document.querySelector('.photo-upload-area.error');
-        if (firstErr) firstErr.scrollIntoView({ behavior:'smooth', block:'center' });
+        document.getElementById('errorBannerText').textContent = firstErrorMsg || 'Please complete all required fields.';
+        document.getElementById('errorBanner').classList.add('visible');
+        const formCard = document.querySelector('.form-card');
+        formCard.classList.remove('shake');
+        void formCard.offsetWidth;
+        formCard.classList.add('shake');
         return;
       }
 
-      const btn = document.getElementById('submitBtn');
-      btn.disabled = true;
-      btn.innerHTML = '<span class="btn-spinner"></span> Registering…';
+      // Submit Form
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="btn-spinner"></span>Processing RSVP...';
 
       try {
-        const fd = new FormData();
-        fd.append('name',  name);
-        fd.append('email', email);
-        fd.append('phone', phone);
-        fd.append('city',  city);
-        if (photo) fd.append('photo', photo);
+        const formData = new FormData();
+        formData.append('attendance', attendance);
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('phone', '+91' + phoneDigits);
+        formData.append('city', city);
+        formData.append('designation', designation);
+        formData.append('organisation', organisation);
+        formData.append('about_company', about_company);
+        formData.append('event_objective', event_objective);
+        
+        selectedInterests.forEach(item => {
+          formData.append('interested_in', item);
+        });
 
-        const res  = await fetch('/api/registration', { method:'POST', body: fd });
-        const data = await res.json();
-
-        if (res.ok) {
-          if (data.registration) {
-            sessionStorage.setItem(`registration_${data.id}`, JSON.stringify(data.registration));
-          }
-          if (data.cardDataUrl) {
-            sessionStorage.setItem(`cardDataUrl_${data.id}`, data.cardDataUrl);
-          }
-          // Success flash before redirect
-          if (typeof gsap !== 'undefined') {
-            gsap.to(btn, { background: '#4ade80', duration: 0.3, onComplete: () => {
-              window.location.href = `/success?id=${data.id}`;
-            }});
-          } else {
-            window.location.href = `/success?id=${data.id}`;
-          }
-        } else {
-          const errMsg = (data.error || '').toLowerCase();
-          if (errMsg.includes('email')) showErr('email', data.error);
-          else if (errMsg.includes('name')) showErr('name', data.error);
-          else if (errMsg.includes('phone')) showErr('phone', data.error);
-          else if (errMsg.includes('city')) showErr('city', data.error);
-          else showErr('name', data.error || 'Registration failed. Please try again.');
-          showNotification(data.error || 'Registration failed. Please try again.');
-          btn.disabled = false;
-          btn.innerHTML = 'Register Now';
+        if (photo) {
+          formData.append('photo', photo);
         }
+
+        const response = await fetch('/api/registration', {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'RSVP registration failed.');
+        }
+
+        // Store registration info in session storage for success page caching
+        sessionStorage.setItem(`registration_${data.id}`, JSON.stringify(data.registration));
+        
+        // Success redirect
+        window.location.href = `/success?id=${data.id}`;
+
       } catch (err) {
-        showErr('name', 'Network error — please check your connection.');
-        showNotification('Network error — please check your connection.');
-        btn.disabled = false;
-        btn.innerHTML = 'Register Now';
+        console.error('Submit error:', err);
+        document.getElementById('errorBannerText').textContent = err.message || 'Server error. Please try again.';
+        document.getElementById('errorBanner').classList.add('visible');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit RSVP Registration';
       }
     });
   </script>
 
-  <!-- ── ANIMATION ENGINE ──────────────────────────────────────────────────── -->
+  <!-- ── GSAP ENTRANCE ANIMATIONS ── -->
   <script>
-  (function() {
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof gsap === 'undefined') return;
 
-
-    // ── 2. CANVAS 2D PARTICLE CONSTELLATION (replaces Three.js — much lighter) ──
-    (function initParticles() {
-      const canvas = document.getElementById('bg-canvas');
-      const ctx    = canvas.getContext('2d');
-
-      function resize() {
-        canvas.width  = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
-      resize();
-      window.addEventListener('resize', resize);
-
-      // Fewer particles = smooth frame rate; connections stay visually rich
-      const COUNT = window.innerWidth < 768 ? 30 : 55;
-      const CONNECT_DIST_SQ = 140 * 140; // px²
-      const MAX_SPEED = 0.4;
-
-      const particles = Array.from({ length: COUNT }, () => ({
-        x:  Math.random() * window.innerWidth,
-        y:  Math.random() * window.innerHeight,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-        r:  1 + Math.random() * 1.2,
-      }));
-
-      // Throttle mouse reads to once per RAF — prevents scroll/input jank
-      let mouseX = -9999, mouseY = -9999, pendingMouse = false;
-      document.addEventListener('mousemove', e => {
-        if (!pendingMouse) {
-          pendingMouse = true;
-          requestAnimationFrame(() => {
-            mouseX = e.clientX; mouseY = e.clientY;
-            pendingMouse = false;
-          });
-        }
-      });
-
-      function tick() {
-        requestAnimationFrame(tick);
-        const W = canvas.width, H = canvas.height;
-        ctx.clearRect(0, 0, W, H);
-
-        for (let i = 0; i < COUNT; i++) {
-          const p = particles[i];
-
-          // Move
-          p.x += p.vx; p.y += p.vy;
-          if (p.x < 0 || p.x > W) p.vx *= -1;
-          if (p.y < 0 || p.y > H) p.vy *= -1;
-
-          // Gentle mouse repulsion
-          const mdx = p.x - mouseX, mdy = p.y - mouseY;
-          const md2 = mdx*mdx + mdy*mdy;
-          if (md2 < 8000) {                    // ~90px radius
-            const f = 0.35 / (md2 + 1);
-            p.vx += mdx * f; p.vy += mdy * f;
-            // Speed cap prevents particles flying off screen
-            const spd = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
-            if (spd > MAX_SPEED) { p.vx = p.vx/spd*MAX_SPEED; p.vy = p.vy/spd*MAX_SPEED; }
-          }
-
-          // Batch draw paths
-        }
-
-        // Draw dots
-        ctx.beginPath();
-        for (let i = 0; i < COUNT; i++) {
-          const p = particles[i];
-          ctx.moveTo(p.x + p.r, p.y);
-          ctx.arc(p.x, p.y, p.r, 0, 6.2832);
-        }
-        ctx.fillStyle = 'rgba(212,175,55,0.6)';
-        ctx.fill();
-
-        // Draw connections grouped by distance to minimize stroke calls
-        const pathStrong = [];
-        const pathMedium = [];
-        const pathWeak = [];
-
-        for (let i = 0; i < COUNT; i++) {
-          for (let j = i + 1; j < COUNT; j++) {
-            const dx = particles[i].x - particles[j].x;
-            const dy = particles[i].y - particles[j].y;
-            const d2 = dx*dx + dy*dy;
-            if (d2 < CONNECT_DIST_SQ) {
-              const d = Math.sqrt(d2);
-              if (d < 60) {
-                pathStrong.push(particles[i].x, particles[i].y, particles[j].x, particles[j].y);
-              } else if (d < 100) {
-                pathMedium.push(particles[i].x, particles[i].y, particles[j].x, particles[j].y);
-              } else {
-                pathWeak.push(particles[i].x, particles[i].y, particles[j].x, particles[j].y);
-              }
-            }
-          }
-        }
-
-        ctx.lineWidth = 0.7;
-
-        if (pathStrong.length > 0) {
-          ctx.beginPath();
-          for (let k = 0; k < pathStrong.length; k += 4) {
-            ctx.moveTo(pathStrong[k], pathStrong[k+1]);
-            ctx.lineTo(pathStrong[k+2], pathStrong[k+3]);
-          }
-          ctx.strokeStyle = 'rgba(212,175,55,0.15)';
-          ctx.stroke();
-        }
-
-        if (pathMedium.length > 0) {
-          ctx.beginPath();
-          for (let k = 0; k < pathMedium.length; k += 4) {
-            ctx.moveTo(pathMedium[k], pathMedium[k+1]);
-            ctx.lineTo(pathMedium[k+2], pathMedium[k+3]);
-          }
-          ctx.strokeStyle = 'rgba(212,175,55,0.09)';
-          ctx.stroke();
-        }
-
-        if (pathWeak.length > 0) {
-          ctx.beginPath();
-          for (let k = 0; k < pathWeak.length; k += 4) {
-            ctx.moveTo(pathWeak[k], pathWeak[k+1]);
-            ctx.lineTo(pathWeak[k+2], pathWeak[k+3]);
-          }
-          ctx.strokeStyle = 'rgba(212,175,55,0.04)';
-          ctx.stroke();
-        }
-      }
-      tick();
-    })();
-
-    // ── 3. GSAP ANIMATIONS ──────────────────────────────────────
-    if (typeof gsap !== 'undefined') {
-      gsap.registerPlugin(ScrollTrigger);
-
-      // Hero entrance timeline
+      // Hero stagger animations
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-
-      tl.fromTo('#heroEyebrow',
-          { opacity: 0, y: 24 },
-          { opacity: 1, y: 0, duration: 0.9 }
-        )
-        .fromTo('.hero-title',
-          { opacity: 0, y: 40 },
-          { opacity: 1, y: 0, duration: 0.9 },
-          '-=0.4'
-        )
-        .fromTo('#heroSubtitle',
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.8 },
-          '-=0.4'
-        )
-        .fromTo('#heroMeta',
-          { opacity: 0, y: 16 },
-          { opacity: 1, y: 0, duration: 0.7 },
-          '-=0.5'
-        )
-        .fromTo('#scrollCta',
-          { opacity: 0, y: 10 },
-          { opacity: 1, y: 0, duration: 0.6 },
-          '-=0.3'
-        );
-
-      // Floating scroll CTA arrow
-      gsap.to('#scrollCta', {
-        y: 6, duration: 1.4, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 2
-      });
-
-      // Nav scroll behavior
-      ScrollTrigger.create({
-        start: 'top -80px',
-        onUpdate: self => {
-          const nav = document.getElementById('mainNav');
-          if (nav) {
-            nav.style.background = self.progress > 0
-              ? 'rgba(7,20,40,0.95)'
-              : 'rgba(7,20,40,0.75)';
-          }
-        }
-      });
-
-      // ScrollTrigger reveal for .reveal elements
-      document.querySelectorAll('.reveal').forEach(el => {
-        ScrollTrigger.create({
-          trigger: el,
-          start: 'top 88%',
-          onEnter: () => {
-            gsap.to(el, {
-              opacity: 1, y: 0,
-              duration: 0.85,
-              ease: 'power3.out',
-              delay: parseFloat(el.style.transitionDelay) || 0,
-            });
-          },
-          once: true,
-        });
-      });
-
-    } else {
-      // Fallback: just show everything
-      document.querySelectorAll('.hero-eyebrow,.hero-title,.hero-subtitle,.hero-meta,#scrollCta,.reveal').forEach(el => {
-        el.style.opacity = '1';
-        el.style.transform = 'none';
-      });
-    }
-
-    // ── 4. MAGNETIC SUBMIT BUTTON ────────────────────────────────────────────
-    if (typeof gsap !== 'undefined') {
-      const btn = document.getElementById('submitBtn');
-      if (btn) {
-        btn.addEventListener('mousemove', e => {
-          const r = btn.getBoundingClientRect();
-          const x = e.clientX - r.left - r.width  / 2;
-          const y = e.clientY - r.top  - r.height / 2;
-          gsap.to(btn, { x: x * 0.22, y: y * 0.22, duration: 0.35, ease: 'power2.out' });
-        });
-        btn.addEventListener('mouseleave', () => {
-          gsap.to(btn, { x: 0, y: 0, duration: 0.6, ease: 'elastic.out(1, 0.5)' });
-        });
-      }
-
-      // Nav links hover
-      document.querySelectorAll('.nav-link, .nav-badge').forEach(link => {
-        link.addEventListener('mouseenter', () => gsap.to(link, { y: -2, duration: 0.2 }));
-        link.addEventListener('mouseleave', () => gsap.to(link, { y: 0,  duration: 0.3, ease: 'elastic.out(1, 0.6)' }));
-      });
-
-      // Meta icon hover tilt
-      document.querySelectorAll('.hero-meta-item').forEach(item => {
-        item.addEventListener('mouseenter', () =>
-          gsap.to(item.querySelector('.hero-meta-icon'), { rotate: 8, scale: 1.15, duration: 0.25 }));
-        item.addEventListener('mouseleave', () =>
-          gsap.to(item.querySelector('.hero-meta-icon'), { rotate: 0, scale: 1, duration: 0.4, ease: 'elastic.out(1, 0.6)' }));
-      });
-    }
-
-  })();
+      tl.from('nav', { y: -30, opacity: 0, duration: 0.8 })
+        .from('.hero-eyebrow', { scale: 0.8, opacity: 0, duration: 0.5 }, '-=0.3')
+        .from('.hero-title', { y: 30, opacity: 0, duration: 0.8 }, '-=0.2')
+        .from('.hero-subtitle', { y: 20, opacity: 0, duration: 0.8 }, '-=0.4')
+        .from('.invitation-badge', { scale: 0.9, opacity: 0, duration: 0.5 }, '-=0.4')
+        .from('.meta-box', { y: 20, opacity: 0, duration: 0.6, stagger: 0.1 }, '-=0.3')
+        .from('.scroll-down', { y: -10, opacity: 0, duration: 0.5, repeat: -1, yoyo: true, ease: 'sine.inOut' }, '+=0.2');
+    });
   </script>
-
 </body>
 </html>

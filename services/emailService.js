@@ -35,7 +35,7 @@ async function sendConfirmationEmail(registrant, cardPath) {
   const plainText = `
 Hello ${name},
 
-Your registration for EVENT 2026 — Future of Innovation has been confirmed.
+Your registration for India's Digital Economy Leadership Council 2026 has been confirmed.
 
 REGISTRATION DETAILS
 ---------------------
@@ -44,17 +44,21 @@ Name         : ${name}
 Email        : ${email}
 Phone        : ${phone}
 City         : ${city}
+Designation  : ${registrant.designation || '—'}
+Organisation : ${registrant.organisation || '—'}
 
 Your attendee card is attached to this email as a PNG image.
 Please save it and bring it (digitally or printed) to the event.
 
-EVENT 2026
-Date    : August 2026
-Venue   : Hyderabad, India
+EVENT DETAILS
+-------------
+Date    : 30 July 2026
+Venue   : Hyderabad, Telangana
+Host    : National Cyber & AI Centre (NCAIC)
 
 We look forward to welcoming you.
 
-— EVENT 2026 Organizing Committee
+— NCAIC Organizing Committee
 `.trim();
 
   // HTML version
@@ -63,7 +67,7 @@ We look forward to welcoming you.
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>EVENT 2026 — Registration Confirmed</title>
+  <title>India's Digital Economy Leadership Council 2026 — Registration Confirmed</title>
 </head>
 <body style="margin:0;padding:0;background:#f4f4f5;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
   <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background:#f4f4f5;padding:32px 0;">
@@ -72,40 +76,40 @@ We look forward to welcoming you.
         style="max-width:600px;background:#ffffff;border-radius:12px;overflow:hidden;
                box-shadow:0 4px 24px rgba(0,0,0,0.08);">
         <tr>
-          <td style="background:linear-gradient(135deg,#071428 0%,#0d1f3c 100%);
+          <td style="background:linear-gradient(135deg,#060d1a 0%,#0f1f3d 100%);
                      padding:32px 40px;text-align:center;">
-            <div style="font-size:26px;font-weight:700;color:#D4AF37;
+            <div style="font-size:26px;font-weight:700;color:#00e5ff;
                         font-family:Georgia,serif;letter-spacing:0.06em;">
-              EVENT 2026
+              NCAIC
             </div>
-            <div style="font-size:12px;color:rgba(212,175,55,0.7);
-                        letter-spacing:0.16em;text-transform:uppercase;margin-top:6px;">
-              Future of Innovation
+            <div style="font-size:12px;color:rgba(0,229,255,0.75);
+                        letter-spacing:0.12em;text-transform:uppercase;margin-top:6px;">
+              Digital Economy Leadership Council 2026
             </div>
           </td>
         </tr>
         <tr>
-          <td style="height:3px;background:linear-gradient(90deg,#AA7C11,#F2CA50,#AA7C11);"></td>
+          <td style="height:3px;background:linear-gradient(90deg,#00b0ff,#00e5ff,#00b0ff);"></td>
         </tr>
         <tr>
           <td style="padding:40px 40px 32px;">
-            <p style="margin:0 0 8px;font-size:18px;font-weight:700;color:#071428;">
+            <p style="margin:0 0 8px;font-size:18px;font-weight:700;color:#0f1f3d;">
               Hello ${name},
             </p>
             <p style="margin:0 0 28px;font-size:15px;color:#555;line-height:1.6;">
-              Your registration for <strong>EVENT 2026</strong> has been confirmed!
+              Your registration for <strong>India's Digital Economy Leadership Council 2026</strong> has been confirmed!
               Your attendee card is attached below — please bring it to the event.
             </p>
             <table role="presentation" cellpadding="0" cellspacing="0" width="100%"
-              style="background:#f9f6ee;border:1px solid #e8d89c;border-radius:8px;
+              style="background:#f0fdfa;border:1px solid #99f6e4;border-radius:8px;
                      margin-bottom:28px;">
               <tr>
                 <td style="padding:16px 20px;">
                   <div style="font-size:10px;font-weight:700;letter-spacing:0.18em;
-                              text-transform:uppercase;color:#AA7C11;margin-bottom:4px;">
+                              text-transform:uppercase;color:#0d9488;margin-bottom:4px;">
                     Reference ID
                   </div>
-                  <div style="font-size:22px;font-weight:700;color:#071428;
+                  <div style="font-size:22px;font-weight:700;color:#0f1f3d;
                               font-family:Georgia,serif;letter-spacing:0.06em;">
                     ${refId}
                   </div>
@@ -137,23 +141,37 @@ We look forward to welcoming you.
               </tr>
               <tr>
                 <td style="padding:12px 16px;font-size:11px;font-weight:700;
+                           letter-spacing:0.12em;text-transform:uppercase;
+                           color:#888;border-bottom:1px solid #e5e7eb;">Designation</td>
+                <td style="padding:12px 16px;font-size:14px;color:#111;
+                           border-bottom:1px solid #e5e7eb;">${registrant.designation || '—'}</td>
+              </tr>
+              <tr style="background:#f9fafb;">
+                <td style="padding:12px 16px;font-size:11px;font-weight:700;
+                           letter-spacing:0.12em;text-transform:uppercase;
+                           color:#888;border-bottom:1px solid #e5e7eb;">Organisation</td>
+                <td style="padding:12px 16px;font-size:14px;color:#111;
+                           border-bottom:1px solid #e5e7eb;">${registrant.organisation || '—'}</td>
+              </tr>
+              <tr>
+                <td style="padding:12px 16px;font-size:11px;font-weight:700;
                            letter-spacing:0.12em;text-transform:uppercase;color:#888;">City</td>
                 <td style="padding:12px 16px;font-size:14px;color:#111;">${city}</td>
               </tr>
             </table>
             <table role="presentation" cellpadding="0" cellspacing="0" width="100%"
-              style="background:#071428;border-radius:8px;margin-bottom:32px;">
+              style="background:#0f1f3d;border-radius:8px;margin-bottom:32px;">
               <tr>
                 <td style="padding:20px 24px;">
-                  <div style="font-size:11px;color:rgba(212,175,55,0.7);
+                  <div style="font-size:11px;color:rgba(0,229,255,0.75);
                               letter-spacing:0.16em;text-transform:uppercase;margin-bottom:10px;">
                     Event Details
                   </div>
-                  <div style="font-size:14px;color:#e8e0cc;margin-bottom:6px;">
-                    📅 &nbsp;August 2026
+                  <div style="font-size:14px;color:#e2e8f0;margin-bottom:6px;">
+                    📅 &nbsp;30 July 2026
                   </div>
-                  <div style="font-size:14px;color:#e8e0cc;">
-                    📍 &nbsp;Hyderabad, India
+                  <div style="font-size:14px;color:#e2e8f0;">
+                    📍 &nbsp;Hyderabad, Telangana
                   </div>
                 </td>
               </tr>
@@ -168,7 +186,8 @@ We look forward to welcoming you.
           <td style="background:#f9fafb;border-top:1px solid #e5e7eb;
                      padding:20px 40px;text-align:center;">
             <p style="margin:0;font-size:12px;color:#999;line-height:1.6;">
-              EVENT 2026 Organizing Committee &nbsp;·&nbsp; Hyderabad, India<br/>
+              NCAIC Organizing Committee &nbsp;·&nbsp; Hyderabad, Telangana<br/>
+              Contact us at 9535789228 or pawani.reddy@ncaic.org.in<br/>
               This is a transactional email confirming your registration.
             </p>
           </td>
@@ -187,14 +206,14 @@ We look forward to welcoming you.
     if (cardBase64) {
       attachments.push({
         content: cardBase64,
-        filename: `${name.replace(/\s+/g, '-')}-Event2026-Card.png`
+        filename: `${name.replace(/\s+/g, '-')}-IDELC-Card.png`
       });
     }
 
     const payload = {
       from,
       to: [email],
-      subject: `EVENT 2026 — Registration Confirmed (${refId})`,
+      subject: `India's Digital Economy Leadership Council 2026 — Registration Confirmed (${refId})`,
       text: plainText,
       html: htmlBody,
       attachments
@@ -242,12 +261,12 @@ We look forward to welcoming you.
       from,
       replyTo: from,
       to: email,
-      subject: `EVENT 2026 — Registration Confirmed (${refId})`,
+      subject: `India's Digital Economy Leadership Council 2026 — Registration Confirmed (${refId})`,
       text: plainText,
       html: htmlBody,
       attachments: [
         {
-          filename: `${name.replace(/\s+/g, '-')}-Event2026-Card.png`,
+          filename: `${name.replace(/\s+/g, '-')}-IDELC-Card.png`,
           path: cardPath,
           contentType: 'image/png'
         }
@@ -281,7 +300,7 @@ We look forward to welcoming you.
     const mockMsg = {
       to: email,
       from,
-      subject: `EVENT 2026 — Registration Confirmed (${refId})`,
+      subject: `India's Digital Economy Leadership Council 2026 — Registration Confirmed (${refId})`,
       text: plainText,
       html: htmlBody,
       cardPath

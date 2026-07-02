@@ -193,7 +193,7 @@ router.get('/admin/registrations/:id', requireAuth, async (req, res) => {
 router.put('/admin/registrations/:id', requireAuth, async (req, res) => {
   try {
     const registrantId = req.params.id;
-    const { name, email, phone, city, card_status, email_status } = req.body;
+    const { name, email, phone, city, designation, organisation, attendance, about_company, event_objective, interested_in, card_status, email_status } = req.body;
 
     const current = await req.db.get('SELECT * FROM registrations WHERE id = ?', [registrantId]);
     if (!current) {
@@ -225,10 +225,17 @@ router.put('/admin/registrations/:id', requireAuth, async (req, res) => {
     if (!city || city.trim().length < 2) {
       return res.status(400).json({ error: 'City must be at least 2 characters.' });
     }
+    if (designation !== undefined && designation.trim().length < 2) {
+      return res.status(400).json({ error: 'Designation must be at least 2 characters.' });
+    }
+    if (organisation !== undefined && organisation.trim().length < 2) {
+      return res.status(400).json({ error: 'Organisation must be at least 2 characters.' });
+    }
 
     await req.db.run(
       `UPDATE registrations 
        SET name = ?, email = ?, phone = ?, city = ?, 
+           designation = ?, organisation = ?, attendance = ?, about_company = ?, event_objective = ?, interested_in = ?,
            card_status = ?, email_status = ?, updated_at = CURRENT_TIMESTAMP 
        WHERE id = ?`,
       [
@@ -236,6 +243,12 @@ router.put('/admin/registrations/:id', requireAuth, async (req, res) => {
         email.trim(),
         phone.trim(),
         city.trim(),
+        designation !== undefined ? designation.trim() : current.designation,
+        organisation !== undefined ? organisation.trim() : current.organisation,
+        attendance !== undefined ? attendance.trim() : current.attendance,
+        about_company !== undefined ? about_company.trim() : current.about_company,
+        event_objective !== undefined ? event_objective.trim() : current.event_objective,
+        interested_in !== undefined ? interested_in.trim() : current.interested_in,
         card_status || current.card_status,
         email_status || current.email_status,
         registrantId
